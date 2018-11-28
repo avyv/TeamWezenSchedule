@@ -117,7 +117,7 @@ function promptMeetingName(){
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
-function setName(){
-  name = document.getElementById("mtngName").value;
-  alert(name);
+function setName(nameobj){
+  let name = document.getElementById("mtngName").value;
+  
 }
