@@ -15,7 +15,7 @@ public class Model {
 	
 	public boolean deleteSchedule(String id) {
 		for(Schedule s: schedules) {
-			if(s.getId() == id) {
+			if(s.getId().equals(id)) {
 				schedules.remove(s);
 				return true;
 			}
@@ -36,7 +36,7 @@ public class Model {
 	
 	public boolean createSchedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, LocalTime slotDuration, String id) {
 		for(Schedule s: schedules) {
-			if(s.id == id) {
+			if(s.id.equals(id)) {
 				return false;
 			}
 		}
