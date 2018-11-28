@@ -1,16 +1,16 @@
 package com.schedule.wezen.model;
 
-import java.sql.Time;
-import java.util.Date;
+import java.time.LocalTime;
+import java.time.LocalDate;
 
 public class TimeSlot {
 	
-	int id;
-	Time startTime, duration;
+	String id;
+	LocalTime startTime, duration;
 	Meeting slotMeeting;
-	Date slotDate;
+	LocalDate slotDate;
 	
-	public TimeSlot(Time startTime, Time duration, Date date, int id) {
+	public TimeSlot(LocalTime startTime, LocalTime duration, LocalDate date, String id) {
 		this.startTime = startTime;
 		this.duration = duration;
 		this.slotDate = date;
@@ -31,11 +31,11 @@ public class TimeSlot {
 		}
 	}
 	
-	public int getId() {return id;}
-	public Time getStartTime() {return startTime;}
-	public Time getDuration() {return duration;}
+	public String getId() {return id;}
+	public LocalTime getStartTime() {return startTime;}
+	public LocalTime getDuration() {return duration;}
 	public Meeting getMeeting() {return slotMeeting;}
-	public Date getDate() {return slotDate;}
+	public LocalDate getDate() {return slotDate;}
 	
 	public void setMeeting(Meeting m) {this.slotMeeting = m;}
 }

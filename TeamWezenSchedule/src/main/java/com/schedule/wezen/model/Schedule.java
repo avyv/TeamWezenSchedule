@@ -1,19 +1,20 @@
 package com.schedule.wezen.model;
 
-import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
+import java.time.LocalTime;
 
 public class Schedule {
 	
-	Date startDate, endDate;
-	Time startTime, endTime, slotDuration;
-	int id, secretCode;
+	LocalDate startDate, endDate;
+	LocalTime startTime, endTime, slotDuration;
+	String id; 
+	int secretCode;
 	ArrayList<TimeSlot> timeSlots;
 	ArrayList<Meeting> meetings;
 	
-	public Schedule(Date startDate, Date endDate, Time startTime, Time endTime, Time slotDuration, int id, int secretCode) {
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, LocalTime slotDuration, String id, int secretCode) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
@@ -34,20 +35,65 @@ public class Schedule {
 		return code;
 	}
 	
-	public boolean createMeeting(TimeSlot t, String title) {
+	public boolean createMeeting(TimeSlot t, String title, String id) {
 		if(t.isOccupied()) {
 			return false;
 		}
 		else {
-			t.slotMeeting = new Meeting(title, createSecretCode());
+			t.slotMeeting = new Meeting(title, createSecretCode(), id);
 			return true;
 		}
 	}
 	
-	public boolean changeDuration(Date sd, Date ed) {
-		this.startDate = sd;
-		this.endDate = ed;
-		return true;
+	public boolean changeDuration(LocalDate sd, LocalDate ed) {
+		if(this.startDate.isBefore(sd) || this.endDate.isAfter(ed)) {
+			return false;
+		}
+		else {
+			this.startDate = sd;
+			this.endDate = ed;
+			return true;
+		}
 	}
-	// TODO add searchForTime
+	
+	public ArrayList<TimeSlot> searchForTime(int month, int year, int dayWeek, int dayMonth, LocalTime time) {
+		ArrayList<TimeSlot> available = timeSlots;
+		for(TimeSlot ts: available) {
+			if(month != 0 && ts.getDate().getMonthValue() != month) {
+				available.remove(ts);
+			}
+			else if(year != 0 && ts.getDate().getYear() != year) {
+				available.remove(ts);
+			}
+			else if(dayWeek != 0 && ts.getDate().getDayOfWeek().getValue() != dayWeek) {
+				available.remove(ts);
+			}
+			else if(dayMonth != 0 && ts.getDate().getDayOfMonth() != dayMonth) {
+				available.remove(ts);
+			}
+			else if(time.getSecond() != 1 && (ts.getStartTime().getHour() != time.getHour() || ts.getStartTime().getMinute() != time.getMinute())) {
+				available.remove(ts);
+			}
+		}
+		return available;
+	}
+	
+	public boolean isCorrectCode(int sc) {
+		return (sc == secretCode);
+	}
+	
+	public LocalDate getStartDate() {return startDate;}
+	public LocalDate getEndDate() {return endDate;}
+	public LocalTime getStartTime() {return startTime;}
+	public LocalTime getEndTime() {return endTime;}
+	public LocalTime getSlotDuration() {return slotDuration;}
+	public String getId() {return id;}
+	public int getSecretCode() {return secretCode;}
+	public ArrayList<TimeSlot> getTimeSlots() {return timeSlots;}
+	public ArrayList<Meeting> meetings() {return meetings;}
+	
+	public void setStartDate(LocalDate sd) {this.startDate = sd;}
+	public void setEndDate(LocalDate ed) {this.endDate = ed;}
+	public void setStartTime(LocalTime st) {this.startTime = st;}
+	public void setEndTime(LocalTime et) {this.endTime = et;}
 }
