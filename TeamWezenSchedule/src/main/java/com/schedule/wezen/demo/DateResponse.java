@@ -1,24 +1,24 @@
 package com.schedule.wezen.demo;
 
 public class DateResponse {
-	public String name;
-	public int date;
+	public String responseName;
+	public String responseDate;
 	int httpCode;
 	
-	public DateResponse (String n, int d, int code) {
-		this.name = n;
-		this.date = d;
+	public DateResponse (String n, String d, int code) {
+		this.responseName = n;
+		this.responseDate = d;
 		this.httpCode = code;
 	}
 	
 	// 200 means success
-	public DateResponse (String n, int d) {
-		this.name = n;
-		this.date = d;
+	public DateResponse (String n, String d) {
+		this.responseName = n;
+		this.responseDate = d;
 		this.httpCode = 200;
 	}
 	
 	public String toString() {
-		return "Name(" + date + ": " + name + ")";
+		return "Name(" + responseDate + ": " + responseName + ")";
 	}
 }

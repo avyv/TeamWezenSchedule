@@ -1,4 +1,5 @@
-var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
+//var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
+var schedule_url = "https://xdk3131931.execute-api.us-east-2.amazonaws.com/Alpha";
 var curr_month = "December";
 var curr_day = "1";
 var curr_year = "2018";
@@ -117,7 +118,40 @@ function promptMeetingName(){
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
+
+function processMeetingNameResponse(name, xhrResult) {
+	console.log("result:" + xhrResult);
+	let js = JSON.parse(xhrResult);
+	
+	let responseName = js["responseName"];
+	let responseDate = js["responseDate"];
+	
+	alert(responseDate);
+}
+
 function setName(nameobj){
   let name = document.getElementById("mtngName").value;
+  
+  let data = {};
+  data["responseName"] = name;
+  data["responseDate"] = curr_month + " " + curr_day + ", " + curr_year; 
+  
+  let js = JSON.stringify(data);
+  console.log("JS:" + js);
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", schedule_url, true);
+  
+  xhr.send(js);
+  
+  xhr.onloadend = function () {
+  	console.log(xhr);
+  	console.log(xhr.request);
+  	if(xhr.readyState == XMLHttpRequest.DONE) {
+  		console.log("XHR:" + xhr.responseText);
+  		processMeetingNameResponse(name, xhr.responseText);
+  	} else {
+  		processMeetingNameResponse(name, "N/A");
+  	}
+  };
   
 }
