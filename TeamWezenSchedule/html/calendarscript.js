@@ -1,28 +1,40 @@
 var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
-//var participant_url = "";
+var curr_month = "December";
+var curr_day = "1";
+var curr_year = "2018";
+var available_dates = [2,4,6];
+var meetings = [];
+window.onload = generateCalendar;
 
-window.onload = setUpCalendar;
-
-  function run(){
-    var month = document.getElementById("selectmonth").value;
-    if (month == "nomonth"){
-      month = "November"
+  function updateDay(){
+    curr_day = document.getElementById("selectDate").value;
+  }
+  function updateMonth(){
+    if (document.getElementById("selectmonth").value == "nomonth"){
+      curr_month = "December"
+    }else {
+      curr_month = document.getElementById("selectmonth").value;
     }
-    document.getElementById("displaymonth").innerHTML = month;
+    updateDisplay();
+  }
+  function updateYear(){
+    curr_year = document.getElementById("selectyear").value;
+    updateDisplay();
   }
 
-  function setUpCalendar(){
-    generateCalendar();
+  function updateDisplay(){
+    document.getElementById("showyear").innerHTML = curr_year;
+    document.getElementById("displaymonth").innerHTML = curr_month;
   }
 
   function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
-      var view = document.getElementById("viewselect").value;
-      if(view == "week"){weekView();}
-      else{monthView();}
+    let view = document.getElementById("viewselect").value;
+    if(view == "week"){weekView();}
+    else{monthView();}
   }
   function makeHeader(arr){
-      var header = document.createElement("tr");
+    let header = document.createElement("tr");
     document.getElementById("daysview").appendChild(header);
     for(let j=0;j<arr.length;j++){
       let head = document.createElement("td");
@@ -33,23 +45,22 @@ window.onload = setUpCalendar;
   }
 
   function weekView(){
-    var headervals = ["Time","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    let headervals = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     makeHeader(headervals);
-    var currWeek = document.createElement("tr");
+    let currWeek = document.createElement("tr");
     document.getElementById("daysview").appendChild(currWeek);
 
-    var emptytime = document.createElement("td");
+    let emptytime = document.createElement("td");
     currWeek.appendChild(emptytime);
 
-    var weekstart = 1;
-    var weekend = weekstart + 7;
+    let weekstart = 1;
+    let weekend = weekstart + 7;
     for (let i = weekstart; i < weekend; i++){
           let day = document.createElement("td");
           day.className = "day";
           day.innerHTML = i + "<br>";
-
-
-          if (i == 3 || i == 5) {
+          // let isopen = available_dates.includes(i);
+          if (i==2) {
             let free = document.createElement("button");
             free.innerText = "Free";
             free.value = i;
@@ -63,26 +74,24 @@ window.onload = setUpCalendar;
   }
 
   function monthView(){
-    var monthlength = 31;
-    var daysview = document.getElementById("daysview");
+    let monthlength = 31;
+    let daysview = document.getElementById("daysview");
 
-    var headervals = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    let headervals = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     makeHeader(headervals);
-      var currWeek = document.createElement("tr");
-      daysview.appendChild(currWeek);
+    let currWeek = document.createElement("tr");
+    daysview.appendChild(currWeek);
 
     for (let i = 1; i <= monthlength; i++){
           let day = document.createElement("td");
           day.className = "day";
           day.innerHTML = i + "<br>";
-          day.addEventListener('click', selectDate(i));
 
           if (i == 3 || i == 5) {
-              var free = document.createElement("button");
+              let free = document.createElement("button");
               free.innerText = "Free";
               free.value = i;
               free.addEventListener('click', function(){handleFreeButton(free)});
-
               day.appendChild(free);
           }
 
@@ -94,53 +103,21 @@ window.onload = setUpCalendar;
       }
   }
 
-  function processDateResponse(name, day, result) {
-    // Can grab any DIV or SPAN HTML element and can then manipulate its
-    // contents dynamically via javascript
-    console.log("result:" + result);
-    let js = JSON.parse(result);
-
-    let nameResponse = js["name"];
-    let dateResponse = js["date"];
-
-    // Update response
-    alert("free: Date: " + dateResponse + ": " + nameResponse);
-}
 
 function handleFreeButton(obj){
-    let day = obj.value;
-    
-    console.log("thesat"+day);
-    
-    
-    let name = "Wezen";
-    
-    let data = {};
-    data["date"] = day;
-    data["name"] = name;
-    let js = JSON.stringify(data);
-    console.log("JS:" + js);
-    let xhr = new XMLHttpRequest();
+  // alert(available_dates.includes(2));
 
-    xhr.open("POST", schedule_url, true);
-    // send the collected date as JSON
-    xhr.send(js);
-
-    // This will process results and update HTML as appropriate
-    xhr.onloadend = function() {
-        console.log(xhr);
-        console.log(xhr.request);
-        if(xhr.readyState == XMLHttpRequest.DONE) {
-            console.log ("XHR:" + xhr.responseText);
-            processDateResponse(name, day, xhr.responseText);
-        } else {
-            processDateResponse(name, day, "N/A");
-        }
-    }
+    curr_day = obj.value;
+    promptMeetingName();
 }
 
-  function selectDate(day){
-      return function() {
-          alert(day);
-      }
-  }
+function promptMeetingName(){
+  let label = document.getElementById("mtnglabel");
+  label.innerHTML="<b>Name for Meeting on " + curr_day + ", " + curr_month + " " + curr_year + ": <b>";
+  let prompt = document.getElementById('mtngPrompt');
+  prompt.style.display='block';
+}
+function setName(){
+  name = document.getElementById("mtngName").value;
+  alert(name);
+}
