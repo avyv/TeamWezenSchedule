@@ -134,8 +134,12 @@ function createMtng(n,d){
   }
 
   function handleSubmit(e){
-    document.getElementById("mtngPrompt").style.display = 'none';
-    setName(e);
+    if(document.getElementById("mtngName").value == ""){
+      alert("You must enter a Meeting Name");
+    }else{
+      document.getElementById("mtngPrompt").style.display = 'none';
+      setName(e);
+    }
     return false;
   }
 
