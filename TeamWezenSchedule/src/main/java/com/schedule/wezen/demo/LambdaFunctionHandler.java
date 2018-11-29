@@ -22,6 +22,9 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.google.gson.Gson;
 
+import com.schedule.wezen.demo.http.DateRequest;
+import com.schedule.wezen.demo.http.DateResponse;
+
 
 public class LambdaFunctionHandler implements RequestStreamHandler {
 

@@ -1,8 +1,8 @@
-package com.schedule.wezen.demo;
+package com.schedule.wezen.demo.http;
 
 public class DateRequest {
-	String requestName;
-	String requestDate;
+	public String requestName;
+	public String requestDate;
 	
 	public DateRequest (String n, String d) {
 		this.requestName = n;

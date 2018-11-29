@@ -1,4 +1,4 @@
-package com.schedule.wezen.demo;
+package com.schedule.wezen.demo.http;
 
 public class DateResponse {
 	public String responseName;

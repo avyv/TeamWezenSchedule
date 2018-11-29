@@ -1,13 +1,13 @@
 // Team Wezen
 
-package com.schedule.wezen.demo;
+package com.schedule.wezen.demo.http;
 
 public class CreateScheduleRequest {
-	String startDate;
-	String endDate;
-	String startTime;
-	String endTime;
-	String slotDuration;
+	public String startDate;
+	public String endDate;
+	public String startTime;
+	public String endTime;
+	public String slotDuration;
 	
 	public CreateScheduleRequest(String startDate, String endDate, String startTime, String endTime, String slotDuration) {
 		this.startDate = startDate;

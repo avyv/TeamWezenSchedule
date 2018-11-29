@@ -1,10 +1,10 @@
 // Team Wezen
 
-package com.schedule.wezen.demo;
+package com.schedule.wezen.demo.http;
 
 public class CreateScheduleResponse {
-	String createScheduleResponse;
-	int httpCode;
+	public String createScheduleResponse;
+	public int httpCode;
 	
 	public CreateScheduleResponse (String s, int code) {
 		this.createScheduleResponse = s;

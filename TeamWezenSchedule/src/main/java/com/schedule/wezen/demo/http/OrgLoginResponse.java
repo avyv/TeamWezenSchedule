@@ -1,8 +1,8 @@
-package com.schedule.wezen.demo;
+package com.schedule.wezen.demo.http;
 
 public class OrgLoginResponse {
-	String message;
-	int httpCode;
+	public String message;
+	public int httpCode;
 	
 	public OrgLoginResponse (String s, int code) {
 		this.message = s;

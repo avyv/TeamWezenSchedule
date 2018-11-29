@@ -22,8 +22,8 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.google.gson.Gson;
 
-import com.schedule.wezen.demo.CreateScheduleRequest;
-import com.schedule.wezen.demo.CreateScheduleResponse;
+import com.schedule.wezen.demo.http.CreateScheduleRequest;
+import com.schedule.wezen.demo.http.CreateScheduleResponse;
 
 
 public class CreateScheduleHandler implements RequestStreamHandler {

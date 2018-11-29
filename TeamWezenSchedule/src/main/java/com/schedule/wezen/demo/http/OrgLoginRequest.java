@@ -1,8 +1,8 @@
-package com.schedule.wezen.demo;
+package com.schedule.wezen.demo.http;
 
 public class OrgLoginRequest {
-	String user;
-	String pass;
+	public String user;
+	public String pass;
 	
 	public OrgLoginRequest (String a1, String a2) {
 		this.user = a1;
