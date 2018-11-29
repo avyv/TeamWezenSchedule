@@ -43,7 +43,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 
     	logger = context.getLogger();
-		logger.log("Loading Java Lambda handler to create constant");
+		logger.log("Loading Java Lambda handler to create Schedule");
 
 		JSONObject headerJson = new JSONObject();
 		headerJson.put("Content-Type",  "application/json");  // not sure if needed anymore?
@@ -66,25 +66,37 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			logger.log("event:" + event.toJSONString());
 			
 			String method = (String) event.get("httpMethod");
+			logger.log("method: " + method);
 			if (method != null && method.equalsIgnoreCase("OPTIONS")) {
 				logger.log("Options request");
+				
+				
 				cSchedResponse = new CreateScheduleResponse("Success: Schedule created!!!", 200);  // OPTIONS needs a 200 response
 		        createScheduleResponseJson.put("body", new Gson().toJson(cSchedResponse));
+		        
 		        processed = true;
 		        body = null;
 			} else {
+				logger.log("in-branch");
 				body = (String)event.get("body");
+				logger.log("pre-body:" + body);
+				
 				if (body == null) {
 					body = event.toJSONString();  // this is only here to make testing easier
 				}
+				logger.log("body:" + body);
 			}
 		} catch (ParseException pe) {
-			logger.log(pe.toString());
+			
+			logger.log("exception: " + pe.toString());
+			
 			cSchedResponse = new CreateScheduleResponse("Bad Request:" + pe.getMessage(), 422);  // unable to process input
 	        createScheduleResponseJson.put("body", new Gson().toJson(cSchedResponse));
 	        processed = true;
 	        body = null;
 		}
+		
+		logger.log("processed" + processed);
 
 		if (!processed) {
 			CreateScheduleRequest req = new Gson().fromJson(body, CreateScheduleRequest.class);
