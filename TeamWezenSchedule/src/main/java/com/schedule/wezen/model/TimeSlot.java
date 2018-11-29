@@ -5,16 +5,14 @@ import java.time.LocalDate;
 
 public class TimeSlot {
 	
-	String id;
 	LocalTime startTime, duration;
 	Meeting slotMeeting;
 	LocalDate slotDate;
 	
-	public TimeSlot(LocalTime startTime, LocalTime duration, LocalDate date, String id) {
+	public TimeSlot(LocalTime startTime, LocalTime duration, LocalDate date) {
 		this.startTime = startTime;
 		this.duration = duration;
 		this.slotDate = date;
-		this.id = id;
 	}
 	
 	public boolean isOccupied() {
@@ -31,7 +29,6 @@ public class TimeSlot {
 		}
 	}
 	
-	public String getId() {return id;}
 	public LocalTime getStartTime() {return startTime;}
 	public LocalTime getDuration() {return duration;}
 	public Meeting getMeeting() {return slotMeeting;}
