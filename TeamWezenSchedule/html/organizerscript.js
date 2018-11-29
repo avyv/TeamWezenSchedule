@@ -1,3 +1,4 @@
+//
 var base_url = "https://kiljpq1n4a.execute-api.us-east-2.amazonaws.com/Alpha";
 var createSchedule_url = base_url + "/createSchedule";
 

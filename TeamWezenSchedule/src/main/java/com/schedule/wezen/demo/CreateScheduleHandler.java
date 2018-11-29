@@ -126,6 +126,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
         OutputStreamWriter writer = new OutputStreamWriter(output, "UTF-8");
         writer.write(createScheduleResponseJson.toJSONString());  
         writer.close();
+        logger.log("you did it, congrats");
     }
 
 }
