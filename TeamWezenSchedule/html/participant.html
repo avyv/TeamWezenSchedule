@@ -131,9 +131,8 @@
     		<form  class="login-content animate">
     	    <div class="container">
     	      <label id="mtnglabel" for="mtngName"><b>Name For Meeting: </b></label>
-    	      <input   type="text" name="meetingName" value="" id="mtngName" placeholder="Enter Name" required />
-
-    	      <button type="button" onclick="JavaScript:setName(this);">Submit</button>
+    	      <input   type="text" name="meetingName" value="" id="mtngName" placeholder="Enter Name" required>
+    	      <button type="button" onclick="JavaScript:handleSubmit(this);">Submit</button>
     	    </div>
     	    <div class="container" style="background-color:#f1f1f1">
     	      <button type="button" onclick="document.getElementById('mtngPrompt').style.display='none'">Cancel</button>
