@@ -5,7 +5,7 @@ var curr_month = "December";
 var curr_day = "1";
 var curr_year = "2018";
 var available_dates = [2,4,6];
-var meetings = [];
+var meetings = [{name:"m1",date:1},{name:"m2",date:5}];
 window.onload = generateCalendar;
 
   function updateDay(){
@@ -46,31 +46,59 @@ window.onload = generateCalendar;
     }
   }
 
+function checkIncludes(arr, obj){
+  for(let i=0; i< arr.length; i++){
+    if(arr[i]==obj){return true;}
+  }
+  return false;
+}
+
+function checkForMtng(day){
+  for(let i=0; i<meetings.length;i++){
+    if(meetings[i].date == day){
+      return true;
+    }
+  }
+  return false;
+}
+function createMtng(n,d){
+  mtng = {name: n, date: d};
+  meetings.push(mtng);
+  generateCalendar();
+}
   function weekView(){
     let headervals = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     makeHeader(headervals);
     let currWeek = document.createElement("tr");
     document.getElementById("daysview").appendChild(currWeek);
-
     let emptytime = document.createElement("td");
     currWeek.appendChild(emptytime);
 
     let weekstart = 1;
     let weekend = weekstart + 7;
+    let index = 0;
     for (let i = weekstart; i < weekend; i++){
           let day = document.createElement("td");
           day.className = "day";
           day.innerHTML = i + "<br>";
-          // let isopen = available_dates.includes(i);
-          if (i==2) {
+          if(checkForMtng(i)){
+            var mtng = document.createElement("P");
+            for(let j=0;j<meetings.length;j++){
+              if(meetings[j].date == i){
+                mtng.innerHTML = meetings[j].name;
+                break;
+              }
+            }
+            day.appendChild(mtng);
+            index++;
+          } else if (checkIncludes(available_dates,i)) {
             let free = document.createElement("button");
             free.innerText = "Free";
             free.value = i;
-
             free.addEventListener('click', function(){handleFreeButton(free)});
-
             day.appendChild(free);
           }
+
           currWeek.appendChild(day);//only the first row
       }
   }
@@ -110,10 +138,8 @@ window.onload = generateCalendar;
     setName(e);
     return false;
   }
-  
-function handleFreeButton(obj){
-  // alert(available_dates.includes(2));
 
+function handleFreeButton(obj){
     curr_day = obj.value;
     promptMeetingName();
 }
@@ -132,11 +158,12 @@ function processMeetingNameResponse(name, xhrResult) {
 	let responseName = js["responseName"];
 	let responseDate = js["responseDate"];
 
-	alert(responseName);
+	alert("received name: " + responseName + " date: " + responseDate);
 }
 
 function setName(nameobj){
   let name = document.getElementById("mtngName").value;
+  createMtng(name,curr_day);
   let data = {};
   data["requestName"] = name;
   data["requestDate"] = curr_month + " " + curr_day + ", " + curr_year;
