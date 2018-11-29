@@ -134,8 +134,8 @@ function setName(nameobj){
   let name = document.getElementById("mtngName").value;
 
   let data = {};
-  data["responseName"] = name;
-  data["responseDate"] = curr_month + " " + curr_day + ", " + curr_year;
+  data["requestName"] = name;
+  data["requestDate"] = curr_month + " " + curr_day + ", " + curr_year;
 
   let js = JSON.stringify(data);
   console.log("JS:" + js);
