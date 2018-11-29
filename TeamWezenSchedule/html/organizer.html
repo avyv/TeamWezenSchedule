@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="basestyle.css">
   </head>
   <body>
-    <script src="Organizerscript.js"></script>
+    <script src="organizerscript.js"></script>
     <!-- <script src="calendarscript.js"></script> -->
     <title> Organizer Scheduler</title>
     <header>
@@ -15,23 +15,29 @@
 
     <section id="OrganizerTools">
     	<div id="orgtools" class="login">
-    		<form  class="login-content animate"  >
+    		<form  class="login-content animate"  onsubmit="JavaScript:handleSubmit();">
     	    <div class="container">
     	      <form>
-    	      	<label for="setstartday"><b>Start Date</label>
-    	      	<input type="text" id="setstartday" placeholder="MM/DD/YYYY" required>
-    	      	<label for="setendday"><b>End Date</label>
-    	      	<input type="text" id="setendday" placeholder="MM/DD/YYYY" required>
-    	      	<label for="settimeslots"><b>Length of Timeslots</label>
+    	      	<label for="setstartday"><b><br>Start Date </label>
+    	      	<input type="date" id="setstartday"  required>
+    	      	<label for="setendday"><b><br>End Date </label>
+    	      	<input type="date" id="setendday" required>
+    	      	<label for="settimeslots"><b><br>Length of Timeslots </label>
     	      	<input type="text" id="settimeslots" placeholder="time in minutes" required>
-    	      	<label for="settimestart"><b>Daily Start Time</label>
-    	      	<input type="text" id="settimestart" placeholder="24:00" required>
-    	      	<label for="settimeend"><b>Daily End Time</label>
-    	      	<input type="text" id="settimeend" placeholder="24:00" required>
+    	      	<label for="settimestart"><b><br>Daily Start Time </label>
+    	      	<input type="time" id="settimestart" required>
+    	      	<label for="settimeend"><b><br>Daily End Time </label>
+    	      	<!-- <input type="time" id="settimeend" placeholder="24:00" required> -->
+              <!-- <input type="datetime-local" name="endtime" > -->
+              <input type="time" id="settimeend" required>
+
     	      </form>
-    	      <button type="submit" onclick="createSchedule()">Submit</button>
+            <br><br>
+            <button type="submit">Submit</button>
             <button type="button" onclick="document.getElementById('orgtools').style.display='none'">Cancel</button>
-    	    </div>
+</div>
+
+
     	  </form>
     	</div>
     </section>
