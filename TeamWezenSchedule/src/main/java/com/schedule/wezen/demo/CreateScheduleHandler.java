@@ -52,7 +52,8 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 	        
 		JSONObject createScheduleResponseJson = new JSONObject();
 		createScheduleResponseJson.put("headers", headerJson);
-
+		
+		// This is where the response will be stored
 		CreateScheduleResponse cSchedResponse = null;
 		
 		// extract body from incoming HTTP POST request. If any error, then return 422 error
