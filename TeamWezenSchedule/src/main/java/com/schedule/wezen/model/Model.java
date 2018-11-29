@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+import java.time.format.DateTimeFormatter;
 
 public class Model {
 	
@@ -12,6 +13,25 @@ public class Model {
 	public Model() {
 		
 	}
+	
+	public LocalDate dateToString(String stringDate) throws Exception {
+		//Date date = new SimpleDateFormat("yyyy/MM/dd").parse(stringDate);
+		//LocalDate finalDate = LocalDate.from(Instant.ofEpochMilli(date.getTime()));
+		//return date;
+		//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate date = LocalDate.parse(stringDate, formatter);
+		return date;
+	}
+	
+	//To change LocalDate to String use the .toString() method which turns it into a string with format "yyyy-MM-dd" 
+	
+	public LocalTime timeToString(String stringTime) {
+		LocalTime time = LocalTime.parse(stringTime);
+		return time;
+	}
+	
+	//To change LocalTime to String use the .toString() method 
 	
 	public boolean deleteSchedule(String id) {
 		for(Schedule s: schedules) {
