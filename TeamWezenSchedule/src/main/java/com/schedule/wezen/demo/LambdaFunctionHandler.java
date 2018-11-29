@@ -64,6 +64,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 			
 			// Determines what kind of method the request is (get, body, options)
 			String method = (String) event.get("httpMethod"); // turns the method into a string
+			logger.log("method:" + method);
 			if (method != null && method.equalsIgnoreCase("OPTIONS")) { // if the method is OPTIONS...
 				logger.log("Options request"); // log it as an OPTIONS request
 				
@@ -75,14 +76,17 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 		        processed = true; // tell the program the response has been processed
 		        body = null;
 			} else { // If the request is a get or body
+				logger.log("in-branch");
 				body = (String)event.get("body");
+				logger.log("pre-body:" + body);
 				if (body == null) {
 					body = event.toJSONString();  // this is only here to make testing easier
 				}
+				logger.log("body:" +body);
 			}
 			// if the input couldn't be processed
 		} catch (ParseException pe) {
-			logger.log(pe.toString());
+			logger.log("exceptionL::" + pe.toString());
 		
 			dateResponse = new DateResponse("", "", 422);  // Send a 422 code (unable to process input)
 	        dateResponseJson.put("body", new Gson().toJson(dateResponse));
@@ -91,6 +95,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 		}
 		
 		// If the request is a body or a get request
+		logger.log("processedL" + processed);
 		if (!processed) {
 			DateRequest req = new Gson().fromJson(body, DateRequest.class); // create a new DateRequest
 			logger.log(req.toString()); // log request
