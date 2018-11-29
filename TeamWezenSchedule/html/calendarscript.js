@@ -1,5 +1,6 @@
 //var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
-var schedule_url = "https://xdk3131931.execute-api.us-east-2.amazonaws.com/Alpha";
+var base_url = "https://xdk3131931.execute-api.us-east-2.amazonaws.com/Alpha";
+var schedule_url = base_url + "/schedule";
 var curr_month = "December";
 var curr_day = "1";
 var curr_year = "2018";
