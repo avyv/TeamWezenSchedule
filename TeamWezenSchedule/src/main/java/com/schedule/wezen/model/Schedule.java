@@ -1,8 +1,8 @@
 package com.schedule.wezen.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Schedule {
@@ -22,6 +22,42 @@ public class Schedule {
 		this.slotDuration = slotDuration;
 		this.id = id;
 		this.secretCode = secretCode;
+		
+		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration);
+	}
+	
+	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime et, LocalTime dur) {
+		if(ed.isBefore(sd) || (ed.isEqual(sd) && et.isBefore(st))) {
+			return false;
+		}
+		
+		for(int year = sd.getYear(); year <= ed.getYear(); year++) {
+			for(int mon = sd.getMonthValue(); mon <= ed.getMonthValue(); mon++) {
+				for(int day = sd.getDayOfMonth(); day <= ed.getDayOfMonth(); day++) {
+					
+					for(int hour = 0; hour < 24; hour++) {
+						for(int min = 0; min < 60; min += dur.getMinute()) {
+							if(dur.getMinute() == 0) {
+								hour++;
+								
+								LocalTime start = LocalTime.parse(hour + ":00:00");
+								LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
+								
+								timeSlots.add(new TimeSlot(start, dur, date));
+								
+								break;
+							}
+							
+							LocalTime start = LocalTime.parse(hour + ":" + min +":00");
+							LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
+							
+							timeSlots.add(new TimeSlot(start, dur, date));
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	public int createSecretCode() {
