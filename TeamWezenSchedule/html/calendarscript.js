@@ -127,7 +127,7 @@ function processMeetingNameResponse(name, xhrResult) {
 	let responseName = js["responseName"];
 	let responseDate = js["responseDate"];
 
-	alert(responseDate);
+	alert(responseName);
 }
 
 function setName(nameobj){
