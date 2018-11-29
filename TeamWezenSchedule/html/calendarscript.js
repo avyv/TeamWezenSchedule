@@ -105,7 +105,12 @@ window.onload = generateCalendar;
       }
   }
 
-
+  function handleSubmit(e){
+    document.getElementById("mtngPrompt").style.display = 'none';
+    setName(e);
+    return false;
+  }
+  
 function handleFreeButton(obj){
   // alert(available_dates.includes(2));
 
@@ -132,7 +137,6 @@ function processMeetingNameResponse(name, xhrResult) {
 
 function setName(nameobj){
   let name = document.getElementById("mtngName").value;
-
   let data = {};
   data["requestName"] = name;
   data["requestDate"] = curr_month + " " + curr_day + ", " + curr_year;
