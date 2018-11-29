@@ -31,7 +31,7 @@ window.onload = generateCalendar;
 
   function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
-    let view = document.getElementById("viewselect").value;
+    var view = document.getElementById("viewselect").value;
     if(view == "week"){weekView();}
     else{monthView();}
   }
@@ -123,27 +123,27 @@ function promptMeetingName(){
 function processMeetingNameResponse(name, xhrResult) {
 	console.log("result:" + xhrResult);
 	let js = JSON.parse(xhrResult);
-	
+
 	let responseName = js["responseName"];
 	let responseDate = js["responseDate"];
-	
+
 	alert(responseDate);
 }
 
 function setName(nameobj){
   let name = document.getElementById("mtngName").value;
-  
+
   let data = {};
   data["responseName"] = name;
-  data["responseDate"] = curr_month + " " + curr_day + ", " + curr_year; 
-  
+  data["responseDate"] = curr_month + " " + curr_day + ", " + curr_year;
+
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();
   xhr.open("POST", schedule_url, true);
-  
+
   xhr.send(js);
-  
+
   xhr.onloadend = function () {
   	console.log(xhr);
   	console.log(xhr.request);
@@ -154,5 +154,5 @@ function setName(nameobj){
   		processMeetingNameResponse(name, "N/A");
   	}
   };
-  
+
 }
