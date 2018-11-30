@@ -26,16 +26,16 @@ function createSchedule(){
   let dailyStartTime = document.getElementById("settimestart").value;
   let dailyEndTime = document.getElementById("settimeend").value;
   
-  let data = {};
+  var data = {};
   data["startDate"] = String(startDay);
   data["endDate"] = String(endDay);
   data["startTime"] = String(dailyStartTime);
   data["endTime"] = String(dailyEndTime);
   data["slotDuration"] = String(timeslot);
   
-  let js = JSON.stringify(data);
+  var js = JSON.stringify(data);
   console.log("JS: " + js);
-  let xhr = new XMLHttpRequest();
+  var xhr = new XMLHttpRequest();
   xhr.open("POST", createSchedule_url, true);
   
   xhr.send(js);

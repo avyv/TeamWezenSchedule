@@ -1,11 +1,25 @@
 //var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
 var base_url = "https://xdk3131931.execute-api.us-east-2.amazonaws.com/Alpha";
 var schedule_url = base_url + "/schedule";
-var curr_month = "December";
 var curr_day = "1";
 var curr_year = "2018";
 var available_dates = [2,4,6];
 var meetings = [{name:"m1",date:1},{name:"m2",date:5}];
+var months = [{name: "none",length:0,startsOn:"none"},
+              {name: "January",length:31,startsOn:"Thursday"},
+              {name: "February",length:28,startsOn:"Sunday"},
+              {name: "March",length:31,startsOn:"Sunday"},
+              {name: "April",length:30,startsOn:"Wednesday"},
+              {name: "May",length:31,startsOn:"Friday"},
+              {name: "June",length:30,startsOn:"Monday"},
+              {name: "July",length:31,startsOn:"Wednesday"},
+              {name: "August",length:31,startsOn:"Sunday"},
+              {name: "September",length:30,startsOn:"Tuesday"},
+              {name: "October",length:31,startsOn:"Thursday"},
+              {name: "November",length:30,startsOn:"Sunday"},
+              {name: "December",length:31,startsOn:"Tuesday"}]
+var curr_month = months[12];
+
 window.onload = generateCalendar;
 
   function updateDay(){
@@ -13,7 +27,7 @@ window.onload = generateCalendar;
   }
   function updateMonth(){
     if (document.getElementById("selectmonth").value == "nomonth"){
-      curr_month = "December"
+      curr_month = months[12];
     }else {
       curr_month = document.getElementById("selectmonth").value;
     }
