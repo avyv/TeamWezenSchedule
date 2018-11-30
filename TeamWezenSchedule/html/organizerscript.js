@@ -2,7 +2,7 @@
 var base_url = "https://kiljpq1n4a.execute-api.us-east-2.amazonaws.com/Alpha";
 var createSchedule_url = base_url + "/createschedule";
 
-function handleSubmit(){
+function handleSubmit(e){
   document.getElementById("orgtools").style.display = 'none';
   createSchedule();
   return false;  
@@ -51,5 +51,4 @@ function createSchedule(){
   	}
   }
   
-  alert("Congratulations!!!");
 }

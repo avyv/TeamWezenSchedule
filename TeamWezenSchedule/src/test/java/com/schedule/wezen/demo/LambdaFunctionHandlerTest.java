@@ -61,7 +61,7 @@ public class LambdaFunctionHandlerTest {
     public void testLambdaFunctionHandlerFromFile() throws IOException {
         LambdaFunctionHandler handler = new LambdaFunctionHandler();
 
-        FileInputStream input = new FileInputStream( new File("src/test/resources/sample.in"));
+        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleCreateMeeting.in"));
         
         OutputStream output = new ByteArrayOutputStream();
 

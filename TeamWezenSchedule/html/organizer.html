@@ -11,12 +11,12 @@
     <header>
     	<h1>Team Wezen Scheduler</h1>
       <h2>Organizer Portal</h2>
-      <button onclick="document.getElementById('orgtools').style.display='block'">Create Schedule</button>
+      <button onclick="Javascript:handleSubmit(this)">Create Schedule</button>
     </header>
 
     <section id="OrganizerTools">
     	<div id="orgtools" class="login">
-    		<form  class="login-content animate"  onsubmit="JavaScript:handleSubmit();">
+    		<form  class="login-content animate">
     	    <div class="container">
     	      <form>
     	      	<label for="setstartday"><b><br>Start Date </label>
@@ -32,8 +32,8 @@
 
     	      </form>
             <br><br>
-            <button type="submit">Submit</button>
-            <button type="button" onclick="document.getElementById('orgtools').style.display='none'">Cancel</button>
+            <button type="button" onclick="JavaScript:handleSubmit(this);">Submit</button>
+            <button type="button" onclick="document.getElementById('orgtools').style.display='none'">Cancel</button> 
 </div>
 
 
