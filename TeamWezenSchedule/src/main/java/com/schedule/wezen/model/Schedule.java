@@ -40,18 +40,22 @@ public class Schedule {
 							if(dur.getMinute() == 0) {
 								hour++;
 								
-								LocalTime start = LocalTime.parse(hour + ":00:00");
-								LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
-								
-								timeSlots.add(new TimeSlot(start, dur, date));
+								if(hour >= st.getHour() && hour < et.getHour()) {
+									LocalTime start = LocalTime.parse(hour + ":00:00");
+									LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
+									
+									timeSlots.add(new TimeSlot(start, dur, date));
+								}
 								
 								break;
 							}
 							
-							LocalTime start = LocalTime.parse(hour + ":" + min +":00");
-							LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
-							
-							timeSlots.add(new TimeSlot(start, dur, date));
+							if(hour >= st.getHour() && hour <= et.getHour() && min >= st.getMinute() && min <= et.getMinute()) {
+								LocalTime start = LocalTime.parse(hour + ":" + min +":00");
+								LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
+								
+								timeSlots.add(new TimeSlot(start, dur, date));
+							}
 						}
 					}
 				}
