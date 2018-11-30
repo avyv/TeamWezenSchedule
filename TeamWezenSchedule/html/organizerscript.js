@@ -8,8 +8,8 @@ function handleSubmit(){
   return false;  
 }
 
-function processCreateScheduleResponse(result) {
-	console.log("result: " + xhrRequest);
+function processCreateScheduleResponse(xhrResult) {
+	console.log("result: " + xhrResult);
 	let js = JSON.parse(xhrResult);
 	
 	let response = js["createScheduleResponse"];
