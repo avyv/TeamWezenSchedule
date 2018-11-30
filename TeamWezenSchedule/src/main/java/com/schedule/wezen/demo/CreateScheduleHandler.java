@@ -100,7 +100,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 
 		if (!processed) {
 			CreateScheduleRequest req = new Gson().fromJson(body, CreateScheduleRequest.class);
-			logger.log(req.toString());
+			logger.log("request: " + req.toString());
 
 			CreateScheduleResponse resp;
 			try {

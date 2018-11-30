@@ -39,7 +39,7 @@ public class LambdaFunctionHandlerTest {
         InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
         OutputStream output = new ByteArrayOutputStream();
 
-        handler.handleRequest(input, output, createContext("smpale"));
+        handler.handleRequest(input, output, createContext("sample"));
 
         // TODO: validate output here if needed.
         String sampleOutputString = output.toString();
@@ -65,7 +65,7 @@ public class LambdaFunctionHandlerTest {
         
         OutputStream output = new ByteArrayOutputStream();
 
-        handler.handleRequest(input, output, createContext("smpale"));
+        handler.handleRequest(input, output, createContext("sample"));
 
         // TODO: validate output here if needed.
         String sampleOutputString = output.toString();

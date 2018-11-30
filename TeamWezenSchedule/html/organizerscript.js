@@ -27,11 +27,11 @@ function createSchedule(){
   let dailyEndTime = document.getElementById("settimeend").value;
   
   let data = {};
-  data["startDate"] = startDay;
-  data["endDate"] = endDay;
-  data["startTime"] = dailyStartTime;
-  data["endTime"] = dailyEndTime;
-  data["slotDuration"] = timeslot;
+  data["startDate"] = String(startDay);
+  data["endDate"] = String(endDay);
+  data["startTime"] = String(dailyStartTime);
+  data["endTime"] = String(dailyEndTime);
+  data["slotDuration"] = String(timeslot);
   
   let js = JSON.stringify(data);
   console.log("JS: " + js);
