@@ -1,6 +1,4 @@
-//var schedule_url = "https://b3ivwb09fg.execute-api.us-east-1.amazonaws.com/Alpha";
 var base_url = "https://xdk3131931.execute-api.us-east-2.amazonaws.com/Alpha";
-var schedule_url = base_url + "/schedule";
 var curr_day = "1";
 var curr_year = "2018";
 var available_dates = [2,4,6];
@@ -20,7 +18,16 @@ var months = [{name: "none",length:0,startsOn:"none"},
               {name: "December",length:31,startsOn:"Tuesday"}]
 var curr_month = months[12];
 
-window.onload = generateCalendar;
+// window.onload = generateCalendar;
+window.onload = initialize;
+
+function initialize(){
+  head = document.getElementById("head");
+  openScheduleBtn = document.createElement("BUTTON");
+  openScheduleBtn.innerText = "Open Schedule";
+  openScheduleBtn.addEventListener('click', function(){document.getElementById("schedprompt").style.display='block';});
+  head.appendChild(openScheduleBtn);
+}
 
   function updateDay(){
     curr_day = document.getElementById("selectDate").value;
@@ -45,9 +52,10 @@ window.onload = generateCalendar;
 
   function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
-    var view = document.getElementById("viewselect").value;
-    if(view == "week"){weekView();}
-    else{monthView();}
+    // var view = document.getElementById("viewselect").value;
+    // if(view == "week"){weekView();}
+    // else{monthView();}
+    weekview();
   }
   function makeHeader(arr){
     let header = document.createElement("tr");
@@ -173,44 +181,52 @@ function handleFreeButton(obj){
 
 function promptMeetingName(){
   let label = document.getElementById("mtnglabel");
-  label.innerHTML="<b>Name for Meeting on " + curr_day + ", " + curr_month + " " + curr_year + ": <b>";
+  label.innerHTML="<b>Name for Meeting on " + curr_day + ", " + curr_month.name + " " + curr_year + ": <b>";
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
 
-function processMeetingNameResponse(name, xhrResult) {
-	console.log("result:" + xhrResult);
-	let js = JSON.parse(xhrResult);
+/*********************** Submit Data to Java*********************************/
+function handleSubmitSchedId(e){
+  schedID = document.getElementById(schedid).value;
+  let data = {};
+  data["requestSchedID"] = schedID;
+  let schedidurl = base_url + "/schedid";
+  sendCalData(data,schedidurl);
 
-	let responseName = js["responseName"];
-	let responseDate = js["responseDate"];
-
-	alert("received name: " + responseName + " date: " + responseDate);
 }
-
-function setName(nameobj){
+function handleSubmitMtngName(nameobj){
   let name = document.getElementById("mtngName").value;
   createMtng(name,curr_day);
   let data = {};
   data["requestName"] = name;
-  data["requestDate"] = curr_month + " " + curr_day + ", " + curr_year;
+  data["requestDate"] = curr_month.name + " " + curr_day + ", " + curr_year;
+  let mtngnameurl = base_url + "/schedule";
+  sendCalData(data,mtngnameurl,processMtngResponse);
 
+}
+function processMtngResponse(xhrResult) {
+	console.log("result:" + xhrResult);
+	let js = JSON.parse(xhrResult);
+  let responseName = js["responseName"];
+  let responseDate = js["responseDate"];
+  alert("received name: " + responseName + " date: " + responseDate);
+}
+
+function sendCalData(data,url,processcallback){
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", schedule_url, true);
-
+  xhr.open("POST", url, true);
   xhr.send(js);
-
   xhr.onloadend = function () {
-  	console.log(xhr);
-  	console.log(xhr.request);
-  	if(xhr.readyState == XMLHttpRequest.DONE) {
-  		console.log("XHR:" + xhr.responseText);
-  		processMeetingNameResponse(name, xhr.responseText);
-  	} else {
-  		processMeetingNameResponse(name, "N/A");
-  	}
+    console.log(xhr);
+    console.log(xhr.request);
+    if(xhr.readyState == XMLHttpRequest.DONE) {
+      console.log("XHR:" + xhr.responseText);
+      processcallback(xhr.responseText);
+    } else {
+      processcallback(xhr.responseText);
+    }
   };
-
 }

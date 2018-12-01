@@ -6,9 +6,9 @@
   </head>
   <body>
     <script src="organizerscript.js"></script>
-    <!-- <script src="calendarscript.js"></script> -->
+    <script src="calendarscript.js"></script>
     <title> Organizer Scheduler</title>
-    <header>
+    <header id='head'>
     	<h1>Team Wezen Scheduler</h1>
       <h2>Organizer Portal</h2>
       <button onclick="JavaScript:openPrompt(this);">Create Schedule</button>
@@ -19,6 +19,8 @@
     		<form  class="login-content animate">
     	    <div class="container">
     	      <form>
+              <label for="setschedid"><b><br>Schedule Id </label>
+    	      	<input type="text" id="setschedid"  required>
     	      	<label for="setstartday"><b><br>Start Date </label>
     	      	<input type="date" id="setstartday"  required>
     	      	<label for="setendday"><b><br>End Date </label>
@@ -32,11 +34,28 @@
 
     	      </form>
             <br><br>
-            <button type="button" onclick="JavaScript:handleSubmit(this);">Submit</button>
+            <button type="button" onclick="JavaScript:handleSubmitSched(this);">Submit</button>
             <button type="button" onclick="document.getElementById('orgtools').style.display='none'">Cancel</button>
 </div>
 
 
+    	  </form>
+    	</div>
+    </section>
+
+
+    <section id="OpenSchedule">
+    	<div id="schedprompt" class="login">
+    		<form  class="login-content animate">
+    	    <div class="container">
+    	      <form>
+    	      	<label for="schedid"><b><br>Schedule ID: </label>
+    	      	<input type="text" id="schedid"  required>
+    	      </form>
+            <br><br>
+            <button type="button" onclick="JavaScript:handleSubmitSchedId(this);">Submit</button>
+            <button type="button" onclick="document.getElementById('schedprompt').style.display='none'">Cancel</button>
+          </div>
     	  </form>
     	</div>
     </section>

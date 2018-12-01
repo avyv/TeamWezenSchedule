@@ -6,7 +6,7 @@
   <body>
     <script src="calendarscript.js"></script>
     <title> Participant Scheduler</title>
-    <header>
+    <header id="head">
     	<h1>Team Wezen Scheduler</h1>
       <h2>Participant Portal</h2>
     </header>
@@ -96,7 +96,7 @@
     	</nav>
     </section>
 
-    <section id="toggleview">
+    <!-- <section id="toggleview">
     	<nav>
     		<label for="viewselect">View as</label>
     		<select id="viewselect" onchange="generateCalendar()">
@@ -104,7 +104,23 @@
     			<option value="month">Month</option>
     		</select>
     	</nav>
-    </section>
+    </section> -->
+
+        <section id="OpenSchedule">
+        	<div id="schedprompt" class="login">
+        		<form  class="login-content animate">
+        	    <div class="container">
+        	      <form>
+        	      	<label for="schedid"><b><br>Schedule ID: </label>
+        	      	<input type="text" id="schedid"  required>
+        	      </form>
+                <br><br>
+                <button type="button" onclick="JavaScript:handleSubmitSchedId(this);">Submit</button>
+                <button type="button" onclick="document.getElementById('schedprompt').style.display='none'">Cancel</button>
+              </div>
+        	  </form>
+        	</div>
+        </section>
 
     <section id="calendar">
     	<div class="month">
@@ -114,8 +130,6 @@
     	    <li><h2 id="displaymonth">December</h2><br><span id="showyear" style="font-size:18px">2018</span></li>
     	  </ul>
     	</div>
-
-
     	<table id="daysview"></table>
     </section>
 
@@ -134,7 +148,7 @@
     	      <input   type="text" name="meetingName" value="" id="mtngName" placeholder="Enter Name" required>
 
     	    </div>
-          <button type="button" onclick="JavaScript:handleSubmit(this);">Submit</button>
+          <button type="button" onclick="JavaScript:handleSubmitMtngName(this);">Submit</button>
 
     	    <div class="container" style="background-color:#f1f1f1">
     	      <button type="button" onclick="document.getElementById('mtngPrompt').style.display='none'">Cancel</button>
