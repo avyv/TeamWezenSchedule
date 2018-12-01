@@ -188,7 +188,8 @@ function promptMeetingName(){
 
 /*********************** Submit Data to Java*********************************/
 function handleSubmitSchedId(e){
-  schedID = document.getElementById(schedid).value;
+  let schedID = document.getElementById(schedid);
+  console.log("id = "+schedID);
   let data = {};
   data["requestSchedID"] = schedID;
   let schedidurl = base_url + "/schedid";
