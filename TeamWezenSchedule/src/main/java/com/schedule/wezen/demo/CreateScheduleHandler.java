@@ -54,7 +54,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		LocalTime startT = m.stringToTime(startTime);
 		LocalTime endT = m.stringToTime(endTime);
-		LocalTime slotD = m.stringToTime(slotDuration);
+		LocalTime slotD = m.stringToDuration(slotDuration);
 		
 		int secretCode = m.createSecretCode();
 		
