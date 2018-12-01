@@ -39,7 +39,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 	
 	
 	/**
-	 * Load from RDS, if it exists (WILL DO THIS EVENTUALLY)
+	 * Load from RDS, if it exists
 	 * 
 	 * @throws Exception
 	 */
@@ -50,6 +50,9 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		Model m = new Model();
 		
 		LocalDate startD = m.stringToDate(startDate);
+		
+		logger.log("Date: " + startDate + "");
+		
 		LocalDate endD = m.stringToDate(endDate);
 		
 		LocalTime startT = m.stringToTime(startTime);
@@ -57,6 +60,8 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		LocalTime slotD = m.stringToTime(slotDuration);
 		
 		int secretCode = m.createSecretCode();
+		
+		logger.log("SecretCode: " + secretCode + "");
 		
 
 		SchedulesDAO dao = new SchedulesDAO();
