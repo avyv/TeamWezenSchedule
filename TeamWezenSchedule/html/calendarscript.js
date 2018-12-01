@@ -40,7 +40,7 @@ window.onload = generateCalendar;
 
   function updateDisplay(){
     document.getElementById("showyear").innerHTML = curr_year;
-    document.getElementById("displaymonth").innerHTML = curr_month;
+    document.getElementById("displaymonth").innerHTML = curr_month.name;
   }
 
   function generateCalendar(){
@@ -79,6 +79,15 @@ function createMtng(n,d){
   mtng = {name: n, date: d};
   meetings.push(mtng);
   generateCalendar();
+}
+function deleteMtng(d){
+  for(let i=0; i<meetings.length;i++){
+    if(meetings[i].date == d){
+      meetings.splice(i,1);
+      alert(meetings);
+      generateCalendar();
+    }
+  }
 }
   function weekView(){
     let headervals = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
