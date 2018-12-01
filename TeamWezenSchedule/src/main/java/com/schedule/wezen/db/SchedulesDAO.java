@@ -24,7 +24,7 @@ public class SchedulesDAO {
         
         try {
             Schedule schedule = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Constants WHERE name=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE name=?;");
             ps.setString(1,  id);
             ResultSet resultSet = ps.executeQuery();
             
@@ -75,7 +75,7 @@ public class SchedulesDAO {
     }
     
     
-    public boolean addConstant(Schedule schedule) throws Exception {
+    public boolean addSchedule(Schedule schedule) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedule WHERE id = ?;");
             ps.setString(1, schedule.getId());
