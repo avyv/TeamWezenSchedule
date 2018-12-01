@@ -66,7 +66,7 @@ public class MeetingsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO Meeting (name,id) values(?,?);");
+            ps = conn.prepareStatement("INSERT INTO Meetings (name,id) values(?,?);");
             ps.setString(3, meeting.getName());
             ps.setString(2, meeting.getId());
             ps.execute();
