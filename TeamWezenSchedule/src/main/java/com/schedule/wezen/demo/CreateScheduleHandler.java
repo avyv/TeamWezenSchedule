@@ -24,19 +24,46 @@ import com.google.gson.Gson;
 
 import com.schedule.wezen.demo.http.CreateScheduleRequest;
 import com.schedule.wezen.demo.http.CreateScheduleResponse;
+import com.schedule.wezen.db.SchedulesDAO;
+import com.schedule.wezen.model.Schedule;
+import com.schedule.wezen.model.Model;
+
+import java.time.LocalTime;
+import java.time.LocalDate;
+
 
 
 public class CreateScheduleHandler implements RequestStreamHandler {
 	
 	public LambdaLogger logger = null;
 	
+	
 	/**
 	 * Load from RDS, if it exists (WILL DO THIS EVENTUALLY)
 	 * 
 	 * @throws Exception
 	 */
-	boolean createSchedule() throws Exception {
-		return true;
+	boolean createSchedule(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) throws Exception {
+		if(logger != null) { logger.log("in createSchedule");}
+		
+		/* turn the times and dates into appropriate objects */
+		Model m = new Model();
+		
+		LocalDate startD = m.stringToDate(startDate);
+		LocalDate endD = m.stringToDate(endDate);
+		
+		LocalTime startT = m.stringToTime(startTime);
+		LocalTime endT = m.stringToTime(endTime);
+		LocalTime slotD = m.stringToTime(slotDuration);
+		
+		int secretCode = m.createSecretCode();
+		
+
+		SchedulesDAO dao = new SchedulesDAO();
+		
+		Schedule schedule = new Schedule(startD, endD, startT, endT, slotD, id, secretCode);
+		
+		return dao.updateSchedule(schedule);
 	}
 
     @Override
@@ -108,7 +135,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				// DATABASE STUFF!!!
 				
-				if (createSchedule()) {
+				if (createSchedule(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
 					resp = new CreateScheduleResponse("Successfully created schedule");
 				} else {
 					resp = new CreateScheduleResponse("Unable to create schedule: ", 422);
