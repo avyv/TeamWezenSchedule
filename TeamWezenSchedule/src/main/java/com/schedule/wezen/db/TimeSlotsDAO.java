@@ -56,8 +56,9 @@ public class TimeSlotsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO TimeSlot (startTime, slotDate) values(?,?);");
+            ps = conn.prepareStatement("INSERT INTO TimeSlots (startTime, duration, slotDate) values(?,?,?);");
             ps.setTime(2,  Time.valueOf(timeSlot.getStartTime()));
+            ps.setTime(3, Time.valueOf(timeSlot.getDuration()));
             ps.setDate(4, Date.valueOf(timeSlot.getDate()));
             ps.execute();
             return true;
@@ -72,7 +73,7 @@ public class TimeSlotsDAO {
         List<TimeSlot> allTS = new ArrayList<>();
         try {
             Statement statement = conn.createStatement();
-            String query = "SELECT * FROM Time Slots";
+            String query = "SELECT * FROM TimeSlots";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
