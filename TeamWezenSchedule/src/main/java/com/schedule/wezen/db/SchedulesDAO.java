@@ -24,8 +24,8 @@ public class SchedulesDAO {
         
         try {
             Schedule schedule = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE name=?;");
-            ps.setString(1,  id);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE id=?;");
+            ps.setString(5,  id);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
@@ -45,14 +45,14 @@ public class SchedulesDAO {
     public boolean deleteSchedule(Schedule schedule) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
-            ps.setString(1, schedule.getId());
+            ps.setString(5, schedule.getId());
             int numAffected = ps.executeUpdate();
             ps.close();
             
             return (numAffected == 1);
 
         } catch (Exception e) {
-            throw new Exception("Failed to insert schedule: " + e.getMessage());
+            throw new Exception("Failed to delete schedule: " + e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class SchedulesDAO {
     public boolean addSchedule(Schedule schedule) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedule WHERE id = ?;");
-            ps.setString(1, schedule.getId());
+            ps.setString(5, schedule.getId());
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
