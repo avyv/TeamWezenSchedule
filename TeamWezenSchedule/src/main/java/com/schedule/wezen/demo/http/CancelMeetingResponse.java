@@ -21,3 +21,5 @@ public class CancelMeetingResponse {
 		return "CancelMeetingResponse(" + meetingNameResponse + " " + cancelResponse + ")";
 	}
 }
+
+// may need alterations

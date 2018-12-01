@@ -35,3 +35,5 @@ public class CancelMeetingHandler implements RequestStreamHandler {
 		 
 	 }
 }
+
+// needs to be filled out once DB is completed

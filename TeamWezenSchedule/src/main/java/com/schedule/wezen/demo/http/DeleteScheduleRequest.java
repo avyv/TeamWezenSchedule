@@ -11,3 +11,5 @@ public class DeleteScheduleRequest {
 		return "DeleteScheduleRequest(" + scheduleSecretCode + ")";
 	}
 }
+
+// may need alterations
