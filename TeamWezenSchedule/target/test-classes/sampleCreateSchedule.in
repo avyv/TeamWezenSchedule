@@ -1,5 +1,5 @@
 {
-    "path": "/schedule",
+    "path": "/createschedule",
     "headers": {
         "Accept": "*/*",
         "CloudFront-Viewer-Country": "US",
@@ -7,19 +7,19 @@
         "CloudFront-Is-Tablet-Viewer": "false",
         "origin": "https://wezenschedule.s3.us-east-2.amazonaws.com",
         "CloudFront-Is-Mobile-Viewer": "false",
-        "Referer": "https://wezenschedule.s3.us-east-2.amazonaws.com/participant.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20181129T200320Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86397&X-Amz-Credential=AKIAJEKB4NABQYMWAOPA%2F20181129%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=852bc2f19b3806039ef3c3a035e3da23a04d4d5afe6ccf4d6520b764e799e6fe",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:63.0) Gecko/20100101 Firefox/63.0",
+        "Referer": "https://wezenschedule.s3.us-east-2.amazonaws.com/organizer.html?",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36",
         "X-Forwarded-Proto": "https",
         "CloudFront-Is-SmartTV-Viewer": "false",
-        "Host": "xdk3131931.execute-api.us-east-2.amazonaws.com",
+        "Host": "kiljpq1n4a.execute-api.us-east-2.amazonaws.com",
         "Accept-Encoding": "gzip, deflate, br",
         "X-Forwarded-Port": "443",
-        "X-Amzn-Trace-Id": "Root=1-5c004614-4adedddfddcfe0c700d79a97",
-        "Via": "2.0 55157b979573d984aaf7e9e716d67a4a.cloudfront.net (CloudFront)",
-        "X-Amz-Cf-Id": "pHiNNHSyecU479UvJOjrXUOeeKo77n9I5kJW9wzJ1Uk94ztlwqOaAQ==",
-        "X-Forwarded-For": "130.215.8.148, 52.46.29.7",
+        "X-Amzn-Trace-Id": "Root=1-5c0184fa-03d960021ad9f34216210cdc",
+        "Via": "2.0 7f23b91f6dbc2ee888cb465c633163d4.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "BKG85Ktx-H2F2mMbcqWvlri_Ne6aHuR68fLsbAYfy2RStV1NNhH17g==",
+        "X-Forwarded-For": "130.215.210.144, 52.46.29.9",
         "content-type": "text/plain;charset=UTF-8",
-        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Language": "en-US,en;q=0.9",
         "CloudFront-Is-Desktop-Viewer": "true"
     },
     "pathParameters": null,
@@ -45,10 +45,10 @@
             "false"
         ],
         "Referer": [
-            "https://wezenschedule.s3.us-east-2.amazonaws.com/participant.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20181129T200320Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86397&X-Amz-Credential=AKIAJEKB4NABQYMWAOPA%2F20181129%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=852bc2f19b3806039ef3c3a035e3da23a04d4d5afe6ccf4d6520b764e799e6fe"
+            "https://wezenschedule.s3.us-east-2.amazonaws.com/organizer.html?"
         ],
         "User-Agent": [
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:63.0) Gecko/20100101 Firefox/63.0"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"
         ],
         "X-Forwarded-Proto": [
             "https"
@@ -57,7 +57,7 @@
             "false"
         ],
         "Host": [
-            "xdk3131931.execute-api.us-east-2.amazonaws.com"
+            "kiljpq1n4a.execute-api.us-east-2.amazonaws.com"
         ],
         "Accept-Encoding": [
             "gzip, deflate, br"
@@ -66,59 +66,59 @@
             "443"
         ],
         "X-Amzn-Trace-Id": [
-            "Root=1-5c004614-4adedddfddcfe0c700d79a97"
+            "Root=1-5c0184fa-03d960021ad9f34216210cdc"
         ],
         "Via": [
-            "2.0 55157b979573d984aaf7e9e716d67a4a.cloudfront.net (CloudFront)"
+            "2.0 7f23b91f6dbc2ee888cb465c633163d4.cloudfront.net (CloudFront)"
         ],
         "X-Amz-Cf-Id": [
-            "pHiNNHSyecU479UvJOjrXUOeeKo77n9I5kJW9wzJ1Uk94ztlwqOaAQ=="
+            "BKG85Ktx-H2F2mMbcqWvlri_Ne6aHuR68fLsbAYfy2RStV1NNhH17g=="
         ],
         "X-Forwarded-For": [
-            "130.215.8.148, 52.46.29.7"
+            "130.215.210.144, 52.46.29.9"
         ],
         "content-type": [
             "text/plain;charset=UTF-8"
         ],
         "Accept-Language": [
-            "en-US,en;q=0.5"
+            "en-US,en;q=0.9"
         ],
         "CloudFront-Is-Desktop-Viewer": [
             "true"
         ]
     },
     "requestContext": {
-        "resourceId": "26kz3n",
-        "resourcePath": "/schedule",
+        "resourceId": "5m8xi0",
+        "resourcePath": "/createschedule",
         "httpMethod": "POST",
-        "extendedRequestId": "RI_jRFY8CYcF-oQ=",
-        "requestTime": "29/Nov/2018:20:03:32 +0000",
-        "path": "/Alpha/schedule",
+        "extendedRequestId": "RMG3HF7XCYcF97A=",
+        "requestTime": "30/Nov/2018:18:44:10 +0000",
+        "path": "/Alpha/createschedule",
         "accountId": "326444859572",
         "protocol": "HTTP/1.1",
         "stage": "Alpha",
-        "domainPrefix": "xdk3131931",
-        "requestTimeEpoch": 1543521812964,
-        "requestId": "d9271ad9-f411-11e8-8b2b-e791adc59066",
+        "domainPrefix": "kiljpq1n4a",
+        "requestTimeEpoch": 1543603450316,
+        "requestId": "ecce7122-f4cf-11e8-9b00-3540bd7d872b",
         "identity": {
             "cognitoIdentityPoolId": null,
             "accountId": null,
             "cognitoIdentityId": null,
             "caller": null,
-            "sourceIp": "130.215.8.148",
+            "sourceIp": "130.215.210.144",
             "accessKey": null,
             "cognitoAuthenticationType": null,
             "cognitoAuthenticationProvider": null,
             "userArn": null,
-            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:63.0) Gecko/20100101 Firefox/63.0",
+            "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36",
             "user": null
         },
-        "domainName": "xdk3131931.execute-api.us-east-2.amazonaws.com",
-        "apiId": "xdk3131931"
+        "domainName": "kiljpq1n4a.execute-api.us-east-2.amazonaws.com",
+        "apiId": "kiljpq1n4a"
     },
-    "resource": "/schedule",
+    "resource": "/createschedule",
     "httpMethod": "POST",
     "queryStringParameters": null,
     "stageVariables": null,
-    "body": "{\"requestName\":\"dfgd\",\"requestDate\":\"December 2, 2018\"}"
+    "body": "{\"startDate\":\"2018-11-30\",\"endDate\":\"2018-12-01\",\"startTime\":\"08:00\",\"endTime\":\"17:00\",\"slotDuration\":\"10\"}"
 }
