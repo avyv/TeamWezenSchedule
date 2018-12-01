@@ -12,7 +12,7 @@ public class stringToDateTests {
 	public void testStringDate() throws Exception {
 		Model model = new Model();
 		String stringDate = "2017-12-12";
-		LocalDate date = model.dateToString(stringDate);
+		LocalDate date = model.stringToDate(stringDate);
 		assertEquals(date.getYear(), 2017);
 	}
 
@@ -20,7 +20,7 @@ public class stringToDateTests {
 	public void testStringDate2() throws Exception {
 		Model model = new Model();
 		String stringDate = "2017-12-12";
-		LocalDate date = model.dateToString(stringDate);
+		LocalDate date = model.stringToDate(stringDate);
 		assertEquals(date.toString(), stringDate);
 	}
 }

@@ -14,7 +14,7 @@ public class Model {
 		
 	}
 	
-	public LocalDate dateToString(String stringDate) throws Exception {
+	public LocalDate stringToDate(String stringDate) throws Exception {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate date = LocalDate.parse(stringDate, formatter);
 		return date;
@@ -22,7 +22,7 @@ public class Model {
 	
 	//To change LocalDate to String use the .toString() method which turns it into a string with format "yyyy-MM-dd" 
 	
-	public LocalTime timeToString(String stringTime) {
+	public LocalTime stringToTime(String stringTime) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 		LocalTime time = LocalTime.parse(stringTime,formatter);
 		return time;

@@ -14,7 +14,7 @@ public class stringToTimeTests {
 	public void testStringTime() throws Exception {
 		Model model = new Model();
 		String stringTime = "09:15";
-		LocalTime time = model.timeToString(stringTime);
+		LocalTime time = model.stringToTime(stringTime);
 		assertEquals(time.getHour(), 9);
 	}
 
@@ -22,7 +22,7 @@ public class stringToTimeTests {
 	public void testStringTime2() throws Exception {
 		Model model = new Model();
 		String stringTime = "09:15";
-		LocalTime time = model.timeToString(stringTime);
+		LocalTime time = model.stringToTime(stringTime);
 		assertEquals(time.toString(), stringTime);
 	}
 }
