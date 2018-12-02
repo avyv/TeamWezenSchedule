@@ -1,5 +1,6 @@
 package com.schedule.wezen.model;
 
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.time.LocalDate;
@@ -10,23 +11,61 @@ public class Schedule {
 	LocalDate startDate, endDate;
 	LocalTime startTime, endTime, slotDuration;
 	String id; 
-	int secretCode;
+	int secretCode, numSlotsDay;
 	ArrayList<TimeSlot> timeSlots;
-	ArrayList<Meeting> meetings;
 	
-	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, LocalTime slotDuration, String id, int secretCode) {
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime slotDuration, String id, int secretCode, int numSlotsDay) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
-		this.endTime = endTime;
 		this.slotDuration = slotDuration;
 		this.id = id;
 		this.secretCode = secretCode;
-		
-		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration);
+		this.numSlotsDay = numSlotsDay;
+		this.endTime = calculateEndTime(startTime, slotDuration, numSlotsDay);
+		//populateTimeSlots(startDate, endDate, startTime, slotDuration);
 	}
 	
-	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime et, LocalTime dur) {
+	public int calculateDayOfWeek(LocalDate startDate) {
+		String date = startDate.toString();
+		int k = Integer.parseInt(date.substring(8, 10));
+		int m = Integer.parseInt(date.substring(5, 7));
+		if(m > 2) {m -= 2;}
+		else {m += 10;}
+		int d = Integer.parseInt(date.substring(2, 4));
+		int c = Integer.parseInt(date.substring(0, 2));
+		int dayOfWeek = (k + doubleToInt((13*m-1)/5) + d + doubleToInt(d/4) + doubleToInt(c/4) + (c*2));
+		if (dayOfWeek > 7) {
+			dayOfWeek = dayOfWeek % 7;
+		}
+		return dayOfWeek; //1=Monday, 2=Tuesday,...
+	}
+	
+	public int doubleToInt(double value) {
+		int intValue = (int) value;
+		return intValue;
+	}
+	
+	public LocalTime calculateEndTime(LocalTime startTime, LocalTime duration, int numSlotsDay) {
+		int min = Integer.parseInt(startTime.toString().substring(3, 5));
+		int hour = Integer.parseInt(startTime.toString().substring(0, 2));
+		int d = Integer.parseInt(duration.toString().substring(0, 2));
+		for (int i = 0; i<numSlotsDay; i++) {
+			if((min+d) > 59) {
+				min = (min+d) - 60;
+				hour++;
+			} 
+			min+=min;
+		}
+		String endMin = String.valueOf(min);
+		String endHour = String.valueOf(hour);
+		String endTimeString = endHour + ":" + endMin;
+		Model model = new Model();
+		LocalTime endTime = model.stringToTime(endTimeString);
+		return endTime;
+	}
+	
+	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime dur) {
 		if(ed.isBefore(sd) || (ed.isEqual(sd) && et.isBefore(st))) {
 			return false;
 		}
@@ -67,11 +106,6 @@ public class Schedule {
 	public int createSecretCode() {
 		Random r = new Random();
 		int code = r.nextInt();
-		for(Meeting m: meetings) {
-			if(m.secretCode == code) {
-				return createSecretCode();
-			}
-		}
 		return code;
 	}
 	
@@ -130,10 +164,10 @@ public class Schedule {
 	public String getId() {return id;}
 	public int getSecretCode() {return secretCode;}
 	public ArrayList<TimeSlot> getTimeSlots() {return timeSlots;}
-	public ArrayList<Meeting> meetings() {return meetings;}
 	
 	public void setStartDate(LocalDate sd) {this.startDate = sd;}
 	public void setEndDate(LocalDate ed) {this.endDate = ed;}
 	public void setStartTime(LocalTime st) {this.startTime = st;}
+	public void setNumSlotsDay(int num) {this.numSlotsDay = num;}
 	public void setEndTime(LocalTime et) {this.endTime = et;}
 }

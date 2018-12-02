@@ -5,9 +5,12 @@ import java.time.LocalDate;
 
 public class TimeSlot {
 	
-	LocalTime startTime, duration;
-	Meeting slotMeeting;
+	LocalTime startTime, endTime;
 	LocalDate slotDate;
+	Meeting slotMeeting;
+	String id;
+	int secretCode;
+	boolean isOpen;
 	
 	public TimeSlot(LocalTime startTime, LocalTime duration, LocalDate date) {
 		this.startTime = startTime;
