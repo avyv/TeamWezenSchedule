@@ -54,7 +54,7 @@ function generateCalendar(){
     let parseddate = date.split("-");
     let d = parseddate[2];
     let m = parseddate[1];
-    let y = parseddate[0];//last 2 digits of year
+    let y = parseddate[0];
     let calendar = document.getElementById("daysview");
     /********** header ************/
     let header = calendar.insertRow(0);
@@ -104,6 +104,13 @@ function generateCalendar(){
     }
   }
 /********* Create A Meeting **********/
+function promptMeetingName(ts){
+  currts = ts;
+  let label = document.getElementById("mtnglabel");
+  label.innerHTML="<b>Name for Meeting on " + currts.date + " at " + currts.startTime + ": <b>";
+  let prompt = document.getElementById('mtngPrompt');
+  prompt.style.display='block';
+}
 function createMtng(name){
   if ((name == "") || (name == " ")) {
     alert("You must enter a valid name");
@@ -112,52 +119,38 @@ function createMtng(name){
       data["requestTSId"] = currts.id;
       data["requestMtngName"] = name;
       let createmtng_url = base_url + "/createmtng";
-      sendCreateMtng(data,createmtng_url);
-  }
-  generateCalendar();
-}
-
-function promptMeetingName(ts){
-  currts = ts;
-  let label = document.getElementById("mtnglabel");
-  label.innerHTML="<b>Name for Meeting on " + currts.date + " at " + currts.startTime + ": <b>";
-  let prompt = document.getElementById('mtngPrompt');
-  prompt.style.display='block';
-}
-
-/*********************** Submit Data to Java*********************************/
-function handleSubmitSchedId(e){
-  let schedID = document.getElementById("schedid").value;
-  if (schedID == "") {
-    alert("You must enter a Schedule ID");
-  }  else{
-      let data = {};
-      data["requestSchedID"] = schedID;
-      let schedidurl = base_url + "/schedid";
-      sendCalData(data,schedidurl);
+      sendCalData(data,createmtng_url,processCreateMtngResponse);
   }
 }
-function handleSubmitMtngName(nameobj){
-  let name = document.getElementById("mtngName").value;
-  let data = {};
-  data["requestName"] = name;
-  data["requestDate"] = currts.date;
-  data["requestTime"] = currts.startTime;
-  let mtngnameurl = base_url + "/schedule";
-  sendCalData(data,mtngnameurl,processMtngResponse);
-  //close prompt
-  document.getElementById('mtngPrompt').style.display = 'none';
-}
-function processMtngResponse(xhrResult) {
-	console.log("result:" + xhrResult);
-	let js = JSON.parse(xhrResult);
-  let responseName = js["responseName"];
-  let responseDate = js["responseDate"];
-  alert("received name: " + responseName + " date: " + responseDate);
-  generateCalendar();
-}
 
-function sendCalData(data,url,processcallback){
+
+
+/*********************** SUBMIT DATA TO JAVA *********************************/
+// /********* Callbacks **********/
+// function processCreateMtngResponse(xhrResult) {
+// 	console.log("result:" + xhrResult);
+// 	let js = JSON.parse(xhrResult);
+//   let responseName = js["responseSchedule"];
+//   alert("received name: " + responseName + " date: " + responseDate);
+//   generateCalendar();
+// }
+//
+// function handleSubmitSchedId(e){
+//   let schedID = document.getElementById("schedid").value;
+//   if (schedID == "") {
+//     alert("You must enter a Schedule ID");
+//   }  else{
+//       let data = {};
+//       data["requestSchedID"] = schedID;
+//       let schedidurl = base_url + "/schedid";
+//       sendCalData(data,schedidurl);
+//   }
+// }
+//
+//
+
+/********* Sending Data **********/
+function sendCalData(data,url){
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();
@@ -168,9 +161,17 @@ function sendCalData(data,url,processcallback){
     console.log(xhr.request);
     if(xhr.readyState == XMLHttpRequest.DONE) {
       console.log("XHR:" + xhr.responseText);
-      processcallback(xhr.responseText);
+      processSchedule(xhr.responseText);
     } else {
-      processcallback(xhr.responseText);
+      processSchedule(xhr.responseText);
     }
   };
+}
+
+function processSchedule(xhrResult){
+	console.log("result:" + xhrResult);
+	let js = JSON.parse(xhrResult);
+  let responseSchedule = js["responseSchedule"];
+  alert("received Schedule");
+  generateCalendar();
 }
