@@ -40,19 +40,41 @@ table{
 }
 .day {
   padding-bottom: 30px;
-
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+}
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+table tr:nth-child(odd) {
+   background-color: #fff;
+}
+table tr#timelbl{
+  background-color: #1abc9c;
+  color: white;
+}
+table td#daylbl{
+  background-color: darkgrey;
+  color: white;
+}
+td{
+  padding: 30px;
 }
 
 button:hover{
 	opacity: 0.6;
 	color: black;
 }
-
+.filterbar{
+  display: none;
+}
 /* Month header */
 .month {
     padding: 20px 25px;
     background: #1abc9c;
     text-align: center;
+    display: none;
 }
 
 /* Month list */

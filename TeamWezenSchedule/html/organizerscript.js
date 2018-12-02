@@ -48,7 +48,7 @@ function processCreateScheduleResponse(xhrResult) {
 	console.log("result: " + xhrResult);
 	let js = JSON.parse(xhrResult);
 	let response = js["createScheduleResponse"];
-	alert(response);
+  alert(response);
 }
 
 function sendOrgData(data,url,processcallback){
