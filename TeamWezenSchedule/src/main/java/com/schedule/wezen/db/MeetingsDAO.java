@@ -21,8 +21,8 @@ public class MeetingsDAO {
         
         try {
             Meeting meeting = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Meetings WHERE id=?;");
-            ps.setString(2,  id);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Meetings WHERE tid=?;");
+            ps.setString(1,  tid);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
@@ -41,8 +41,8 @@ public class MeetingsDAO {
     
     public boolean deleteMeeting(Meeting meeting) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM Meetings WHERE id = ?;");
-            ps.setString(2, meeting.getId());
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM Meetings WHERE tid = ?;");
+            ps.setString(1, meeting.getTid());
             int numAffected = ps.executeUpdate();
             ps.close();
             
@@ -55,8 +55,8 @@ public class MeetingsDAO {
     
     public boolean addMeeting(Meeting meeting) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Meetings WHERE id = ?;");
-            ps.setString(2, meeting.getId());
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Meetings WHERE tid = ?;");
+            ps.setString(1, meeting.getTid());
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
@@ -66,9 +66,9 @@ public class MeetingsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO Meetings (name,id) values(?,?);");
-            ps.setString(3, meeting.getName());
-            ps.setString(2, meeting.getId());
+            ps = conn.prepareStatement("INSERT INTO Meetings (tid, name) values(?,?);");
+            ps.setString(1, meeting.getTid());
+            ps.setString(2, meeting.getName());
             ps.execute();
             return true;
 
@@ -99,9 +99,8 @@ public class MeetingsDAO {
     }
     
     private Meeting generateMeeting(ResultSet resultSet) throws Exception {
-    	String id = resultSet.getString("id");
+    	String tid = resultSet.getString("tid");
     	String name  = resultSet.getString("name");
-        int secretCode = resultSet.getInt("secretCode");
-        return new Meeting (name, secretCode, id);
+        return new Meeting (tid, name);
     }
 }

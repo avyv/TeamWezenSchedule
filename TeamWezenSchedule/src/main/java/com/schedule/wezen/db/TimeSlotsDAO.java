@@ -56,10 +56,13 @@ public class TimeSlotsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO TimeSlots (startTime, duration, slotDate) values(?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, secretCode, isOpen) values(?,?,?,?,?,?);");
+            ps.setSid(1, timeSlot.getSid());
             ps.setTime(2,  Time.valueOf(timeSlot.getStartTime()));
-            ps.setTime(3, Time.valueOf(timeSlot.getDuration()));
-            ps.setDate(4, Date.valueOf(timeSlot.getDate()));
+            ps.setDate(3, Date.valueOf(timeSlot.getDate()));
+            ps.setString(4, timeSlot.getId());
+            ps.setInt(5, timeSlot.getSecretCode());
+            ps.setBoolean(6, timeSlot.getIsOpen);
             ps.execute();
             return true;
 
@@ -90,9 +93,12 @@ public class TimeSlotsDAO {
     }
     
     private TimeSlot generateTimeSlot(ResultSet resultSet) throws Exception {
+    	String sid = resultSet.getString("sid");
     	Time startTime = resultSet.getTime("startTime");
-    	Time duration = resultSet.getTime("duration");
     	Date slotDate = resultSet.getDate("slotDate");
-        return new TimeSlot (LocalTime.parse(startTime.toString()), LocalTime.parse(duration.toString()), LocalDate.parse(slotDate.toString()));
+    	String id = resultSet.getString("id");
+    	int secretCode = resultSet.getInt("secretCode");
+    	boolean isOpen = resultSet.getBoolean("isOpen");
+        return new TimeSlot (sid, LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()), id, secretCode, isOpen);
     }
 }

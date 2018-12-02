@@ -58,12 +58,11 @@ public class SchedulesDAO {
 
     public boolean updateSchedule(Schedule schedule) throws Exception {
         try {
-        	String query = "UPDATE Schedules SET startDate=?, endDate=?, startTime=?, endTime=?, WHERE id=?;";
+        	String query = "UPDATE Schedules SET startDate=?, endDate=?, startTime=?, WHERE id=?;";
         	PreparedStatement ps = conn.prepareStatement(query);
         	ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
         	ps.setTime(3, Time.valueOf(schedule.getStartTime().toString()));
-        	ps.setTime(4, Time.valueOf(schedule.getEndTime().toString()));
         	
             int numAffected = ps.executeUpdate();
             ps.close();
@@ -92,9 +91,10 @@ public class SchedulesDAO {
             ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
         	ps.setTime(3, Time.valueOf(schedule.getStartTime().toString()));
-        	ps.setTime(4, Time.valueOf(schedule.getEndTime().toString()));
+        	ps.setTime(4, Time.valueOf(schedule.getSlotDuration().toString()));
         	ps.setString(5, schedule.getId());
         	ps.setInt(6, schedule.getSecretCode());
+        	ps.setInt(7, schedule.getNumSlotsDay());
             
             ps.execute();
             return true;
@@ -129,12 +129,12 @@ public class SchedulesDAO {
         Date startDate = resultSet.getDate("startDate");
         Date endDate = resultSet.getDate("endDate");
         Time startTime = resultSet.getTime("startTime");
-        Time endTime = resultSet.getTime("endTime");
         Time duration = resultSet.getTime("duration");
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
+        int numSlotsDay= resultSet.getInt("numSlotsPerDay");
 
-        return new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), LocalTime.parse(duration.toString()), id, secretCode);
+        return new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(duration.toString()), id, secretCode, numSlotsDay);
     }
 
 }
