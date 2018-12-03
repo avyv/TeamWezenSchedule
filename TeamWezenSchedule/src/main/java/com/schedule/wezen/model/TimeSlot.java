@@ -12,16 +12,6 @@ public class TimeSlot {
 	int secretCode;
 	boolean isOpen;
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode) {
-		this.startTime = startTime;
-		this.slotDate = slotDate;
-		this.id = id;
-		this.sid = sid;
-		this.secretCode = secretCode;
-		this.isOpen = true;
-		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
-	}
-	
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
@@ -29,6 +19,16 @@ public class TimeSlot {
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
+		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
+	}
+	
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode) {
+		this.startTime = startTime;
+		this.slotDate = slotDate;
+		this.id = id;
+		this.sid = sid;
+		this.secretCode = secretCode;
+		this.isOpen = true;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
