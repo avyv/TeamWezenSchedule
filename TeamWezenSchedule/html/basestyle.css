@@ -44,6 +44,9 @@ table{
   padding-right: 10px;
   text-align: center;
 }
+section#calendarwindow {
+  visibility: hidden;
+}
 table tr:nth-child(even) {
     background-color: #eee;
 }
@@ -66,9 +69,7 @@ button:hover{
 	opacity: 0.6;
 	color: black;
 }
-.filterbar{
-  display: none;
-}
+
 /* Month header */
 .month {
     padding: 20px 25px;
@@ -143,7 +144,7 @@ li.schedules{
 
 /* Full-width input fields */
 input[type=text], input[type=password], input[type=time],input[type=date] {
-    width: 30%;
+    width: auto;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;

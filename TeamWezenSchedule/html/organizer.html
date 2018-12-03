@@ -23,14 +23,12 @@
     	      	<input type="text" id="setschedid"  required>
     	      	<label for="setstartday"><b><br>Start Date </label>
     	      	<input type="date" id="setstartday"  required>
-    	      	<label for="setendday"><b><br>End Date </label>
-    	      	<input type="date" id="setendday" required>
-    	      	<label for="settimeslots"><b><br>Length of Timeslots </label>
-    	      	<input type="time" id="settimeslots" required>
     	      	<label for="settimestart"><b><br>Daily Start Time </label>
     	      	<input type="time" id="settimestart" required>
-    	      	<label for="settimeend"><b><br>Daily End Time </label>
-              <input type="time" id="settimeend" required>
+    	      	<label for="settimeslots"><b><br>Length of Timeslots </label>
+    	      	<input type="time" id="settimeslots" required>
+    	      	<label for="setnumtimeslots"><b><br>Number of Timeslots Per Day </label>
+    	      	<input type="number" id="setnumtimeslots" required>
 
     	      </form>
             <br><br>
@@ -53,7 +51,7 @@
     	      	<input type="text" id="schedid"  required>
     	      </form>
             <br><br>
-            <button type="button" onclick="JavaScript:handleSubmitSchedId(this);">Submit</button>
+            <button type="button" onclick="JavaScript:openSchedule();">Submit</button>
             <button type="button" onclick="document.getElementById('schedprompt').style.display='none'">Cancel</button>
           </div>
     	  </form>

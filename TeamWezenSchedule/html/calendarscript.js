@@ -48,7 +48,6 @@ function initialize(){
 /**********  Create Calendar Display **********/
 function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
-
     var weekdays = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     let date = dummySchedule.startDate;
     let parseddate = date.split("-");
@@ -59,7 +58,6 @@ function generateCalendar(){
     /********** header ************/
     let header = calendar.insertRow(0);
     header.id = "timelbl";
-
     for(let j=0;j<weekdays.length;j++){
       let head = header.insertCell(-1);
       if(j>0){
@@ -73,7 +71,10 @@ function generateCalendar(){
     let dur = dummySchedule.slotDuration.split(":");
     let timelabel = document.createElement("td");
     var tsiterator = 0;
+    let filt = document.getElementById("filterTime");//update filter while im here
+    filt.innerHTML = "<option value=0>--none--</option>"
     for(let row=1; row<=(dummySchedule.numSlotsPerDay); row++){
+      let filteroption = document.createElement("OPTION");
       /********** Time Slot Label **********/
        let hrs = parseInt(st[0]) + (parseInt(dur[0])*(row-1));
        let mins = parseInt(st[1]) + (parseInt(dur[1])*(row-1));
@@ -85,6 +86,9 @@ function generateCalendar(){
       timeslot = tsrow.insertCell(0);
       timeslot.innerHTML = label;
       timeslot.id = "daylbl";
+      //update filter dropdown menu
+      filteroption.innerHTML = label;
+      filt.appendChild(filteroption);
       /********** Time Slots **********/
       var text;
       for(let d=1;d<=7;d++){
@@ -102,7 +106,11 @@ function generateCalendar(){
         tsiterator++;
       }
     }
+    //if not already visible, make visible
+    document.getElementById("calendarwindow").style.visibility = 'visible';
   }
+
+
 /********* Create A Meeting **********/
 function promptMeetingName(ts){
   currts = ts;
@@ -119,38 +127,41 @@ function createMtng(name){
       data["requestTSId"] = currts.id;
       data["requestMtngName"] = name;
       let createmtng_url = base_url + "/createmtng";
-      sendCalData(data,createmtng_url,processCreateMtngResponse);
+      sendCalendarData(data,createmtng_url);
   }
 }
 
+function openSchedule(){
+  let enteredID = document.getElementById("schedid").value
+  if((enteredID == " ") || (enteredID == "")){
+    alert("You Must enter a valid id");
+  }else{
+    let data = {};
+    data["requestId"] = enteredID;
+    let openschedule_url = base_url + "/openshedule";
+    sendCalendarData(data,openschedule_url);
+    document.getElementById("schedprompt").style.display ='none';
+  }
+}
 
+function filter(){
+  let day = document.getElementById("dayofweek").value;
+  let month = document.getElementById("selectmonth").value;
+  let year = document.getElementById("selectyear").value;
+  let date = document.getElementById("selectdayofmonth").value;
+  let time = document.getElementById("filterTime").value;
+  let data = {};
+  data["requestWeekday"] = day;
+  data["requestMonth"] = month;
+  data["requestYear"] = year;
+  data["requestDate"] = date;
+  data["requestTime"] = time;
+  let filter_url = base_url + "/filter";
+  sendCalendarData(data,filter_url);
+}
 
 /*********************** SUBMIT DATA TO JAVA *********************************/
-// /********* Callbacks **********/
-// function processCreateMtngResponse(xhrResult) {
-// 	console.log("result:" + xhrResult);
-// 	let js = JSON.parse(xhrResult);
-//   let responseName = js["responseSchedule"];
-//   alert("received name: " + responseName + " date: " + responseDate);
-//   generateCalendar();
-// }
-//
-// function handleSubmitSchedId(e){
-//   let schedID = document.getElementById("schedid").value;
-//   if (schedID == "") {
-//     alert("You must enter a Schedule ID");
-//   }  else{
-//       let data = {};
-//       data["requestSchedID"] = schedID;
-//       let schedidurl = base_url + "/schedid";
-//       sendCalData(data,schedidurl);
-//   }
-// }
-//
-//
-
-/********* Sending Data **********/
-function sendCalData(data,url){
+function sendCalendarData(data,url){
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();
@@ -173,5 +184,6 @@ function processSchedule(xhrResult){
 	let js = JSON.parse(xhrResult);
   let responseSchedule = js["responseSchedule"];
   alert("received Schedule");
+  //add if schedule couldnt be opened, display "could not find schedule"
   generateCalendar();
 }
