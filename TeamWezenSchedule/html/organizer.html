@@ -6,12 +6,12 @@
   </head>
   <body>
     <script src="organizerscript.js"></script>
-    <!-- <script src="calendarscript.js"></script> -->
     <title> Organizer Scheduler</title>
     <header id='head'>
     	<h1>Team Wezen Scheduler</h1>
       <h2>Organizer Portal</h2>
-      <button onclick="JavaScript:openPrompt(this);">Create Schedule</button>
+      <button onclick="JavaScript:openCreatePrompt(this);">Create Schedule</button>
+      <button onclick="JavaScript:openSchedPrompt(this);">Open Schedule</button>
     </header>
 
     <section id="OrganizerTools">
@@ -121,71 +121,102 @@
     	</div>
     </section>
 
-<!--
-  <section id="calendarwindow">
+    <section id="calendarwindow">
 
-    <section id="filteroptions">
-    	<nav><b>Show : </b><br>
-    		<label for="selectmonth">Month</label>
-    		<select id="selectmonth" onchange="updateMonth()">
-    		  <option value="nomonth">--none--</option>
-    		  <option value="January">January</option>
-    		  <option value="February">February</option>
-    		  <option value="March">March</option>
-    		  <option value="April">April</option>
-    		  <option value="May">May</option>
-    		  <option value="June">June</option>
-    		  <option value="July">July</option>
-    		  <option value="August">August</option>
-    		  <option value="September">September</option>
-    		  <option value="October">October</option>
-    		  <option value="November">November</option>
-    		  <option value="December">December</option>
-    		</select>
+        <section id="filteroptions">
+        	<nav><b>Filter By: </b><br>
+        		<label for="dayofweek">Day of Week</label>
+        		<select id="dayofweek" onchange="run()">
+        		  <option value=0>--none--</option>
+        		  <option value=1>Monday</option>
+        		  <option value=2>Tuesday</option>
+        		  <option value=3>Wednesday</option>
+        		  <option value=4>Thursday</option>
+        		  <option value=5>Friday</option>
+        		  <option value=6>Saturday</option>
+        		  <option value=7>Sunday</option>
+        		</select>
 
 
-    		<label for="selectyear">Year</label>
-    		<select id="selectyear" onchange="updateYear()">
-    		  <option value="2018">2018</option>
-    		  <option value="2019">2019</option>
-    		  <option value="2020">2020</option>
-    		  <option value="2021">2021</option>
-    		  <option value="2022">2022</option>
-    		  <option value="2023">2023</option>
-    		  <option value="2024">2024</option>
-    		  <option value="2025">2025</option>
-    		</select>
-    	</nav>
+        		<label for="selectmonth">Month</label>
+        		<select id="selectmonth">
+        		  <option value=0>--none--</option>
+        		  <option value=1>January</option>
+        		  <option value=2>February</option>
+        		  <option value=3>March</option>
+        		  <option value=4>April</option>
+        		  <option value=5>May</option>
+        		  <option value=6>June</option>
+        		  <option value=7>July</option>
+        		  <option value=8>August</option>
+        		  <option value=9>September</option>
+        		  <option value=10>October</option>
+        		  <option value=11>November</option>
+        		  <option value=12>December</option>
+        		</select>
+
+        		<label for="selectdayofmonth">Date</label>
+        		<input type="date" id="selectdayofmonth">
+
+        		<label for="selectyear">Year</label>
+        		<select id="selectyear">
+              <option value=0>--none--</option>
+        		  <option value=2018>2018</option>
+        		  <option value=2019>2019</option>
+        		  <option value=2020>2020</option>
+        		  <option value=2021>2021</option>
+        		  <option value=2022>2022</option>
+        		  <option value=2023>2023</option>
+        		  <option value=2024>2024</option>
+        		  <option value=2025>2025</option>
+        		</select>
+            <label for="filterTime">Timeslot: </label>
+            <select id="filterTime"></select>
+            <button onclick="filter()">Go</button>
+        	</nav>
+        </section>
+
+        <section id="calendar">
+        	<table id="daysview" class="day"></table>
+        </section>
+
+
     </section>
 
-    <section id="toggleview">
-    	<nav>
-    		<label for="viewselect">View as</label>
-    		<select id="viewselect" onchange="generateCalendar()">
-    			<option value="week">Week</option>
-    			<option value="month">Month</option>
-    		</select>
-    	</nav>
-    </section>
 
-    <section id="calendar">
-    	<div class="month">
-    	  <ul>
-    	    <li class="prev">&#10094;</li>
-    	    <li class="next">&#10095;</li>
-    	    <li><h2 id="displaymonth">December</h2><br><span style="font-size:18px">2018</span></li>
-    	  </ul>
-    	</div>
+        <section id="mtngNamePrompt">
+        	<div id ="mtngPrompt" class="login">
+        		<form  class="login-content animate">
+        	    <div class="container">
+        	      <label id="mtnglabel" for="mtngName"><b>Name For Meeting: </b></label>
+        	      <input   type="text" name="meetingName" value="" id="mtngName" placeholder="Enter Name" required>
+        	    </div>
+              <button type="button" onclick="JavaScript:handleSubmitMtngName(this);">Submit</button>
+        	    <div class="container" style="background-color:#f1f1f1">
+        	      <button type="button" onclick="document.getElementById('mtngPrompt').style.display='none'">Cancel</button>
+        	    </div>
+        	  </form>
+        	</div>
+        </section>
 
+        <section id="OpenSchedule">
+        	<div id="schedprompt" class="login">
+        		<form  class="login-content animate">
+        	    <div class="container">
+        	      <form>
+        	      	<label for="schedid"><b><br>Schedule ID: </label>
+        	      	<input type="text" id="schedid"  required>
+        	      </form>
+                <br><br>
+                <button type="button" onclick="JavaScript:openSchedule();">Submit</button>
+                <button type="button" onclick="document.getElementById('schedprompt').style.display='none'">Cancel</button>
+              </div>
+        	  </form>
+        	</div>
+        </section>
+      </body>
+    </html>
 
-    	<table id="daysview"></table>
-    </section>
-
-    <section>
-    	<table id="timeslot"></table>
-    </section>
-
-  </section> -->
 
   </body>
 </html>
