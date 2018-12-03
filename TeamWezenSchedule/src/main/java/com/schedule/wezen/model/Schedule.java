@@ -24,7 +24,7 @@ public class Schedule {
 		this.secretCode = secretCode;
 		this.numSlotsDay = numSlotsDay;
 		this.endTime = calculateEndTime(startTime, slotDuration, numSlotsDay);
-		//populateTimeSlots(startDate, endDate, startTime, slotDuration);
+		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay);
 	}
 	
 	public int calculateDayOfWeek(LocalDate startDate) {
