@@ -123,7 +123,7 @@ public class Schedule {
 							}
 							LocalTime startTime = LocalTime.parse(hour+":"+min, DateTimeFormatter.ofPattern("HH:mm"));
 							LocalDate slotDate = LocalDate.parse(year+"-"+mon+"-"+day, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-							timeSlots.add(new TimeSlot(startTime, dur, slotDate, startTime.toString()+slotDate.toString(), createSecretCode()));
+							timeSlots.add(new TimeSlot(startTime, dur, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode()));
 						}
 					}
 				}

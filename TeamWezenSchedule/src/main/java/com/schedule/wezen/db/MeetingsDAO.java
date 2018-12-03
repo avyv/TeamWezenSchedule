@@ -17,7 +17,7 @@ public class MeetingsDAO {
     	}
     }
 
-    public Meeting getMeeting(String id) throws Exception {
+    public Meeting getMeeting(String tid) throws Exception {
         
         try {
             Meeting meeting = null;
