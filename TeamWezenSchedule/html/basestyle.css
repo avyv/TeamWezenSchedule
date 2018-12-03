@@ -151,3 +151,6 @@ input[type=text], input[type=password], input[type=time],input[type=date] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+select{
+  width:20%;
+}

@@ -6,7 +6,7 @@
   </head>
   <body>
     <script src="organizerscript.js"></script>
-    <script src="calendarscript.js"></script>
+    <!-- <script src="calendarscript.js"></script> -->
     <title> Organizer Scheduler</title>
     <header id='head'>
     	<h1>Team Wezen Scheduler</h1>
@@ -20,15 +20,78 @@
     	    <div class="container">
     	      <form>
               <label for="setschedid"><b><br>Schedule Id </label>
-    	      	<input type="text" id="setschedid"  required>
-    	      	<label for="setstartday"><b><br>Start Date </label>
-    	      	<input type="date" id="setstartday"  required>
-    	      	<label for="settimestart"><b><br>Daily Start Time </label>
-    	      	<input type="time" id="settimestart" required>
-    	      	<label for="settimeslots"><b><br>Length of Timeslots </label>
-    	      	<input type="time" id="settimeslots" required>
-    	      	<label for="setnumtimeslots"><b><br>Number of Timeslots Per Day </label>
-    	      	<input type="number" id="setnumtimeslots" required>
+              <input type="text" id="setschedid"  required>
+
+              <label for="setstartday"><b><br>Start Date </label>
+              <input type="date" id="setstartday"  required>
+
+              <label for="setendday"><b><br>End Date </label>
+              <input type="date" id="setendday"  required>
+
+              <label for="settimestart"><b><br>Daily Start Time </label>
+              <select id="settimestart" onchange="updateEndTime()" required>
+                <option value="01:00:00">01:00</option>
+                <option value="02:00:00">02:00</option>
+                <option value="03:00:00">03:00</option>
+                <option value="04:00:00">04:00</option>
+                <option value="05:00:00">05:00</option>
+                <option value="06:00:00">06:00</option>
+                <option value="07:00:00">07:00</option>
+                <option value="08:00:00">08:00</option>
+                <option value="09:00:00">09:00</option>
+                <option value="10:00:00">10:00</option>
+                <option value="11:00:00">11:00</option>
+                <option value="12:00:00">12:00</option>
+                <option value="13:00:00">13:00</option>
+                <option value="14:00:00">14:00</option>
+                <option value="15:00:00">15:00</option>
+                <option value="16:00:00">16:00</option>
+                <option value="17:00:00">17:00</option>
+                <option value="18:00:00">18:00</option>
+                <option value="19:00:00">19:00</option>
+                <option value="20:00:00">20:00</option>
+                <option value="21:00:00">21:00</option>
+                <option value="22:00:00">22:00</option>
+                <option value="23:00:00">23:00</option>
+              </select>
+
+              <label for="settimeend"><b><br>Daily End Time </label>
+              <select id="settimeend" required>
+                <option value="02:00:00">02:00</option>
+                <option value="03:00:00">03:00</option>
+                <option value="04:00:00">04:00</option>
+                <option value="05:00:00">05:00</option>
+                <option value="06:00:00">06:00</option>
+                <option value="07:00:00">07:00</option>
+                <option value="08:00:00">08:00</option>
+                <option value="09:00:00">09:00</option>
+                <option value="10:00:00">10:00</option>
+                <option value="11:00:00">11:00</option>
+                <option value="12:00:00">12:00</option>
+                <option value="13:00:00">13:00</option>
+                <option value="14:00:00">14:00</option>
+                <option value="15:00:00">15:00</option>
+                <option value="16:00:00">16:00</option>
+                <option value="17:00:00">17:00</option>
+                <option value="18:00:00">18:00</option>
+                <option value="19:00:00">19:00</option>
+                <option value="20:00:00">20:00</option>
+                <option value="21:00:00">21:00</option>
+                <option value="22:00:00">22:00</option>
+                <option value="23:00:00">23:00</option>
+                <option value="23:00:00">24:00</option>
+              </select>
+
+              <label for="settimeslots"><b><br>Length of Timeslots </label>
+              <select id="settimeslots" required>
+                <option value="00:10:00">10 min</option>
+                <option value="00:15:00">15 min</option>
+                <option value="00:20:00">20 min</option>
+                <option value="00:30:00">30 min</option>
+                <option value="01:00:00">60 min</option>
+              </select>
+
+
 
     	      </form>
             <br><br>
