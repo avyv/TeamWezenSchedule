@@ -5,35 +5,35 @@ import java.time.LocalDate;
 
 public class TimeSlot {
 	
-	LocalTime startTime, endTime;
+	LocalTime startTime/*, endTime*/;
 	LocalDate slotDate;
 	Meeting slotMeeting;
 	String id, sid;
 	int secretCode;
 	boolean isOpen;
 	
-	public TimeSlot(LocalTime startTime, LocalTime duration, LocalDate slotDate, String id, String sid, int secretCode) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = true;
-		this.endTime = calculateEndTime(startTime, duration);
+		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
-	public TimeSlot(LocalTime startTime, LocalTime duration, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
-		this.endTime = calculateEndTime(startTime, duration);
+		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
 	public LocalTime getStartTime() {return startTime;}
-	public LocalTime getEndTime() {return endTime;}
+	//public LocalTime getEndTime() {return endTime;}
 	public LocalDate getDate() {return slotDate;}
 	public Meeting getMeeting() {return slotMeeting;}
 	public String getId() {return id;}
@@ -47,7 +47,8 @@ public class TimeSlot {
 		return (sc == secretCode);
 	}
 	
-	public LocalTime calculateEndTime(LocalTime startTime, LocalTime duration) {
+	// Unnecessary?
+	/*public LocalTime calculateEndTime(LocalTime startTime, LocalTime duration) {
 		int min = startTime.getMinute();
 		int hour = startTime.getHour();
 		int d = duration.getMinute();
@@ -62,7 +63,7 @@ public class TimeSlot {
 		Model model = new Model();
 		LocalTime endTime = model.stringToTime(endTimeString);
 		return endTime;
-	}
+	}*/
 	
 	public boolean deleteMeeting() {
 		if(isOpen) {
