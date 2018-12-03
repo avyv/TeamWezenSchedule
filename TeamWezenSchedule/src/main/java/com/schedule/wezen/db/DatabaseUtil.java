@@ -16,7 +16,6 @@ public class DatabaseUtil {
 	public final static String multiQueries = "?allowMultiQueries=true";
 	   
 	public final static String dbName = "innodb";    // default created from MySQL WorkBench
-	// should this ^ be "schedulerdb"?
 	
 	// pooled across all usages.
 	static Connection conn;
