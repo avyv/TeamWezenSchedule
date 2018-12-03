@@ -34,15 +34,15 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
-var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots};
+var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:"ImAnOrgCode"};
 var currts = dummySchedule.timeSlots[0];
-
-
+var currSchedule = dummySchedule;
+var orgCredentials = "";
 /**********  Create Calendar Display **********/
 function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
     var weekdays = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-    let date = dummySchedule.startDate;
+    let date = currSchedule.startDate;
     let parseddate = date.split("-");
     let d = parseddate[2];
     let m = parseddate[1];
@@ -60,14 +60,18 @@ function generateCalendar(){
       head.innerHTML = html;
     }
     /********* Calendar *********/
-    let st = dummySchedule.startTime.split(":");
-    let dur = dummySchedule.slotDuration.split(":");
+    let st = currSchedule.startTime.split(":");
+    let dur = currSchedule.slotDuration.split(":");
     let timelabel = document.createElement("td");
     var tsiterator = 0;
     let filt = document.getElementById("filterTime");//update filter while im here
-    filt.innerHTML = "<option value=0>--none--</option>"
-    for(let row=1; row<=(dummySchedule.numSlotsPerDay); row++){
+    filt.innerHTML = "<option value=0>--none--</option>";
+    let bulkedit = document.getElementById("opencloseTime");//update bulk edit
+    bulkedit.innerHTML = "<option value=0>--none--</option>";
+    for(let row=1; row<=(currSchedule.numSlotsPerDay); row++){
       let filteroption = document.createElement("OPTION");
+      let filteroption2 = document.createElement("OPTION");
+
       /********** Time Slot Label **********/
        let hrs = parseInt(st[0]) + (parseInt(dur[0])*(row-1));
        let mins = parseInt(st[1]) + (parseInt(dur[1])*(row-1));
@@ -81,13 +85,16 @@ function generateCalendar(){
       timeslot.id = "daylbl";
       //update filter dropdown menu
       filteroption.innerHTML = label;
+      filteroption2.innerHTML = label;
+
       filt.appendChild(filteroption);
+      bulkedit.appendChild(filteroption2);
       /********** Time Slots **********/
       var text;
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
-        let myslot = dummySchedule.timeSlots[tsiterator];
-        if(myslot.isOpen){
+        let myslot = currSchedule.timeSlots[tsiterator];
+        if((myslot.isOpen)&&(orgCredentials == currSchedule.orgCode)){
           let closebtn = document.createElement("BUTTON");
           closebtn.innerText = "Set Closed";
           closebtn.addEventListener('click', function(){closeSlot(myslot)});
@@ -99,7 +106,7 @@ function generateCalendar(){
             freebtn.innerText = "Free";
             freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
             thisSlot.appendChild(freebtn);
-          }else{
+          }else if(orgCredentials == currSchedule.orgCode){
             let openbtn = document.createElement("BUTTON");
             openbtn.innerText = "Set Free";
             openbtn.addEventListener('click', function(){openSlot(myslot)});
@@ -112,6 +119,9 @@ function generateCalendar(){
         tsiterator++;
       }
     }
+    if(orgCredentials == currSchedule.orgCode){
+      document.getElementById("bulkts").style.display = 'inline';
+    }else{document.getElementById("bulkts").style.display = 'none';}
     //if not already visible, make visible
     document.getElementById("calendarwindow").style.visibility = 'visible';
   }
@@ -172,7 +182,7 @@ function generateCalendar(){
     data["startTime"] = String(dailyStartTime);
     data["endTime"] = String(dailyEndTime);
     data["slotDuration"] = String(slotDuration);
-    sendData(data,createSchedule_url);
+    sendData(data,createSchedule_url,createResponse);
   }
 
 /********* Manage Meetings **********/
@@ -191,29 +201,54 @@ function createMtng(name){
       data["requestTSId"] = currts.id;
       data["requestMtngName"] = name;
       let createmtng_url = base_url + "/createmtng";
-      sendData(data,createmtng_url);
+      sendData(data,createmtng_url,processSchedule);
   }
 }
 function deleteMtng(){
   alert("Delete Meeting on "+currts.date+ " at "+ currts.startTime);
 }
 /********* Open An Existing Schedule **********/
+function openSchedPrompt(e){
+document.getElementById("schedprompt").style.display='block';
+return false;
+}
 function openSchedule(){
-  let enteredID = document.getElementById("schedid").value
+  let enteredID = document.getElementById("schedid").value;
+  orgCredentials = "";
   if((enteredID == " ") || (enteredID == "")){
     alert("You Must enter a valid id");
   }else{
-    if(enteredID == dummySchedule.id){
+    if(enteredID == currSchedule.id){
       generateCalendar();
     }/////////////////////////////////////////////////////////////////for testing only.
-    // let data = {};
-    // data["requestId"] = enteredID;
-    // let openschedule_url = base_url + "/openshedule";
-    // sendData(data,openschedule_url);
+    let data = {};
+    data["requestId"] = enteredID;
+    let openschedule_url = base_url + "/openshedule";
+    sendData(data,openschedule_url,processSchedule);
     document.getElementById("schedprompt").style.display ='none';
   }
 }
-
+function openSchedEditPrompt(e){
+document.getElementById("schededitprompt").style.display='block';
+return false;
+}
+function openEditSchedule(){
+  let enteredID = document.getElementById("editschedid").value;
+  orgCredentials = document.getElementById("orgCred").value;
+  if((enteredID == " ") || (enteredID == "") || (orgCredentials == "")){
+    alert("Please Fill Out All Inputs");
+  }else{
+    if((enteredID == currSchedule.id) && (orgCredentials == currSchedule.orgCode)){
+      generateCalendar();
+    }/////////////////////////////////////////////////////////////////for testing only.
+    let data = {};
+    data["requestId"] = enteredID;
+    data["requestCode"] = orgCredentials;
+    let openschedule_url = base_url + "/openshedule";
+    sendData(data,openschedule_url,processSchedule);
+    document.getElementById("schededitprompt").style.display ='none';
+  }
+}
 function filter(){
   let day = document.getElementById("dayofweek").value;
   let month = document.getElementById("selectmonth").value;
@@ -227,7 +262,7 @@ function filter(){
   data["requestDate"] = date;
   data["requestTime"] = time;
   let filter_url = base_url + "/filter";
-  sendData(data,filter_url);
+  sendData(data,filter_url,processSchedule);
 }
 function openSlot(ts){
   alert("opening "+ts.date+" at " + ts.startTime);
@@ -237,12 +272,11 @@ function closeSlot(ts){
   alert("closing "+ts.date+" at " + ts.startTime);
   currts = ts;
 }
-function openSchedPrompt(e){
-document.getElementById("schedprompt").style.display='block';
-return false;
+function bulkEdit(){
+  alert("Bulk Edit");
 }
 /*********************** SUBMIT DATA TO JAVA *********************************/
-function sendData(data,url){
+function sendData(data,url,callback){
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();
@@ -253,18 +287,27 @@ function sendData(data,url){
     console.log(xhr.request);
     if(xhr.readyState == XMLHttpRequest.DONE) {
       console.log("XHR:" + xhr.responseText);
-      processSchedule(xhr.responseText);
+      callback(xhr.responseText);
     } else {
-      processSchedule(xhr.responseText);
+      callback(xhr.responseText);
     }
   };
 }
-
+//default callback
 function processSchedule(xhrResult){
 	console.log("result:" + xhrResult);
 	let js = JSON.parse(xhrResult);
   let responseSchedule = js["responseSchedule"];
   alert("received Schedule");
   //add if schedule couldnt be opened, display "could not find schedule"
-  // generateCalendar();
+  generateCalendar();
+}
+//Create callback
+function createResponse(xhrResult){
+  console.log("result:" + xhrResult);
+  let js = JSON.parse(xhrResult);
+  let responseSchedule = js["responseSchedule"];
+  currSchedule = dummySchedule;
+  document.getElementById("orgcode").innerHTML = currSchedule.orgCode;
+  document.getElementById("idPrompt").style.display='block';
 }

@@ -154,3 +154,6 @@ input[type=text], input[type=password], input[type=time],input[type=date] {
 select{
   width:auto;
 }
+section#bulkts{
+  display: none;
+}

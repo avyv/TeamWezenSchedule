@@ -11,7 +11,8 @@
     	<h1>Team Wezen Scheduler</h1>
       <h2>Organizer Portal</h2>
       <button onclick="JavaScript:openCreatePrompt(this);">Create Schedule</button>
-      <button onclick="JavaScript:openSchedPrompt(this);">Open Schedule</button>
+      <button onclick="JavaScript:openSchedPrompt(this);">Open Schedule to View</button>
+      <button onclick="JavaScript:openSchedEditPrompt(this);">Open Schedule to Edit</button>
     </header>
 
     <section id="OrganizerTools">
@@ -90,19 +91,18 @@
                 <option value="00:30:00">30 min</option>
                 <option value="01:00:00">60 min</option>
               </select>
-
-
-
     	      </form>
             <br><br>
             <button type="button" onclick="JavaScript:handleSubmitSched(this);">Submit</button>
             <button type="button" onclick="document.getElementById('orgtools').style.display='none'">Cancel</button>
-</div>
-
-
+          </div>
     	  </form>
     	</div>
     </section>
+
+
+
+
 
 
     <section id="OpenSchedule">
@@ -121,12 +121,30 @@
     	</div>
     </section>
 
+    <section id="OpenEditSchedule">
+    	<div id="schededitprompt" class="login">
+    		<form  class="login-content animate">
+    	    <div class="container">
+    	      <form>
+    	      	<label for="editschedid"><b><br>Schedule ID: </label>
+    	      	<input type="text" id="editschedid"  required>
+              <label for="orgCred"><b><br>Enter Organizer Code: </label>
+    	      	<input type="text" id="orgCred"  required>
+    	      </form>
+            <br><br>
+            <button type="button" onclick="JavaScript:openEditSchedule();">Submit</button>
+            <button type="button" onclick="document.getElementById('schededitprompt').style.display='none'">Cancel</button>
+          </div>
+    	  </form>
+    	</div>
+    </section>
+
     <section id="calendarwindow">
 
         <section id="filteroptions">
         	<nav><b>Filter By: </b><br>
         		<label for="dayofweek">Day of Week</label>
-        		<select id="dayofweek" onchange="run()">
+        		<select id="dayofweek">
         		  <option value=0>--none--</option>
         		  <option value=1>Monday</option>
         		  <option value=2>Tuesday</option>
@@ -176,12 +194,75 @@
         	</nav>
         </section>
 
+        <section id="bulkts">
+          <nav><b>Edit Bulk Timeslots: </b><br>
+            <label for="setopenclose">All: </label>
+            <select id="setopenclose">
+              <option value="open">Open</option>
+              <option value="close">Closed</option>
+            </select>
+            <label for="openclosedayofweek">Day of Week</label>
+        		<select id="openclosedayofweek">
+        		  <option value=0>--none--</option>
+        		  <option value=1>Monday</option>
+        		  <option value=2>Tuesday</option>
+        		  <option value=3>Wednesday</option>
+        		  <option value=4>Thursday</option>
+        		  <option value=5>Friday</option>
+        		  <option value=6>Saturday</option>
+        		  <option value=7>Sunday</option>
+        		</select>
+
+
+        		<label for="openclosemonth">Month</label>
+        		<select id="openclosemonth">
+        		  <option value=0>--none--</option>
+        		  <option value=1>January</option>
+        		  <option value=2>February</option>
+        		  <option value=3>March</option>
+        		  <option value=4>April</option>
+        		  <option value=5>May</option>
+        		  <option value=6>June</option>
+        		  <option value=7>July</option>
+        		  <option value=8>August</option>
+        		  <option value=9>September</option>
+        		  <option value=10>October</option>
+        		  <option value=11>November</option>
+        		  <option value=12>December</option>
+        		</select>
+
+        		<label for="openclosedate">Date</label>
+        		<input type="date" id="openclosedate">
+
+        		<label for="opencloseyear">Year</label>
+        		<select id="opencloseyear">
+              <option value=0>--none--</option>
+        		  <option value=2018>2018</option>
+        		  <option value=2019>2019</option>
+        		  <option value=2020>2020</option>
+        		  <option value=2021>2021</option>
+        		  <option value=2022>2022</option>
+        		  <option value=2023>2023</option>
+        		  <option value=2024>2024</option>
+        		  <option value=2025>2025</option>
+        		</select>
+
+            <label for="opencloseTime">Timeslot: </label>
+            <select id="opencloseTime"></select>
+            <button onclick="bulkEdit()">Go</button>
+          </nav>
+        </section>
+
         <section id="calendar">
         	<table id="daysview" class="day"></table>
         </section>
 
 
     </section>
+
+
+
+
 
 
         <section id="mtngNamePrompt">
@@ -214,9 +295,20 @@
         	  </form>
         	</div>
         </section>
-      </body>
-    </html>
 
+        <section>
+        	<div id ="idPrompt" class="login">
+        		<form  class="login-content animate">
+        	    <div class="container">
+        	      <label for="orgcode"><b>Organizer Code: </b></label>
+        	      <label id="orgcode"></label>
+        	    </div>
+        	    <div class="container" style="background-color:#f1f1f1">
+        	      <button type="button" onclick="document.getElementById('idPrompt').style.display='none'">Exit</button>
+        	    </div>
+        	  </form>
+        	</div>
+        </section>
 
   </body>
 </html>
