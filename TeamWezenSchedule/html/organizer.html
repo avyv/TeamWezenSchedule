@@ -310,5 +310,20 @@
         	</div>
         </section>
 
+        <section>
+          <div id ="editMtngPrompt" class="login">
+            <form  class="login-content animate">
+              <div class="container">
+                <label for="secretCode"><b>Secret Code: </b></label>
+                <input type="text" id="secretCode" required>
+              </div>
+              <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="JavaScript:checkMeetingAuthorization(true);">Submit</button>
+                <button type="button" onclick="document.getElementById('idPrompt').style.display='none'">Exit</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
   </body>
 </html>

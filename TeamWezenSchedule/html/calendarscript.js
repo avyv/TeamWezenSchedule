@@ -90,19 +90,25 @@ function generateCalendar(){
       filteroption.innerHTML = label;
       filt.appendChild(filteroption);
       /********** Time Slots **********/
-      var text;
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
         let myslot = dummySchedule.timeSlots[tsiterator];
-        if((myslot.meeting.name == " ") && myslot.isOpen){
+
+        if((myslot.meeting.name == " ")&&(myslot.isOpen)){
           let freebtn = document.createElement("BUTTON");
-          freebtn.innerText = "Free";
+          freebtn.innerText = "Schedule Mtng";
           freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
           thisSlot.appendChild(freebtn);
-        }else{
-          text = myslot.meeting.name;
-          thisSlot.innerHTML = text;
+        }else if(myslot.meeting.name != " "){
+          let mtng = document.createElement("P");
+          mtng.innerText = myslot.meeting.name;
+          let cancelbtn = document.createElement("BUTTON");
+          cancelbtn.innerText = "Cancel Mtng";
+          cancelbtn.addEventListener('click',function(){cancelMtng(myslot)});
+          thisSlot.appendChild(mtng);
+          thisSlot.appendChild(cancelbtn);
         }
+
         tsiterator++;
       }
     }
@@ -119,6 +125,7 @@ function promptMeetingName(ts){
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
+
 function createMtng(name){
   if ((name == "") || (name == " ")) {
     alert("You must enter a valid name");
@@ -131,6 +138,21 @@ function createMtng(name){
   }
 }
 
+function cancelMtng(ts){
+  currts = ts;
+  document.getElementById("editMtngPrompt").style.display = 'block';
+}
+checkMeetingAuthorization(){
+  document.getElementById("editMtngPrompt").style.display = 'none';
+  let enteredCode = document.getElementById("secretCode").value;
+  if(enteredCode == currts.secretCode){
+    alert("Successfully Logged in");
+  }else{
+    alert("Invalid Code");
+    return;
+  }
+  alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
+}
 function openSchedule(){
   let enteredID = document.getElementById("schedid").value
   if((enteredID == " ") || (enteredID == "")){

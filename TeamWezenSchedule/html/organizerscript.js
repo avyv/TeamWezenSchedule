@@ -90,7 +90,6 @@ function generateCalendar(){
       filt.appendChild(filteroption);
       bulkedit.appendChild(filteroption2);
       /********** Time Slots **********/
-      var text;
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
         let myslot = currSchedule.timeSlots[tsiterator];
@@ -103,7 +102,7 @@ function generateCalendar(){
         if(myslot.meeting.name == " "){
           if(myslot.isOpen){
             let freebtn = document.createElement("BUTTON");
-            freebtn.innerText = "Free";
+            freebtn.innerText = "Schedule Mtng";
             freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
             thisSlot.appendChild(freebtn);
           }else if(orgCredentials == currSchedule.orgCode){
@@ -113,8 +112,13 @@ function generateCalendar(){
             thisSlot.appendChild(openbtn);
           }
         }else{
-          text = myslot.meeting.name;
-          thisSlot.innerHTML = text;
+          let mtng = document.createElement("P");
+          mtng.innerText = myslot.meeting.name;
+          let cancelbtn = document.createElement("BUTTON");
+          cancelbtn.innerText = "Cancel Mtng";
+          cancelbtn.addEventListener('click',function(){cancelMtng(myslot)});
+          thisSlot.appendChild(mtng);
+          thisSlot.appendChild(cancelbtn);
         }
         tsiterator++;
       }
@@ -204,8 +208,26 @@ function createMtng(name){
       sendData(data,createmtng_url,processSchedule);
   }
 }
-function deleteMtng(){
-  alert("Delete Meeting on "+currts.date+ " at "+ currts.startTime);
+function cancelMtng(ts){
+  currts = ts;
+  if(orgCredentials == currSchedule.orgCode){
+    checkMeetingAuthorization(false);
+  }else{
+    document.getElementById("editMtngPrompt").style.display = 'block';
+  }
+}
+function checkMeetingAuthorization(unauthorized){
+  document.getElementById("editMtngPrompt").style.display = 'none';
+  if(unauthorized){
+    let enteredCode = document.getElementById("secretCode").value;
+    if(enteredCode == currts.secretCode){
+      alert("Successfully Logged in");
+    }else{
+      alert("Invalid Code");
+      return;
+    }
+  }
+  alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
 }
 /********* Open An Existing Schedule **********/
 function openSchedPrompt(e){
