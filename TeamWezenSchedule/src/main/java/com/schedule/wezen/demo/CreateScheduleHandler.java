@@ -43,7 +43,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 	 * 
 	 * @throws Exception
 	 */
-	boolean createScheduleLambda(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) throws Exception {
+	boolean createScheduleLambda(String startDate, String endDate, String startTime, String endTime, int slotDuration, String id) throws Exception {
 		if(logger != null) { logger.log("in createSchedule");}
 		
 		/* turn the times and dates into appropriate objects */
@@ -59,7 +59,6 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		LocalTime startT = m.stringToTime(startTime);
 		LocalTime endT = m.stringToTime(endTime);
-		LocalTime slotD = m.stringToDuration(slotDuration);
 		
 		int secretCode = m.createSecretCode();
 		
@@ -68,7 +67,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 
 		SchedulesDAO dao = new SchedulesDAO();
 		
-		Schedule schedule = new Schedule(startD, endD, startT, endT, slotD, id, secretCode);
+		Schedule schedule = new Schedule(startD, endD, startT, endT, slotDuration, id, secretCode);
 		
 		return dao.updateSchedule(schedule);
 	}

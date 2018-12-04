@@ -7,10 +7,10 @@ public class CreateScheduleRequest {
 	public final String endDate;
 	public final String startTime;
 	public final String endTime;
-	public final String slotDuration;
+	public final int slotDuration;
 	public final String id;
 	
-	public CreateScheduleRequest(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) {
+	public CreateScheduleRequest(String startDate, String endDate, String startTime, String endTime, int slotDuration, String id) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;

@@ -10,14 +10,14 @@ public class CreateScheduleResponse {
 	String responseStartDate;
 	String responseEndDate;
 	String responseStartTime;
-	String responseSlotDuration;
+	int responseSlotDuration;
 	int responseNumSlotsDay;
 	int secretCode;
 	ArrayList <TimeSlot> responseTimeSlots;
 	
 	public int httpCode;
 	
-	public CreateScheduleResponse (String resp, String sd, String ed, String st, String duration, int ns, int secretCode, ArrayList<TimeSlot> ts, int code) {
+	public CreateScheduleResponse (String resp, String sd, String ed, String st, int duration, int ns, int secretCode, ArrayList<TimeSlot> ts, int code) {
 		this.createScheduleResponse = resp;
 		this.responseStartDate = sd;
 		this.responseEndDate = ed;
@@ -29,7 +29,7 @@ public class CreateScheduleResponse {
 		this.httpCode = code;
 	}
 	
-	public CreateScheduleResponse (String resp, String sd, String ed, String st, String duration, int ns, int secretCode, ArrayList<TimeSlot> ts) {
+	public CreateScheduleResponse (String resp, String sd, String ed, String st, int duration, int ns, int secretCode, ArrayList<TimeSlot> ts) {
 		this.createScheduleResponse = resp;
 		this.responseStartDate = sd;
 		this.responseEndDate = ed;
@@ -46,7 +46,7 @@ public class CreateScheduleResponse {
 		this.responseStartDate = null;
 		this.responseEndDate = null;
 		this.responseStartTime = null;
-		this.responseSlotDuration = null;
+		this.responseSlotDuration = 0;
 		this.responseNumSlotsDay = 0;
 		this.httpCode = code;
 	}
