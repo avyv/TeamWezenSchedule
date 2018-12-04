@@ -27,6 +27,19 @@ public class Schedule {
 		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay);
 	}
 	
+	public boolean sortTimeSlots(ArrayList<TimeSlot> ts, int numSlotsDay) {
+		ArrayList<TimeSlot> sortedTs = new ArrayList<TimeSlot>();
+		for (int i = 0; i < numSlotsDay; i++) {
+			int k = i;
+			for (int j = 0; j < 7; j++) {
+				sortedTs.add(ts.get(k));
+				k += numSlotsDay;
+				if(k>=ts.size()) {return false;}
+			}
+		}
+		return true;
+	}
+	
 	public int calculateNumTimeSlots(LocalTime st, LocalTime et, LocalTime dur) {
 		int numSlots = 0;
 	
