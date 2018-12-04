@@ -1,4 +1,4 @@
-package com.schedule.wezen.demo;
+package com.schedule.wezen.db;
 
 import java.io.IOException;
 import java.io.InputStream;

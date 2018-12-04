@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
+import com.schedule.wezen.db.TestContext;
 import com.schedule.wezen.demo.http.CreateScheduleRequest;
 import com.schedule.wezen.demo.http.PostResponse;
 

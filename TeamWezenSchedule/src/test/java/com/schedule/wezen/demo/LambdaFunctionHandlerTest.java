@@ -15,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.schedule.wezen.db.TestContext;
 
 
 /**
