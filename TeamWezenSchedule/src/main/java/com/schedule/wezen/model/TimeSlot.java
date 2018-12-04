@@ -24,6 +24,17 @@ public class TimeSlot {
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen, boolean hasMeeting) {
+		this.startTime = startTime;
+		this.slotDate = slotDate;
+		this.id = id;
+		this.sid = sid;
+		this.secretCode = secretCode;
+		this.isOpen = isOpen;
+		this.hasMeeting = hasMeeting;
+		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
+	}
+	
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
