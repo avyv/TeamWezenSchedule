@@ -166,7 +166,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 						didRetrieveSchedule = true;
 					} catch (Exception e) {
 						resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
-					}
+					} //
 					
 					
 					if(didRetrieveSchedule) {
