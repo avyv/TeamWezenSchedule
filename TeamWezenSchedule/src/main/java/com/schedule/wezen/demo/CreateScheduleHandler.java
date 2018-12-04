@@ -49,6 +49,8 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		/* turn the times and dates into appropriate objects */
 		Model m = new Model();
 		
+		logger.log("after model, before LocalDate");
+		
 		LocalDate startD = m.stringToDate(startDate);
 		
 		logger.log("Date: " + startDate + "");
