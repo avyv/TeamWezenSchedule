@@ -27,6 +27,22 @@ public class Schedule {
 		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay);
 	}
 	
+	public ArrayList<TimeSlot> divideWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, LocalTime duration, String id, int secretCode, int numSlotsDay){
+		LocalDate copySD = startDate;
+		LocalDate copyED = endDate;
+		int startDayOfWeek = calculateDayOfWeek(startDate);
+		int endDayOfWeek = calculateDayOfWeek(endDate);
+		if(startDayOfWeek > 1) {
+			startDate = startDate.minusDays(1);
+			startDate = startDate.minusDays(startDayOfWeek - 1);
+		}
+		if(endDayOfWeek < 7) {
+			startDate = endDate.plusDays(1);
+			endDate = endDate.plusDays(7 - endDayOfWeek);
+		}
+		return timeSlots;
+	}
+	
 	public boolean sortTimeSlots(ArrayList<TimeSlot> ts, int numSlotsDay) {
 		ArrayList<TimeSlot> sortedTs = new ArrayList<TimeSlot>();
 		for (int i = 0; i < numSlotsDay; i++) {
