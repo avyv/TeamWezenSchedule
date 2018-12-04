@@ -43,7 +43,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 	 * 
 	 * @throws Exception
 	 */
-	boolean createScheduleLambda(String startDate, String endDate, String startTime, String endTime, int slotDuration, String id) throws Exception {
+	boolean createScheduleLambda(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) throws Exception {
 		if(logger != null) { logger.log("in createSchedule");}
 		
 		/* turn the times and dates into appropriate objects */
@@ -60,6 +60,8 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		LocalTime startT = m.stringToTime(startTime);
 		LocalTime endT = m.stringToTime(endTime);
 		
+		int slotD = Integer.parseInt(slotDuration);
+		
 		int secretCode = m.createSecretCode();
 		
 		logger.log("SecretCode: " + secretCode + "");
@@ -67,7 +69,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 
 		SchedulesDAO dao = new SchedulesDAO();
 		
-		Schedule schedule = new Schedule(startD, endD, startT, endT, slotDuration, id, secretCode);
+		Schedule schedule = new Schedule(startD, endD, startT, endT, slotD, id, secretCode);
 		
 		return dao.updateSchedule(schedule);
 	}
@@ -169,7 +171,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					
 					if(didRetrieveSchedule) {
-						resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
+						resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, retrievedSchedule.getSlotDuration(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
 					}
 					
 					
