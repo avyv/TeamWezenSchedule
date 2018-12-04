@@ -124,8 +124,12 @@ function generateCalendar(){
       }
     }
     if(orgCredentials == currSchedule.orgCode){
+      document.getElementById("deleteschedbtn").style.display = 'inline';
       document.getElementById("bulkts").style.display = 'inline';
-    }else{document.getElementById("bulkts").style.display = 'none';}
+    }else{
+      document.getElementById("bulkts").style.display = 'none';
+      document.getElementById("deleteschedbtn").style.display = 'none';
+    }
     //if not already visible, make visible
     document.getElementById("calendarwindow").style.visibility = 'visible';
   }
@@ -146,6 +150,14 @@ function generateCalendar(){
       alert("Please Fill Out All Fields");
     }
     return false;
+  }
+
+  function deleteSchedule(){
+    let cont = confirm("Are you sure you want to delete this schedule?");
+    if(cont){
+      document.getElementById("calendarwindow").style.visibility = 'hidden';
+      alert("Deleted Schedule");
+    }
   }
   //ensure all fields have been filled out
   function checkValidResponse(){

@@ -157,3 +157,7 @@ select{
 section#bulkts{
   display: none;
 }
+button#deleteschedbtn{
+  display: none;
+  float: right;
+}
