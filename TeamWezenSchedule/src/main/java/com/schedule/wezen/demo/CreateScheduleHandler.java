@@ -134,24 +134,44 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			CreateScheduleRequest req = new Gson().fromJson(body, CreateScheduleRequest.class);
 			logger.log("request: " + req.toString());
 
-			CreateScheduleResponse resp;
+			//CreateScheduleResponse resp;
+			
+			CreateScheduleResponse resp = null; //
+			
 			
 			SchedulesDAO dao = new SchedulesDAO();
 			
 			Schedule retrievedSchedule = null;
 			
-			try {
-				retrievedSchedule = dao.getSchedule(req.id);
-			} catch (Exception e) {
-				resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
-			}
+			boolean didRetrieveSchedule = false; //
+			
+			
 			try {
 				/* NOTE: When the database is created, we will use these lines to create Schedules */
 				
 				// DATABASE STUFF!!!
 				
 				if (createScheduleLambda(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
-					resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
+					
+					
+					try { //
+						retrievedSchedule = dao.getSchedule(req.id);
+						didRetrieveSchedule = true;
+					} catch (Exception e) {
+						resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+					}
+					
+					
+					if(didRetrieveSchedule) {
+						resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
+					}
+					
+					
+					
+					//resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
+					
+					
+					
 				} else {
 					resp = new CreateScheduleResponse("Unable to create schedule: ", 422);
 				}
