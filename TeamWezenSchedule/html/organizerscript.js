@@ -196,7 +196,7 @@ function generateCalendar(){
     data["endDate"] = String(endDay);
     data["startTime"] = String(dailyStartTime);
     data["endTime"] = String(dailyEndTime);
-    data["slotDuration"] = String(slotDuration);
+    data["slotDuration"] = slotDuration;
     data["id"] = String(sid);
     sendData(data,createSchedule_url,createResponse);
   }
