@@ -64,6 +64,7 @@ public class TimeSlotsDAO {
             ps.setString(5,  timeSlot.getMeeting());
             ps.setInt(6, timeSlot.getSecretCode());
             ps.setBoolean(7, timeSlot.getIsOpen());
+            ps.setBoolean(8, timeSlot.getHasMeeting());
             ps.execute();
             return true;
 
@@ -101,6 +102,7 @@ public class TimeSlotsDAO {
     	String meetingName = resultSet.getString("meetingName");
     	int secretCode = resultSet.getInt("secretCode");
     	boolean isOpen = resultSet.getBoolean("isOpen");
-        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()), id, meetingName, sid, secretCode, isOpen);
+    	boolean hasMeeting = resultSet.getBoolean("hasMeeting");
+        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()), id, meetingName, sid, secretCode, isOpen, hasMeeting);
     }
 }

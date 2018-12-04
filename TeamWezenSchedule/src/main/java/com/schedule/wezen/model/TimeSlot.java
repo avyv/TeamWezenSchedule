@@ -10,9 +10,9 @@ public class TimeSlot {
 	//Meeting slotMeeting;
 	String id, sid, meetingName = " ";
 	int secretCode;
-	boolean isOpen;
+	boolean isOpen, hasMeeting;
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
@@ -20,6 +20,7 @@ public class TimeSlot {
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
+		this.hasMeeting = hasMeeting;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
@@ -30,6 +31,7 @@ public class TimeSlot {
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = true;
+		this.hasMeeting = false;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
@@ -41,8 +43,13 @@ public class TimeSlot {
 	public String getSid() {return sid;}
 	public boolean getIsOpen() {return isOpen;}
 	public int getSecretCode() {return secretCode;}
+	public boolean getHasMeeting() {return hasMeeting;}
 	
-	public void setMeeting(String m) {this.meetingName = m;}
+	public void setIsOpen(boolean isOpen) {this.isOpen = isOpen;}
+	public void setMeeting(String m) {
+		this.meetingName = m;
+		this.hasMeeting = true;
+	}
 	
 	public boolean isCorrectCode(int sc) {
 		return (sc == secretCode);
@@ -72,6 +79,7 @@ public class TimeSlot {
 		} else {
 			meetingName = " ";
 			isOpen = true;
+			hasMeeting = false;
 			return true;
 		}
 	}
@@ -82,6 +90,7 @@ public class TimeSlot {
 		} else {
 			meetingName = name;
 			isOpen = false;
+			hasMeeting = true;
 			return true;
 		}
 	}
