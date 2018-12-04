@@ -1,4 +1,5 @@
-package com.schedule.wezen.db;
+//IRRELEVANT CLASS
+/*package com.schedule.wezen.db;
 
 import com.schedule.wezen.model.*;
 
@@ -103,4 +104,4 @@ public class MeetingsDAO {
     	String name  = resultSet.getString("name");
         return new Meeting (tid, name);
     }
-}
+}*/

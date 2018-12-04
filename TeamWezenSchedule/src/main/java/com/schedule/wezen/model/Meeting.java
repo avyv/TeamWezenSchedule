@@ -1,4 +1,5 @@
-package com.schedule.wezen.model;
+// IRRELEVANT CLASS
+/*package com.schedule.wezen.model;
 
 public class Meeting {
 	
@@ -14,4 +15,4 @@ public class Meeting {
 	public String getName() {return name;}
 	public void setName(String n) {this.name = n;}
 	public void setTid(String inputTid) {this.tid = inputTid;}
-}
+}*/
