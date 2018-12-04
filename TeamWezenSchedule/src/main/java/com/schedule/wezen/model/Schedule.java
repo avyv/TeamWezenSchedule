@@ -15,16 +15,42 @@ public class Schedule {
 	int secretCode, numSlotsDay;
 	ArrayList<TimeSlot> timeSlots;
 	
-	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime slotDuration, String id, int secretCode, int numSlotsDay) {
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, LocalTime slotDuration, String id, int secretCode) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
 		this.slotDuration = slotDuration;
 		this.id = id;
 		this.secretCode = secretCode;
-		this.numSlotsDay = numSlotsDay;
-		this.endTime = calculateEndTime(startTime, slotDuration, numSlotsDay);
+		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
+		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
 		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay);
+	}
+	
+	public int calculateNumTimeSlots(LocalTime st, LocalTime et, LocalTime dur) {
+		int numSlots = 0;
+	
+		int overflowMinutes = 0;
+		for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
+			int endMinutes = et.getMinute();
+			if((et.getMinute() < st.getMinute()) || (et.getMinute() == st.getMinute() && (et.getHour() > hour))) {
+				endMinutes = 60;
+			}
+			
+			int min = overflowMinutes;
+			if(hour == st.getHour()) {
+				min = st.getMinute();
+			}
+			
+			while(min < endMinutes) {
+				min += dur.getMinute();
+				if(min >= 60) {
+					overflowMinutes = min-60;
+				}
+				numSlots++;
+			}
+		}
+		return numSlots;
 	}
 	
 	public int calculateDayOfWeek(LocalDate startDate) {
@@ -47,7 +73,7 @@ public class Schedule {
 		return intValue;
 	}
 	
-	public LocalTime calculateEndTime(LocalTime startTime, LocalTime duration, int numSlotsDay) {
+	/*public LocalTime calculateEndTime(LocalTime startTime, LocalTime duration, int numSlotsDay) {
 		int min = startTime.getMinute();
 		int hour = startTime.getHour();
 		int d = duration.getMinute();
@@ -64,7 +90,7 @@ public class Schedule {
 		Model model = new Model();
 		LocalTime endTime = model.stringToTime(endTimeString);
 		return endTime;
-	}
+	}*/
 	
 	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime et, LocalTime dur, int numSlotsDay) {
 		if(ed.isBefore(sd) || (ed.isEqual(sd) && et.isBefore(st))) {
@@ -206,8 +232,5 @@ public class Schedule {
 	public void setEndDate(LocalDate ed) {this.endDate = ed;}
 	public void setStartTime(LocalTime st) {this.startTime = st;}
 	public void setEndTime(LocalTime et) {this.endTime = et;}
-	public void setNumSlotsDay(int num) {
-		this.numSlotsDay = num;
-		endTime = calculateEndTime(startTime, slotDuration, numSlotsDay);
-	}
+	public void setNumSlotsDay(int num) {this.numSlotsDay = num;}
 }
