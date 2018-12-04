@@ -32,18 +32,15 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
-var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",id:1000,numSlotsPerDay:4,timeSlots:dummyTimeslots};
+var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots};
 var currts = dummySchedule.timeSlots[0];
-window.onload = initialize;
-
-function initialize(){
-  head = document.getElementById("head");
-  openScheduleBtn = document.createElement("BUTTON");
-  openScheduleBtn.innerText = "Open Schedule";
-  openScheduleBtn.addEventListener('click', function(){document.getElementById("schedprompt").style.display='block';});
-  head.appendChild(openScheduleBtn);
-  generateCalendar();
-}
+var currSchedule = dummySchedule;
+// window.onload = initialize;
+//
+// function initialize(){
+//
+//   generateCalendar();
+// }
 
 /**********  Create Calendar Display **********/
 function generateCalendar(){
@@ -134,7 +131,7 @@ function createMtng(name){
       data["requestTSId"] = currts.id;
       data["requestMtngName"] = name;
       let createmtng_url = base_url + "/createmtng";
-      sendCalendarData(data,createmtng_url);
+      sendData(data,createmtng_url);
   }
 }
 
@@ -142,10 +139,11 @@ function cancelMtng(ts){
   currts = ts;
   document.getElementById("editMtngPrompt").style.display = 'block';
 }
-checkMeetingAuthorization(){
-  document.getElementById("editMtngPrompt").style.display = 'none';
+
+function checkMeetingAuthorization(){
   let enteredCode = document.getElementById("secretCode").value;
   if(enteredCode == currts.secretCode){
+    document.getElementById("editMtngPrompt").style.display = 'none';
     alert("Successfully Logged in");
   }else{
     alert("Invalid Code");
@@ -153,15 +151,24 @@ checkMeetingAuthorization(){
   }
   alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
 }
+
+function openSchedPrompt(e){
+  document.getElementById("schedprompt").style.display='block';
+  return false;
+}
 function openSchedule(){
-  let enteredID = document.getElementById("schedid").value
+  let enteredID = document.getElementById("schedid").value;
+  orgCredentials = "";
   if((enteredID == " ") || (enteredID == "")){
     alert("You Must enter a valid id");
   }else{
+    if(enteredID == currSchedule.id){
+      generateCalendar();
+    }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = enteredID;
     let openschedule_url = base_url + "/openshedule";
-    sendCalendarData(data,openschedule_url);
+    sendData(data,openschedule_url);
     document.getElementById("schedprompt").style.display ='none';
   }
 }
@@ -179,11 +186,19 @@ function filter(){
   data["requestDate"] = date;
   data["requestTime"] = time;
   let filter_url = base_url + "/filter";
-  sendCalendarData(data,filter_url);
+  sendData(data,filter_url);
 }
 
+
+function getNextWeek(){
+  alert("next week");
+}
+
+function getPreviousWeek(){
+  alert("previous week");
+}
 /*********************** SUBMIT DATA TO JAVA *********************************/
-function sendCalendarData(data,url){
+function sendData(data,url){
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();

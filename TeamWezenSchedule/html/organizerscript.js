@@ -309,6 +309,14 @@ function closeSlot(ts){
 function bulkEdit(){
   alert("Bulk Edit");
 }
+
+function getNextWeek(){
+  alert("next week");
+}
+
+function getPreviousWeek(){
+  alert("previous week");
+}
 /*********************** SUBMIT DATA TO JAVA *********************************/
 function sendData(data,url,callback){
   let js = JSON.stringify(data);

@@ -10,6 +10,7 @@
     <header id="head">
     	<h1>Team Wezen Scheduler</h1>
       <h2>Participant Portal</h2>
+      <button onclick="JavaScript:openSchedPrompt(this);">Open Schedule</button>
     </header>
 
 
@@ -71,6 +72,8 @@
     <section id="calendar">
     	<table id="daysview" class="day"></table>
     </section>
+    <a href="#" class="previous" onclick="getPreviousWeek()">&laquo; Previous Week</a>
+    <a href="#" class="next" onclick="getNextWeek()">Next Week &raquo;</a>
 
 
 </section>
@@ -85,7 +88,7 @@
     	    </div>
           <button type="button" onclick="JavaScript:handleSubmitMtngName(this);">Submit</button>
     	    <div class="container" style="background-color:#f1f1f1">
-    	      <button type="button" onclick="document.getElementById('mtngPrompt').style.display='none'">Cancel</button>
+    	      <button type="button" onclick="document.getElementById('mtngPrompt').style.display='none';">Cancel</button>
     	    </div>
     	  </form>
     	</div>
@@ -101,7 +104,7 @@
     	      </form>
             <br><br>
             <button type="button" onclick="JavaScript:openSchedule();">Submit</button>
-            <button type="button" onclick="document.getElementById('schedprompt').style.display='none'">Cancel</button>
+            <button type="button" onclick="document.getElementById('schedprompt').style.display='none';">Cancel</button>
           </div>
     	  </form>
     	</div>
@@ -116,11 +119,28 @@
           </div>
           <div class="container" style="background-color:#f1f1f1">
             <button type="button" onclick="JavaScript:checkMeetingAuthorization();">Submit</button>
-            <button type="button" onclick="document.getElementById('idPrompt').style.display='none'">Exit</button>
+            <button type="button" onclick="document.getElementById('idPrompt').style.display='none';">Exit</button>
           </div>
         </form>
       </div>
     </section>
+
+    <section id="OpenSchedule">
+    	<div id="schedprompt" class="login">
+    		<form  class="login-content animate">
+    	    <div class="container">
+    	      <form>
+    	      	<label for="schedid"><b><br>Schedule ID: </label>
+    	      	<input type="text" id="schedid"  required>
+    	      </form>
+            <br><br>
+            <button type="button" onclick="JavaScript:openSchedule();">Submit</button>
+            <button type="button" onclick="document.getElementById('schedprompt').style.display='none';">Cancel</button>
+          </div>
+    	  </form>
+    	</div>
+    </section>
+
 
   </body>
 </html>
