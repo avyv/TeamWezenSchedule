@@ -43,7 +43,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 	 * 
 	 * @throws Exception
 	 */
-	boolean createSchedule(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) throws Exception {
+	boolean createScheduleLambda(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) throws Exception {
 		if(logger != null) { logger.log("in createSchedule");}
 		
 		/* turn the times and dates into appropriate objects */
@@ -135,13 +135,23 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			logger.log("request: " + req.toString());
 
 			CreateScheduleResponse resp;
+			
+			SchedulesDAO dao = new SchedulesDAO();
+			
+			Schedule retrievedSchedule = null;
+			
+			try {
+				retrievedSchedule = dao.getSchedule(req.id);
+			} catch (Exception e) {
+				resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+			}
 			try {
 				/* NOTE: When the database is created, we will use these lines to create Schedules */
 				
 				// DATABASE STUFF!!!
 				
-				if (createSchedule(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
-					resp = new CreateScheduleResponse("Successfully created schedule");
+				if (createScheduleLambda(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
+					resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getTimeSlots(), 200);
 				} else {
 					resp = new CreateScheduleResponse("Unable to create schedule: ", 422);
 				}
@@ -150,7 +160,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			}
 
 			// compute proper response
-	        createScheduleResponseJson.put("body", new Gson().toJson(resp));  
+	        createScheduleResponseJson.put("body", new Gson().toJson(resp));
 		}
 		
         logger.log("end result:" + createScheduleResponseJson.toJSONString());

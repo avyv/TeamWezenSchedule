@@ -27,6 +27,9 @@ import com.schedule.wezen.demo.http.DeleteScheduleRequest;
 import com.schedule.wezen.demo.http.DeleteScheduleResponse;
 import com.schedule.wezen.model.Schedule;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 
 public class DeleteScheduleHandler implements RequestStreamHandler {
 	
@@ -74,18 +77,26 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 
 			SchedulesDAO dao = new SchedulesDAO();
 			
+			LocalDate sd = null;
+			LocalDate ed = null;
+			LocalTime st = null;
+			LocalTime et = null;
+			LocalTime dur = null;
+			String id = "";
+			
+			
 			// See how awkward it is to call delete with an object, when you only
 			// have one part of its information?
-			Schedule schedule = new Schedule(req.name, 0);
+			Schedule schedule = new Schedule(sd, ed, st, et, dur, id, req.scheduleSecretCode);
 			DeleteScheduleResponse resp;
 			try {
 				if (dao.deleteSchedule(schedule)) {
-					resp = new DeleteScheduleResponse("Successfully deleted constant:" + req.name);
+					resp = new DeleteScheduleResponse("Successfully deleted schedule:" + req.scheduleSecretCode);
 				} else {
-					resp = new DeleteScheduleResponse("Unable to delete constant: " + req.name, 422);
+					resp = new DeleteScheduleResponse("Unable to delete schedule, Secret Code did not match: " + req.scheduleSecretCode, 422);
 				}
 			} catch (Exception e) {
-				resp = new DeleteScheduleResponse("Unable to delete constant: " + req.name + "(" + e.getMessage() + ")", 403);
+				resp = new DeleteScheduleResponse("Unable to delete schedule, Secret Code did not match: " + req.scheduleSecretCode + "(" + e.getMessage() + ")", 403);
 			}
 			
 			// compute proper response
@@ -99,5 +110,3 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
         writer.close();
 	}
 }
-
-// needs to be filled out once DB is completed
