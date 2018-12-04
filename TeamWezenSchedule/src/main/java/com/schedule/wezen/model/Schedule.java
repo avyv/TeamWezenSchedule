@@ -97,15 +97,15 @@ public class Schedule {
 			return false;
 		}
 		for(int year = sd.getYear(); year <= ed.getYear(); year++) {
-			if((ed.getMonthValue() < sd.getMonthValue()) || ((ed.getMonthValue() == sd.getMonthValue()) && (ed.getYear() > year))){
-				int endMonth = 12;
-			}
-			int endMonth = ed.getMonthValue();
+			int endMonth;
+			if(ed.getYear() > year){
+				endMonth = 12;
+			} else {endMonth = ed.getMonthValue();}
 			for(int mon = sd.getMonthValue(); mon <= endMonth; mon++) {
-				if((ed.getDayOfMonth() < sd.getDayOfMonth()) || ((ed.getDayOfMonth() == sd.getDayOfMonth()) && (ed.getMonthValue() > mon))){
-					int endDay = sd.lengthOfMonth();
-				}
-				int endDay = ed.getDayOfMonth();
+				int endDay;
+				if(ed.getMonthValue() > mon || ed.getYear() > year){
+					endDay = sd.lengthOfMonth();
+				} else {endDay = ed.getDayOfMonth();}
 				for(int day = sd.getDayOfMonth(); day <= endDay; day++) {
 //					for(int hour = 0; hour < 24; hour++) {
 //						for(int min = 0; min < 60; min += dur.getMinute()) {
@@ -132,19 +132,18 @@ public class Schedule {
 //						}
 //					}
 					int overflowMinutes = 0;
-					for(int hour = st.getHour(); hour == et.getHour(); hour++) {
-						if((et.getMinute() < st.getMinute()) || (et.getMinute() == st.getMinute() && (et.getHour() > hour))) {
-							int endMinutes = 60;
-						}
-						int endMinutes = et.getMinute();
+					for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
+						int endMinutes, min;
+						if(et.getHour() > hour) {
+							endMinutes = 59;
+						} else {endMinutes = et.getMinute();}
 						if(hour == st.getHour()) {
-							int min = st.getMinute();
-						}
-						int min = overflowMinutes;
+							min = st.getMinute();
+						} else {min = overflowMinutes;}
 						while(min < endMinutes) {
 							min += dur.getMinute();
-							if(min >= 60) {
-								overflowMinutes = min-60;
+							if(min >= 59) {
+								overflowMinutes = min-59;
 								LocalTime startTime = LocalTime.parse(hour+":"+overflowMinutes, DateTimeFormatter.ofPattern("HH:mm"));
 							}
 							LocalTime startTime = LocalTime.parse(hour+":"+min, DateTimeFormatter.ofPattern("HH:mm"));
