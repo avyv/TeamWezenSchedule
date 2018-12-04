@@ -23,7 +23,7 @@ public class Model {
 	//To change LocalDate to String use the .toString() method which turns it into a string with format "yyyy-MM-dd" 
 	
 	public LocalTime stringToTime(String stringTime) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		LocalTime time = LocalTime.parse(stringTime,formatter);
 		return time;
 	}
@@ -31,7 +31,7 @@ public class Model {
 	//To change LocalTime to String use the .toString() method 
 	
 	public LocalTime stringToDuration(String stringTime) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		LocalTime time = LocalTime.parse(stringTime,formatter);
 		return time;
 	}
