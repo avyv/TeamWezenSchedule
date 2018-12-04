@@ -148,12 +148,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			boolean didRetrieveSchedule = false; //
 			
 			
-			try { //
-				retrievedSchedule = dao.getSchedule(req.id);
-				didRetrieveSchedule = true;
-			} catch (Exception e) {
-				resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
-			}
+		
 			
 			
 			
@@ -166,7 +161,12 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				if (createScheduleLambda(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
 					
 					
-					
+					try { //
+						retrievedSchedule = dao.getSchedule(req.id);
+						didRetrieveSchedule = true;
+					} catch (Exception e) {
+						resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+					}
 					
 					
 					if(didRetrieveSchedule) {
