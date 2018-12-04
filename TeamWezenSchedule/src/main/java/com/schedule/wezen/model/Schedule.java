@@ -33,8 +33,8 @@ public class Schedule {
 		int overflowMinutes = 0;
 		for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
 			int endMinutes = et.getMinute();
-			if((et.getMinute() < st.getMinute()) || (et.getMinute() == st.getMinute() && (et.getHour() > hour))) {
-				endMinutes = 60;
+			if(et.getHour() > hour) {
+				endMinutes = 59;
 			}
 			
 			int min = overflowMinutes;
@@ -44,8 +44,8 @@ public class Schedule {
 			
 			while(min < endMinutes) {
 				min += dur.getMinute();
-				if(min >= 60) {
-					overflowMinutes = min-60;
+				if(min >= 59) {
+					overflowMinutes = min-59;
 				}
 				numSlots++;
 			}
@@ -97,15 +97,15 @@ public class Schedule {
 			return false;
 		}
 		for(int year = sd.getYear(); year <= ed.getYear(); year++) {
-			int endMonth;
+			int endMonth = ed.getMonthValue();
 			if(ed.getYear() > year){
 				endMonth = 12;
-			} else {endMonth = ed.getMonthValue();}
+			}
 			for(int mon = sd.getMonthValue(); mon <= endMonth; mon++) {
-				int endDay;
+				int endDay = ed.getDayOfMonth();
 				if(ed.getMonthValue() > mon || ed.getYear() > year){
 					endDay = sd.lengthOfMonth();
-				} else {endDay = ed.getDayOfMonth();}
+				} 
 				for(int day = sd.getDayOfMonth(); day <= endDay; day++) {
 //					for(int hour = 0; hour < 24; hour++) {
 //						for(int min = 0; min < 60; min += dur.getMinute()) {
@@ -133,20 +133,22 @@ public class Schedule {
 //					}
 					int overflowMinutes = 0;
 					for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
-						int endMinutes, min;
+						int endMinutes = et.getMinute();
 						if(et.getHour() > hour) {
 							endMinutes = 59;
-						} else {endMinutes = et.getMinute();}
+						} 
+						int min = overflowMinutes;
 						if(hour == st.getHour()) {
 							min = st.getMinute();
-						} else {min = overflowMinutes;}
+						} 
 						while(min < endMinutes) {
 							min += dur.getMinute();
 							if(min >= 59) {
 								overflowMinutes = min-59;
 								LocalTime startTime = LocalTime.parse(hour+":"+overflowMinutes, DateTimeFormatter.ofPattern("HH:mm"));
+							} else {
+								LocalTime startTime = LocalTime.parse(hour+":"+min, DateTimeFormatter.ofPattern("HH:mm"));
 							}
-							LocalTime startTime = LocalTime.parse(hour+":"+min, DateTimeFormatter.ofPattern("HH:mm"));
 							LocalDate slotDate = LocalDate.parse(year+"-"+mon+"-"+day, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 							timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode()));
 						}
