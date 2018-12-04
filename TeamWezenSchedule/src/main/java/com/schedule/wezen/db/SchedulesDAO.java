@@ -95,7 +95,7 @@ public class SchedulesDAO {
         	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
         	ps.setTime(3, Time.valueOf(schedule.getStartTime().toString()));
         	ps.setTime(4, Time.valueOf(schedule.getEndTime().toString()));
-        	ps.setTime(5, Time.valueOf(schedule.getSlotDuration().toString()));
+        	ps.setInt(5, schedule.getSlotDuration());
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
             
@@ -133,11 +133,11 @@ public class SchedulesDAO {
         Date endDate = resultSet.getDate("endDate");
         Time startTime = resultSet.getTime("startTime");
         Time endTime = resultSet.getTime("endTime");
-        Time duration = resultSet.getTime("duration");
+        int duration = resultSet.getInt("duration");
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
 
-        return new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), LocalTime.parse(duration.toString()), id, secretCode);
+        return new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
     }
 
 }

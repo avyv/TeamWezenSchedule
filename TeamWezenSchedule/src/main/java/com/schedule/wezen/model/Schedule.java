@@ -10,12 +10,12 @@ import java.time.format.DateTimeFormatter;
 public class Schedule {
 	
 	LocalDate startDate, endDate;
-	LocalTime startTime, endTime, slotDuration;
+	LocalTime startTime, endTime;
 	String id; 
-	int secretCode, numSlotsDay;
+	int slotDuration, secretCode, numSlotsDay;
 	ArrayList<TimeSlot> timeSlots;
 	
-	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, LocalTime slotDuration, String id, int secretCode) {
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
@@ -27,7 +27,7 @@ public class Schedule {
 		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay);
 	}
 	
-	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, LocalTime duration, String id, int secretCode){
+	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode){
 		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>(); 
 		LocalDate copySD = startDate;
 		LocalDate copyED;
@@ -57,7 +57,7 @@ public class Schedule {
 		return true;
 	}
 	
-	public int calculateNumTimeSlots(LocalTime st, LocalTime et, LocalTime dur) {
+	public int calculateNumTimeSlots(LocalTime st, LocalTime et, int dur) {
 		int numSlots = 0;
 	
 		int overflowMinutes = 0;
@@ -73,7 +73,7 @@ public class Schedule {
 			}
 			
 			while(min < endMinutes) {
-				min += dur.getMinute();
+				min += dur;
 				if(min >= 59) {
 					overflowMinutes = min-59;
 				}
@@ -122,7 +122,7 @@ public class Schedule {
 		return endTime;
 	}*/
 	
-	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime et, LocalTime dur, int numSlotsDay) {
+	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime et, int dur, int numSlotsDay) {
 		if(ed.isBefore(sd) || (ed.isEqual(sd) && et.isBefore(st))) {
 			return false;
 		}
@@ -172,7 +172,7 @@ public class Schedule {
 							min = st.getMinute();
 						} 
 						while(min < endMinutes) {
-							min += dur.getMinute();
+							min += dur;
 							if(min >= 59) {
 								overflowMinutes = min-59;
 								LocalTime startTime = LocalTime.parse(hour+":"+overflowMinutes, DateTimeFormatter.ofPattern("HH:mm"));
@@ -262,7 +262,7 @@ public class Schedule {
 	public LocalDate getEndDate() {return endDate;}
 	public LocalTime getStartTime() {return startTime;}
 	public LocalTime getEndTime() {return endTime;}
-	public LocalTime getSlotDuration() {return slotDuration;}
+	public int getSlotDuration() {return slotDuration;}
 	public String getId() {return id;}
 	public int getSecretCode() {return secretCode;}
 	public int getNumSlotsDay() {return numSlotsDay;}

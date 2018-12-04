@@ -68,7 +68,7 @@ public class Model {
 		return code;
 	}
 	
-	public boolean createSchedule(LocalDate startDate, LocalDate endDate,  LocalTime startTime, LocalTime endTime, LocalTime slotDuration, String id) {
+	public boolean createSchedule(LocalDate startDate, LocalDate endDate,  LocalTime startTime, LocalTime endTime, int slotDuration, String id) {
 		for(Schedule s: schedules) {
 			if(s.id.equals(id)) {
 				return false;
