@@ -151,7 +151,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				// DATABASE STUFF!!!
 				
 				if (createScheduleLambda(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
-					resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getTimeSlots(), 200);
+					resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
 				} else {
 					resp = new CreateScheduleResponse("Unable to create schedule: ", 422);
 				}

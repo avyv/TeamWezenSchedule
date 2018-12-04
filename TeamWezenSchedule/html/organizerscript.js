@@ -192,12 +192,12 @@ function generateCalendar(){
     let dailyEndTime = document.getElementById("settimeend").value;
     let slotDuration = document.getElementById("settimeslots").value;
     let data = {};
-    data["id"] = String(sid);
     data["startDate"] = String(startDay);
     data["endDate"] = String(endDay);
     data["startTime"] = String(dailyStartTime);
     data["endTime"] = String(dailyEndTime);
     data["slotDuration"] = String(slotDuration);
+    data["id"] = String(sid);
     sendData(data,createSchedule_url,createResponse);
   }
 
