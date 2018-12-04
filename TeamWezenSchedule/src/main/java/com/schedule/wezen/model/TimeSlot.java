@@ -12,10 +12,11 @@ public class TimeSlot {
 	int secretCode;
 	boolean isOpen;
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
+		this.meetingName = meetingName;
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
