@@ -7,15 +7,16 @@ public class TimeSlot {
 	
 	LocalTime startTime/*, endTime*/;
 	LocalDate slotDate;
-	Meeting slotMeeting;
-	String id, sid;
+	//Meeting slotMeeting;
+	String id, sid, meetingName = " ";
 	int secretCode;
 	boolean isOpen;
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
+		this.meetingName = meetingName;
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
@@ -35,13 +36,13 @@ public class TimeSlot {
 	public LocalTime getStartTime() {return startTime;}
 	//public LocalTime getEndTime() {return endTime;}
 	public LocalDate getDate() {return slotDate;}
-	public Meeting getMeeting() {return slotMeeting;}
+	public String getMeeting() {return meetingName;}
 	public String getId() {return id;}
 	public String getSid() {return sid;}
 	public boolean getIsOpen() {return isOpen;}
 	public int getSecretCode() {return secretCode;}
 	
-	public void setMeeting(Meeting m) {this.slotMeeting = m;}
+	public void setMeeting(String m) {this.meetingName = m;}
 	
 	public boolean isCorrectCode(int sc) {
 		return (sc == secretCode);
@@ -69,7 +70,7 @@ public class TimeSlot {
 		if(isOpen) {
 			return false;
 		} else {
-			slotMeeting = null;
+			meetingName = " ";
 			isOpen = true;
 			return true;
 		}
@@ -79,7 +80,7 @@ public class TimeSlot {
 		if(!isOpen) {
 			return false;
 		} else {
-			slotMeeting = new Meeting(name, id);
+			meetingName = name;
 			isOpen = false;
 			return true;
 		}
