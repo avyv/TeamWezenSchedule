@@ -248,6 +248,10 @@ public class Schedule {
 		return (sc == secretCode);
 	}
 	
+	public void addTimeSlot(TimeSlot ts) {
+		this.timeSlots.add(ts);
+	}
+	
 	public LocalDate getStartDate() {return startDate;}
 	public LocalDate getEndDate() {return endDate;}
 	public LocalTime getStartTime() {return startTime;}
