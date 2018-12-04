@@ -81,7 +81,7 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 			LocalDate ed = null;
 			LocalTime st = null;
 			LocalTime et = null;
-			LocalTime dur = null;
+			int dur = 0;
 			String id = "";
 			
 			
