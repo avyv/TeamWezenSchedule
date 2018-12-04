@@ -42,7 +42,7 @@ public class Model {
 	//To change LocalTime to String use the .toString() method 
 	
 	public LocalTime stringToDuration(String stringTime) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss"); // changed
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm"); // changed
 		LocalTime time = LocalTime.parse(stringTime,formatter);
 		return time;
 	}
