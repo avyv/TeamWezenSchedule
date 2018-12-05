@@ -71,7 +71,9 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		logger.log("before secret code");
 		
-		int secretCode = m.createSecretCode();
+		//int secretCode = m.createSecretCode();
+		
+		int secretCode = 5;
 		
 		logger.log("SecretCode: " + secretCode + "");
 		
