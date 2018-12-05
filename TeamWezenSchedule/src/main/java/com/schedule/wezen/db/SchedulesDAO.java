@@ -91,10 +91,10 @@ public class SchedulesDAO {
             }*/
 
             PreparedStatement ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) values (?,?,?,?,?,?,?);");
-            ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
-        	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
-        	ps.setTime(3, Time.valueOf(schedule.getStartTime().toString()));
-        	ps.setTime(4, Time.valueOf(schedule.getEndTime().toString()));
+            ps.setDate(1, Date.valueOf(schedule.getStartDate()));//schedule.getStartDate().toString()));
+        	ps.setDate(2, Date.valueOf(schedule.getEndDate()));//schedule.getEndDate().toString()));
+        	ps.setTime(3, Time.valueOf(schedule.getStartTime()));//schedule.getStartTime().toString()));
+        	ps.setTime(4, Time.valueOf(schedule.getEndTime()));//schedule.getEndTime().toString()));
         	ps.setInt(5, schedule.getSlotDuration());
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
