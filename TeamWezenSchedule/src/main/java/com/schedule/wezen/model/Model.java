@@ -61,7 +61,6 @@ public class Model {
 		Random r = new Random();
 		int code = r.nextInt();
 		return code;
-		// TODO
 		/*if(schedules.size() == 0) 
 			return code;
 		for(Schedule s: schedules) {
@@ -72,10 +71,12 @@ public class Model {
 		return code;*/
 	}
 	
-	public boolean createSchedule(LocalDate startDate, LocalDate endDate,  LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode) { // added secreCode
-		for(Schedule s: schedules) {
-			if(s.id.equals(id)) {
-				return false;
+	public boolean createSchedule(LocalDate startDate, LocalDate endDate,  LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode) {
+		if(schedules.size() != 0) {
+			for(Schedule s: schedules) {
+				if(s.id.equals(id)) {
+					return false;
+				}
 			}
 		}
 		schedules.add(new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, secretCode /*createSecretCode()*/));
