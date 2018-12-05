@@ -79,7 +79,7 @@ public class SchedulesDAO {
     
     public boolean addSchedule(Schedule schedule) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedule WHERE id = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE id = ?;");
             ps.setString(1, schedule.getId());
             ResultSet resultSet = ps.executeQuery();
             
