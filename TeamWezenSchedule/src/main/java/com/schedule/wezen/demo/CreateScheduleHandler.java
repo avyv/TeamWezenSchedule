@@ -96,7 +96,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			
 			logger.log("exist == null");
 			
-			m.createSchedule(startD, endD, startT, endT, slotD, id, secretCode);
+			//m.createSchedule(startD, endD, startT, endT, slotD, id, secretCode);
 			
 			return dao.addSchedule(schedule);
 		} else {
