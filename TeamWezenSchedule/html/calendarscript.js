@@ -32,7 +32,7 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
-var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots};
+var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",orgCode:10, id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots};
 var currts = dummySchedule.timeSlots[0];
 var currSchedule = dummySchedule;
 // window.onload = initialize;
@@ -127,11 +127,13 @@ function createMtng(name){
   if ((name == "") || (name == " ")) {
     alert("You must enter a valid name");
   }  else{
-      let data = {};
-      data["requestTSId"] = currts.id;
-      data["requestMtngName"] = name;
-      let createmtng_url = base_url + "/createmtng";
-      sendData(data,createmtng_url);
+    let data = {};
+    data["requestSchedID"] = currSchedule.id;
+    data["requestWeekStart"] = currSchedule.startDate;
+    data["requestTSId"] = currts.id;
+    data["requestMtngName"] = name;
+    let createmtng_url = base_url + "/createmeeting";
+    sendData(data,createmtng_url);
   }
 }
 
@@ -150,6 +152,12 @@ function checkMeetingAuthorization(){
     return;
   }
   alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
+  let data = {};
+  data["requestSchedID"] = currSchedule.id;
+  data["requestWeekStart"] = currSchedule.startDate;
+  data["requestTSId"] = currts.id;
+  let deletemtng_url = base_url + "/cancelmeeting";
+  sendData(data,deletemtng_url);
 }
 
 function openSchedPrompt(e){
@@ -167,7 +175,7 @@ function openSchedule(){
     }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = enteredID;
-    let openschedule_url = base_url + "/openshedule";
+    let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url);
     document.getElementById("schedprompt").style.display ='none';
   }
@@ -180,12 +188,14 @@ function filter(){
   let date = document.getElementById("selectdayofmonth").value;
   let time = document.getElementById("filterTime").value;
   let data = {};
+  data["requestSchedID"] = currSchedule.id;
+  data["requestWeekStart"] = currSchedule.startDate;
   data["requestWeekday"] = day;
   data["requestMonth"] = month;
   data["requestYear"] = year;
   data["requestDate"] = date;
   data["requestTime"] = time;
-  let filter_url = base_url + "/filter";
+  let filter_url = base_url + "/filterschedule";
   sendData(data,filter_url);
 }
 
@@ -219,7 +229,14 @@ function sendData(data,url){
 function processSchedule(xhrResult){
 	console.log("result:" + xhrResult);
 	let js = JSON.parse(xhrResult);
-  let responseSchedule = js["responseSchedule"];
+  // let startdate = js["responseSchedule"];
+  currSchedule.startDate = js["responseStartDateOfWeek"];
+  currSchedule.startTime = js["responseStartTime"];
+  currSchedule.id = js["responseID"];
+  currSchedule.slotDuration = js["responseSlotDuration"];
+  currSchedule.orgCode = js["responseSecretCode"];
+  currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
+  currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
   alert("received Schedule");
   //add if schedule couldnt be opened, display "could not find schedule"
   generateCalendar();

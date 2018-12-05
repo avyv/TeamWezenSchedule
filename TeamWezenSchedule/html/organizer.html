@@ -27,7 +27,7 @@
               <input type="date" id="setstartday"  required>
 
               <label for="setendday"><b><br>End Date </label>
-              <input type="date" id="setendday"  required>
+              <input type="date" id="setendday"   required>
 
               <label for="settimestart"><b><br>Daily Start Time </label>
               <select id="settimestart" onchange="updateEndTime()" required>
@@ -140,7 +140,8 @@
     </section>
 
     <section id="calendarwindow">
-      <button id="deleteschedbtn" onclick="deleteSchedule()">DELETE</button>
+      <button id="deleteschedbtn" onclick="deleteSchedule();">DELETE</button>
+      <button id="editschedbtn" onclick="promptSchedParamEdit();">EDIT</button>
         <section id="filteroptions">
         	<nav><b>Filter By: </b><br>
         		<label for="dayofweek">Day of Week</label>
@@ -321,11 +322,30 @@
               </div>
               <div class="container" style="background-color:#f1f1f1">
                 <button type="button" onclick="JavaScript:checkMeetingAuthorization(true);">Submit</button>
-                <button type="button" onclick="document.getElementById('idPrompt').style.display='none'">Exit</button>
+                <button type="button" onclick="document.getElementById('editMtngPrompt').style.display='none'">Exit</button>
               </div>
             </form>
           </div>
         </section>
+
+
+        <section>
+          <div id ="editschedparamPrompt" class="login">
+            <form  class="login-content animate">
+              <div class="container">
+                <label for="newStartDate"><b>New Start Date: </b></label>
+                <input type="date" id="newStartDate" required>
+                <label for="newEndDate"><b>New End Date: </b></label>
+                <input type="date" id="newEndDate" required>
+              </div>
+              <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="JavaScript:updateScheduleParams();">Submit</button>
+                <button type="button" onclick="document.getElementById('editschedparamPrompt').style.display='none'">Exit</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
 
   </body>
 </html>

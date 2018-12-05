@@ -160,8 +160,13 @@ section#bulkts{
 button#deleteschedbtn{
   display: none;
   float: right;
+  margin: 3px 3px;
 }
-
+button#editschedbtn{
+  display: none;
+  float: right;
+  margin: 3px 3px;
+}
 
 a {
     text-decoration: none;

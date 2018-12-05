@@ -1,5 +1,4 @@
 var base_url = "https://kiljpq1n4a.execute-api.us-east-2.amazonaws.com/Alpha";
-var createSchedule_url = base_url + "/createschedule";
 
 /********************* Create Calendar *********************/
 var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:{name:"Mtng1"},date:"2018-12-03",isOpen:false},
@@ -124,6 +123,7 @@ function generateCalendar(){
       }
     }
     if(orgCredentials == currSchedule.orgCode){
+      document.getElementById("editschedbtn").style.display = 'inline';
       document.getElementById("deleteschedbtn").style.display = 'inline';
       document.getElementById("bulkts").style.display = 'inline';
     }else{
@@ -156,6 +156,11 @@ function generateCalendar(){
     let cont = confirm("Are you sure you want to delete this schedule?");
     if(cont){
       document.getElementById("calendarwindow").style.visibility = 'hidden';
+      let sid = currSchedule.id;
+      let data = {};
+      data["requestid"] = String(sid);
+      let deleteschedule_url = base_url + "/deleteschedule";
+      sendData(data,deleteschedule_url,processSchedule);
       alert("Deleted Schedule");
     }
   }
@@ -166,6 +171,8 @@ function generateCalendar(){
     let ed = (document.getElementById("setendday").value != "");
     return (sd && ed && sid);
   }
+
+
   //adjust the form to only allow end times after the start
   function updateEndTime(){
     let start = document.getElementById("settimestart").value;
@@ -183,6 +190,27 @@ function generateCalendar(){
       hrs++;
     }
   }
+  function updateEndDate(startdate){
+    //onchange="JavaScript:updateEndDate(this);"
+    var enddate;
+    if(startdate.id == "setstartday"){
+      enddate = document.getElementById("setendday");
+    }else if(startdate.id == "newStartDate"){//this actually should be based on schedule start and end dates
+      enddate = document.getElementById("newEndDate");
+    }
+    enddate.min = startdate.value;
+  }
+
+  function updateStartDate(enddate){
+    //onchange="JavaScript:updateStartDate(this);"
+    var startdate;
+    if(enddate.id == "setendday"){
+      startdate = document.getElementById("setstartday");
+    }else if(enddate.id == "newEndDate"){
+      startdate = document.getElementById("newStartDate");
+    }
+    startdate.max = enddate.value;
+  }
   //compile inputs and send into java
   function createSchedule(){
     let sid = document.getElementById("setschedid").value
@@ -192,12 +220,13 @@ function generateCalendar(){
     let dailyEndTime = document.getElementById("settimeend").value;
     let slotDuration = document.getElementById("settimeslots").value;
     let data = {};
-    data["startDate"] = String(startDay);
-    data["endDate"] = String(endDay);
-    data["startTime"] = String(dailyStartTime);
-    data["endTime"] = String(dailyEndTime);
-    data["slotDuration"] = slotDuration;
-    data["id"] = String(sid);
+    data["requestStartDate"] = String(startDay);
+    data["requestEndDate"] = String(endDay);
+    data["requestStartTime"] = String(dailyStartTime);
+    data["requestEndTime"] = String(dailyEndTime);
+    data["requestSlotDuration"] = slotDuration;
+    data["requestID"] = String(sid);
+    let createSchedule_url = base_url + "/createschedule";
     sendData(data,createSchedule_url,createResponse);
   }
 
@@ -214,9 +243,11 @@ function createMtng(name){
     alert("You must enter a valid name");
   }  else{
       let data = {};
+      data["requestSchedID"] = currSchedule.id;
+      data["requestWeekStart"] = currSchedule.startDate;
       data["requestTSId"] = currts.id;
       data["requestMtngName"] = name;
-      let createmtng_url = base_url + "/createmtng";
+      let createmtng_url = base_url + "/createmeeting";
       sendData(data,createmtng_url,processSchedule);
   }
 }
@@ -240,6 +271,13 @@ function checkMeetingAuthorization(unauthorized){
     }
   }
   alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
+
+  let data = {};
+  data["requestSchedID"] = currSchedule.id;
+  data["requestWeekStart"] = currSchedule.startDate;
+  data["requestTSId"] = currts.id;
+  let deletemtng_url = base_url + "/cancelmeeting";
+  sendData(data,deletemtng_url,processSchedule);
 }
 /********* Open An Existing Schedule **********/
 function openSchedPrompt(e){
@@ -252,12 +290,12 @@ function openSchedule(){
   if((enteredID == " ") || (enteredID == "")){
     alert("You Must enter a valid id");
   }else{
-    if(enteredID == currSchedule.id){
-      generateCalendar();
-    }/////////////////////////////////////////////////////////////////for testing only.
+    // if(enteredID == currSchedule.id){
+    //   generateCalendar();
+    // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = enteredID;
-    let openschedule_url = base_url + "/openshedule";
+    let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
     document.getElementById("schedprompt").style.display ='none';
   }
@@ -272,13 +310,12 @@ function openEditSchedule(){
   if((enteredID == " ") || (enteredID == "") || (orgCredentials == "")){
     alert("Please Fill Out All Inputs");
   }else{
-    if((enteredID == currSchedule.id) && (orgCredentials == currSchedule.orgCode)){
-      generateCalendar();
-    }/////////////////////////////////////////////////////////////////for testing only.
+    // if((enteredID == currSchedule.id) && (orgCredentials == currSchedule.orgCode)){
+    //   generateCalendar();
+    // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = enteredID;
-    data["requestCode"] = orgCredentials;
-    let openschedule_url = base_url + "/openshedule";
+    let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
     document.getElementById("schededitprompt").style.display ='none';
   }
@@ -290,12 +327,14 @@ function filter(){
   let date = document.getElementById("selectdayofmonth").value;
   let time = document.getElementById("filterTime").value;
   let data = {};
+  data["requestSchedID"] = currSchedule.id;
+  data["requestWeekStart"] = currSchedule.startDate;
   data["requestWeekday"] = day;
   data["requestMonth"] = month;
   data["requestYear"] = year;
   data["requestDate"] = date;
   data["requestTime"] = time;
-  let filter_url = base_url + "/filter";
+  let filter_url = base_url + "/filterschedule";
   sendData(data,filter_url,processSchedule);
 }
 function openSlot(ts){
@@ -316,6 +355,17 @@ function getNextWeek(){
 
 function getPreviousWeek(){
   alert("previous week");
+}
+function promptSchedParamEdit(){
+  //I need the start and end dates of the full schedule to do this bit
+  // let startmax = currSchedule.startDay;
+  document.getElementById("editschedparamPrompt").style.display='block';
+}
+function updateScheduleParams(){
+  let nsd = document.getElementById("newStartDate").value;
+  let ned = document.getElementById("newEndDate").value;
+  alert("New Start Date = " + nsd + ", New End Date = " + ned);
+  document.getElementById("editschedparamPrompt").style.display='none';
 }
 /*********************** SUBMIT DATA TO JAVA *********************************/
 function sendData(data,url,callback){
@@ -339,8 +389,13 @@ function sendData(data,url,callback){
 function processSchedule(xhrResult){
 	console.log("result:" + xhrResult);
 	let js = JSON.parse(xhrResult);
-  let responseSchedule = js["responseSchedule"];
-  alert("received Schedule");
+  currSchedule.startDate = js["responseStartDateOfWeek"];
+  currSchedule.startTime = js["responseStartTime"];
+  currSchedule.id = js["responseID"];
+  currSchedule.slotDuration = js["responseSlotDuration"];
+  currSchedule.orgCode = js["responseSecretCode"];
+  currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
+  currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
   //add if schedule couldnt be opened, display "could not find schedule"
   generateCalendar();
 }
@@ -348,8 +403,13 @@ function processSchedule(xhrResult){
 function createResponse(xhrResult){
   console.log("result:" + xhrResult);
   let js = JSON.parse(xhrResult);
-  let responseSchedule = js["responseSchedule"];
-  currSchedule = dummySchedule;
+  currSchedule.startDate = js["responseStartDateOfWeek"];
+  currSchedule.startTime = js["responseStartTime"];
+  currSchedule.id = js["responseID"];
+  currSchedule.slotDuration = js["responseSlotDuration"];
+  currSchedule.orgCode = js["responseSecretCode"];
+  currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
+  currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
   document.getElementById("orgcode").innerHTML = currSchedule.orgCode;
   document.getElementById("idPrompt").style.display='block';
 }
