@@ -92,19 +92,19 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		logger.log("Schedule object created");
 		
-		if(exist == null) {
+//		if(exist == null) {
 			
-			logger.log("exist == null");
+		logger.log("exist == null");
 			
 			//m.createSchedule(startD, endD, startT, endT, slotD, id, secretCode);
 			
-			return dao.addSchedule(schedule);
-		} else {
-			
-			logger.log("already exists");
-			
-			return dao.updateSchedule(schedule);
-		}
+		return dao.addSchedule(schedule);
+//		} else {
+//			
+//			logger.log("already exists");
+//			
+//			return dao.updateSchedule(schedule);
+//		}
 		
 	}
 
