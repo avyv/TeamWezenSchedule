@@ -60,6 +60,7 @@ public class Model {
 	public int createSecretCode() {
 		Random r = new Random();
 		int code = r.nextInt();
+		return code;
 		// TODO
 		/*if(schedules.size() == 0) 
 			return code;

@@ -210,6 +210,7 @@ public class Schedule {
 		Random r = new Random();
 		int code = r.nextInt();
 		return code;
+		//TODO
 		/*if(timeSlots.size() == 0)
 			return code;
 		for(TimeSlot ts: timeSlots) {
