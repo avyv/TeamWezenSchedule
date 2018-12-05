@@ -79,9 +79,9 @@ public class SchedulesDAO {
     
     public boolean addSchedule(Schedule schedule) throws Exception {
         try {
-            /*PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedule WHERE id = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedule WHERE id = ?;");
             ps.setString(1, schedule.getId());
-            ResultSet resultSet = ps.executeQuery();*/
+            ResultSet resultSet = ps.executeQuery();
             
             // already present?
            /* while (resultSet.next()) {
@@ -90,7 +90,7 @@ public class SchedulesDAO {
                 return false;
             }*/
 
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Schedule (startDate,endDate,startTime,endTime,duration,id,secretCode) values(?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) values(?,?,?,?,?,?,?);");
             ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
         	ps.setTime(3, Time.valueOf(schedule.getStartTime().toString()));
