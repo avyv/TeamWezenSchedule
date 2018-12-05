@@ -84,11 +84,11 @@ public class SchedulesDAO {
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
-            while (resultSet.next()) {
+           /* while (resultSet.next()) {
                 Schedule s = generateSchedule(resultSet);
                 resultSet.close();
                 return false;
-            }
+            }*/
 
             ps = conn.prepareStatement("INSERT INTO Schedule (startDate, endDate, startTime, endTime, id, secretCode) values(?,?,?,?,?,?);");
             ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
