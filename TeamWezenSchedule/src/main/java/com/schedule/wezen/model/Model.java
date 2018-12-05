@@ -72,13 +72,13 @@ public class Model {
 		return code;*/
 	}
 	
-	public boolean createSchedule(LocalDate startDate, LocalDate endDate,  LocalTime startTime, LocalTime endTime, int slotDuration, String id) {
+	public boolean createSchedule(LocalDate startDate, LocalDate endDate,  LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode) { // added secreCode
 		for(Schedule s: schedules) {
 			if(s.id.equals(id)) {
 				return false;
 			}
 		}
-		schedules.add(new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, createSecretCode()));
+		schedules.add(new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, secretCode /*createSecretCode()*/));
 		return true;
 	}
 	
