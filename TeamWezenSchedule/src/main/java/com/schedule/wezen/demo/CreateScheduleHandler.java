@@ -57,10 +57,19 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		LocalDate endD = m.stringToDate(endDate);
 		
+		logger.log("Date: " + endDate + "");
+		
 		LocalTime startT = m.stringToTime(startTime);
+		
+		logger.log("Time: " + startTime + "");
+		
 		LocalTime endT = m.stringToTime(endTime);
 		
+		logger.log("Time: " + endTime + "");
+		
 		int slotD = Integer.parseInt(slotDuration);
+		
+		logger.log("before secret code");
 		
 		int secretCode = m.createSecretCode();
 		
