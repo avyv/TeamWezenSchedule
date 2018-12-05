@@ -13,7 +13,7 @@ public class stringToDateTests {
 	@Test
 	public void testStringDate() throws Exception {
 		Model model = new Model();
-		String stringDate = "12/12/2017";
+		String stringDate = "2017-12-12";
 		LocalDate date = model.stringToDate(stringDate);
 		assertEquals(date.getYear(), 2017);
 	}
@@ -21,9 +21,9 @@ public class stringToDateTests {
 	@Test
 	public void testStringDate2() throws Exception {
 		Model model = new Model();
-		String stringDate = "12/12/2017";
+		String stringDate = "2017-12-12";
 		LocalDate date = model.stringToDate(stringDate);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		assertEquals(date.format(formatter), stringDate);
 	}
 }
