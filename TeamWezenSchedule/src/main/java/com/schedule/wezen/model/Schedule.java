@@ -58,29 +58,33 @@ public class Schedule {
 	}
 	
 	public int calculateNumTimeSlots(LocalTime st, LocalTime et, int dur) {
-		int numSlots = 0;
-	
-		int overflowMinutes = 0;
-		for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
-			int endMinutes = et.getMinute();
-			if(et.getHour() > hour) {
-				endMinutes = 59;
-			}
-			
-			int min = overflowMinutes;
-			if(hour == st.getHour()) {
-				min = st.getMinute();
-			}
-			
-			while(min < endMinutes) {
-				min += dur;
-				if(min >= 59) {
-					overflowMinutes = min-59;
-				}
-				numSlots++;
-			}
-		}
-		return numSlots;
+		double numSlots = 0;
+		double shr = st.getHour();
+		double ehr = et.getHour();
+		
+		numSlots = ((ehr - shr)*60)/dur;
+		
+//		int overflowMinutes = 0;
+//		for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
+//			int endMinutes = et.getMinute();
+//			if(et.getHour() > hour) {
+//				endMinutes = 59;
+//			}
+//			
+//			int min = overflowMinutes;
+//			if(hour == st.getHour()) {
+//				min = st.getMinute();
+//			}
+//			
+//			while(min < endMinutes) {
+//				min += dur;
+//				if(min >= 59) {
+//					overflowMinutes = min-59;
+//				}
+//				numSlots++;
+//			}
+//		}
+		return (int) numSlots;
 	}
 	
 	public int calculateDayOfWeek(LocalDate startDate) {
@@ -123,87 +127,88 @@ public class Schedule {
 	}*/
 	
 	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime et, int dur, int numSlotsDay) {
-		if(ed.isBefore(sd) || (ed.isEqual(sd) && et.isBefore(st))) {
-			return false;
-		}
-		for(int year = sd.getYear(); year <= ed.getYear(); year++) {
-			int endMonth = ed.getMonthValue();
-			if(ed.getYear() > year){
-				endMonth = 12;
-			}
-			for(int mon = sd.getMonthValue(); mon <= endMonth; mon++) {
-				int endDay = ed.getDayOfMonth();
-				if(ed.getMonthValue() > mon || ed.getYear() > year){
-					endDay = sd.lengthOfMonth();
-				} 
-				for(int day = sd.getDayOfMonth(); day <= endDay; day++) {
-//					for(int hour = 0; hour < 24; hour++) {
-//						for(int min = 0; min < 60; min += dur.getMinute()) {
-//							if(dur.getMinute() == 0) {
-//								hour++;
-//								dur.get
-//								
-//								if(hour >= st.getHour() && hour < et.getHour()) {
-//									LocalTime start = LocalTime.parse(hour + ":00:00");
-//									LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
-//									
-//									timeSlots.add(new TimeSlot(start, dur, date));
-//								}
-//								
-//								break;
+		return true;
+//		if(ed.isBefore(sd) || (ed.isEqual(sd) && et.isBefore(st))) {
+//			return false;
+//		}
+//		for(int year = sd.getYear(); year <= ed.getYear(); year++) {
+//			int endMonth = ed.getMonthValue();
+//			if(ed.getYear() > year){
+//				endMonth = 12;
+//			}
+//			for(int mon = sd.getMonthValue(); mon <= endMonth; mon++) {
+//				int endDay = ed.getDayOfMonth();
+//				if(ed.getMonthValue() > mon || ed.getYear() > year){
+//					endDay = sd.lengthOfMonth();
+//				} 
+//				for(int day = sd.getDayOfMonth(); day <= endDay; day++) {
+////					for(int hour = 0; hour < 24; hour++) {
+////						for(int min = 0; min < 60; min += dur.getMinute()) {
+////							if(dur.getMinute() == 0) {
+////								hour++;
+////								dur.get
+////								
+////								if(hour >= st.getHour() && hour < et.getHour()) {
+////									LocalTime start = LocalTime.parse(hour + ":00:00");
+////									LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
+////									
+////									timeSlots.add(new TimeSlot(start, dur, date));
+////								}
+////								
+////								break;
+////							}
+////
+////							if(hour >= st.getHour() && hour <= et.getHour() && min >= st.getMinute() && min <= et.getMinute()) {
+////								LocalTime start = LocalTime.parse(hour + ":" + min +":00");
+////								LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
+////								
+////								timeSlots.add(new TimeSlot(start, dur, date));
+////							}
+////						}
+////					}
+//					int overflowMinutes = 0;
+//					for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
+//						int endMinutes = et.getMinute();
+//						if(et.getHour() > hour) {
+//							endMinutes = 59;
+//						} 
+//						int min = overflowMinutes;
+//						if(hour == st.getHour()) {
+//							min = st.getMinute();
+//						} 
+//						while(min < endMinutes) {
+//							min += dur;
+//							if(min >= 59) {
+//								overflowMinutes = min-59;
+//								LocalTime startTime = LocalTime.parse(hour+":"+overflowMinutes, DateTimeFormatter.ofPattern("HH:mm"));
+//							} else {
+//								LocalTime startTime = LocalTime.parse(hour+":"+min, DateTimeFormatter.ofPattern("HH:mm"));
 //							}
-//
-//							if(hour >= st.getHour() && hour <= et.getHour() && min >= st.getMinute() && min <= et.getMinute()) {
-//								LocalTime start = LocalTime.parse(hour + ":" + min +":00");
-//								LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
-//								
-//								timeSlots.add(new TimeSlot(start, dur, date));
+//							LocalDate slotDate = LocalDate.parse(year+"-"+mon+"-"+day, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//							if(slotDate.isBefore(startDate) || slotDate.isAfter(endDate)){
+//								timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode(), false, false));
+//							} else {
+//								timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode()));
 //							}
+//							
 //						}
 //					}
-					int overflowMinutes = 0;
-					for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
-						int endMinutes = et.getMinute();
-						if(et.getHour() > hour) {
-							endMinutes = 59;
-						} 
-						int min = overflowMinutes;
-						if(hour == st.getHour()) {
-							min = st.getMinute();
-						} 
-						while(min < endMinutes) {
-							min += dur;
-							if(min >= 59) {
-								overflowMinutes = min-59;
-								LocalTime startTime = LocalTime.parse(hour+":"+overflowMinutes, DateTimeFormatter.ofPattern("HH:mm"));
-							} else {
-								LocalTime startTime = LocalTime.parse(hour+":"+min, DateTimeFormatter.ofPattern("HH:mm"));
-							}
-							LocalDate slotDate = LocalDate.parse(year+"-"+mon+"-"+day, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-							if(slotDate.isBefore(startDate) || slotDate.isAfter(endDate)){
-								timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode(), false, false));
-							} else {
-								timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode()));
-							}
-							
-						}
-					}
-				}
-			}
-		}
-		int startDayOfWeek = calculateDayOfWeek(sd);
-		int endDayOfWeek = calculateDayOfWeek(ed);
-		if(startDayOfWeek > 1) {
-			ed = sd.minusDays(1);
-			sd = sd.minusDays(startDayOfWeek - 1);
-			populateTimeSlots(sd, ed, st, et, dur, numSlotsDay);
-		}
-		if(endDayOfWeek < 7) {
-			sd = ed.plusDays(1);
-			ed = ed.plusDays(7 - endDayOfWeek);
-			populateTimeSlots(sd, ed, st, et, dur, numSlotsDay);
-		}
-		return true;
+//				}
+//			}
+//		}
+//		int startDayOfWeek = calculateDayOfWeek(sd);
+//		int endDayOfWeek = calculateDayOfWeek(ed);
+//		if(startDayOfWeek > 1) {
+//			ed = sd.minusDays(1);
+//			sd = sd.minusDays(startDayOfWeek - 1);
+//			populateTimeSlots(sd, ed, st, et, dur, numSlotsDay);
+//		}
+//		if(endDayOfWeek < 7) {
+//			sd = ed.plusDays(1);
+//			ed = ed.plusDays(7 - endDayOfWeek);
+//			populateTimeSlots(sd, ed, st, et, dur, numSlotsDay);
+//		}
+//		return true;
 	}
 	
 	public int createSecretCode() {
