@@ -80,9 +80,14 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 
 		SchedulesDAO dao = new SchedulesDAO();
 		
+		logger.log("DAO Created");
+		
 		Schedule schedule = new Schedule(startD, endD, startT, endT, slotD, id, secretCode);
 		
+		logger.log("Schedule object created");
+		
 		return dao.updateSchedule(schedule);
+		
 	}
 
     @Override
