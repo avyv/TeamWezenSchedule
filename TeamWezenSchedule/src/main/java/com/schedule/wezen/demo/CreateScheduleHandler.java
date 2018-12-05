@@ -71,9 +71,9 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		logger.log("before secret code");
 		
-		//int secretCode = m.createSecretCode();
+		int secretCode = m.createSecretCode();
 		
-		int secretCode = 5;
+		//int secretCode = 5;
 		
 		logger.log("SecretCode: " + secretCode + "");
 		
@@ -101,7 +101,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			return dao.addSchedule(schedule);
 		} else {
 			
-			logger.log("does not already exist");
+			logger.log("already exists");
 			
 			return dao.updateSchedule(schedule);
 		}
