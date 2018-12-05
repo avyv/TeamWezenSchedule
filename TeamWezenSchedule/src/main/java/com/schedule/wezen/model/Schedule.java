@@ -209,14 +209,15 @@ public class Schedule {
 	public int createSecretCode() {
 		Random r = new Random();
 		int code = r.nextInt();
-		if(timeSlots.size() == 0)
+		return code;
+		/*if(timeSlots.size() == 0)
 			return code;
 		for(TimeSlot ts: timeSlots) {
 			if(ts.secretCode == code) {
 				return createSecretCode();
 			}
 		}
-		return code;
+		return code;*/
 	}
 	
 	public boolean changeDuration(LocalDate sd, LocalDate ed) {

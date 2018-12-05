@@ -60,14 +60,15 @@ public class Model {
 	public int createSecretCode() {
 		Random r = new Random();
 		int code = r.nextInt();
-		if(schedules.size() == 0) 
+		// TODO
+		/*if(schedules.size() == 0) 
 			return code;
 		for(Schedule s: schedules) {
 			if(s.secretCode == code) {
 				return createSecretCode();
 			}
 		}
-		return code;
+		return code;*/
 	}
 	
 	public boolean createSchedule(LocalDate startDate, LocalDate endDate,  LocalTime startTime, LocalTime endTime, int slotDuration, String id) {
