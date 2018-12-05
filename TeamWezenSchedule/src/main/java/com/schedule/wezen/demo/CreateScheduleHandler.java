@@ -43,40 +43,40 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 	 * 
 	 * @throws Exception
 	 */
-	boolean createScheduleLambda(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) throws Exception {
+	boolean createScheduleLambda(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, int secretCode, String id) throws Exception {
 		if(logger != null) { logger.log("in createSchedule");}
 		
 		/* turn the times and dates into appropriate objects */
-		Model m = new Model();
-		
-		logger.log("after model, before LocalDate");
-		
-		LocalDate startD = m.stringToDate(startDate);
-		
-		logger.log("Date: " + startDate + "");
-		
-		LocalDate endD = m.stringToDate(endDate);
-		
-		logger.log("Date: " + endDate + "");
-		
-		LocalTime startT = m.stringToTime(startTime);
-		
-		logger.log("Time: " + startTime + "");
-		
-		LocalTime endT = m.stringToTime(endTime);
-		
-		logger.log("Time: " + endTime + "");
-		
-		int slotD = Integer.parseInt(slotDuration);
-		
-		logger.log("before secret code");
-		
-		int secretCode = m.createSecretCode(); //
-		
-		//int secretCode = 5;
-		
-		logger.log("SecretCode: " + secretCode + "");
-		
+//		Model m = new Model();
+//		
+//		logger.log("after model, before LocalDate");
+//		
+//		LocalDate startD = m.stringToDate(startDate);
+//		
+//		logger.log("Date: " + startDate + "");
+//		
+//		LocalDate endD = m.stringToDate(endDate);
+//		
+//		logger.log("Date: " + endDate + "");
+//		
+//		LocalTime startT = m.stringToTime(startTime);
+//		
+//		logger.log("Time: " + startTime + "");
+//		
+//		LocalTime endT = m.stringToTime(endTime);
+//		
+//		logger.log("Time: " + endTime + "");
+//		
+//		int slotD = Integer.parseInt(slotDuration);
+//		
+//		logger.log("before secret code");
+//		
+//		int secretCode = m.createSecretCode(); //
+//		
+//		//int secretCode = 5;
+//		
+//		logger.log("SecretCode: " + secretCode + "");
+//		
 
 		SchedulesDAO dao = new SchedulesDAO();
 		
@@ -88,7 +88,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		logger.log("past exists");
 		
-		Schedule schedule = new Schedule(startD, endD, startT, endT, slotD, id, secretCode);
+		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, secretCode);
 		
 		logger.log("Schedule object created");
 		
@@ -183,6 +183,47 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			boolean didRetrieveSchedule = false; //
 			
 			
+			/** 
+			 * This is where we convert Strings LocalDates and Times
+			 */
+			
+			logger.log("Starting conversions");
+	
+			Model m = new Model();
+			
+			logger.log("after model, before LocalDate");
+			
+			LocalDate startD = m.stringToDate(req.requestStartDate);
+			
+			logger.log("Date: " + req.requestStartDate + "");
+			
+			LocalDate endD = m.stringToDate(req.requestEndDate);
+			
+			logger.log("Date: " + req.requestEndDate + "");
+			
+			LocalTime startT = m.stringToTime(req.requestStartTime);
+			
+			logger.log("Time: " + req.requestStartTime + "");
+			
+			LocalTime endT = m.stringToTime(req.requestEndTime);
+			
+			logger.log("Time: " + req.requestEndTime + "");
+			
+			int slotD = Integer.parseInt(req.requestSlotDuration);
+			
+			logger.log("slot duration" + slotD);
+			
+			int secretCode = m.createSecretCode(); //
+			
+			//int secretCode = 5;
+			
+			logger.log("SecretCode: " + secretCode + "");
+			
+			
+			
+			
+			
+			
 		
 			
 			
@@ -193,11 +234,11 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				// DATABASE STUFF!!!
 				
-				if (createScheduleLambda(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
+				if (createScheduleLambda(startD, endD, startT, endT, slotD, secretCode, req.requestID)) {
 					
 					
 					try { //
-						retrievedSchedule = dao.getSchedule(req.id);
+						retrievedSchedule = dao.getSchedule(req.requestID);
 						didRetrieveSchedule = true;
 					} catch (Exception e) {
 						resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
@@ -205,7 +246,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					
 					if(didRetrieveSchedule) {
-						resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, retrievedSchedule.getSlotDuration(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
+						resp = new CreateScheduleResponse("Successfully created schedule", req.requestStartDate, req.requestEndDate, req.requestStartTime, retrievedSchedule.getSlotDuration(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
 					}
 					
 					

@@ -14,7 +14,7 @@ public class Model {
 		
 	}
 	
-	public LocalDate stringToDate(String stringDate) throws Exception {
+	public LocalDate stringToDate(String stringDate) /*throws Exception*/ {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate date = LocalDate.parse(stringDate, formatter);
 		return date;
