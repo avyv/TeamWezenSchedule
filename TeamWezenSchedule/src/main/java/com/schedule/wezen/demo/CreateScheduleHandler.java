@@ -82,11 +82,25 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		logger.log("DAO Created");
 		
+		Schedule exist = dao.getSchedule(id);
+		
+		logger.log("past exists");
+		
 		Schedule schedule = new Schedule(startD, endD, startT, endT, slotD, id, secretCode);
 		
 		logger.log("Schedule object created");
 		
-		return dao.updateSchedule(schedule);
+		if(exist == null) {
+			
+			logger.log("exist == null");
+			
+			return dao.addSchedule(schedule);
+		} else {
+			
+			logger.log("does not already exist");
+			
+			return dao.updateSchedule(schedule);
+		}
 		
 	}
 
