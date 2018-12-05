@@ -6,16 +6,17 @@ import java.util.ArrayList;
 import com.schedule.wezen.model.TimeSlot;
 
 public class CreateScheduleResponse {
-	public String createScheduleResponse;
-	String responseStartDate;
-	String responseEndDate;
-	String responseStartTime;
-	int responseSlotDuration;
-	int responseNumSlotsDay;
-	int secretCode;
-	ArrayList <TimeSlot> responseTimeSlots;
-	
-	public int httpCode;
+	public final String responseStartDateOfWeek;
+	public final String responseStartTime;
+	public final String responseID;
+	public final int responseSlotDuration;
+	public final String responseSecretCode;
+	public final int responseNumSlotsDay;
+	public final String responseScheduleStartDate;
+	public final String responseScheduleEndDate;
+	public final ArrayList<TimeSlot> responseWeeklyTimeSlots;
+	public final String response; // necessary
+	public final int httpCode;
 	
 	public CreateScheduleResponse (String resp, String sd, String ed, String st, int duration, int ns, int secretCode, ArrayList<TimeSlot> ts, int code) {
 		this.createScheduleResponse = resp;

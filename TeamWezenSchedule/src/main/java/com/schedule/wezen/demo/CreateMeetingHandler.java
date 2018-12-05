@@ -72,7 +72,7 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				logger.log("Options request"); // log it as an OPTIONS request
 				
 				
-				createMeetingResponse = new CreateMeetingResponse("", "", "", "", 200);  // OPTIONS needs a 200 response
+				createMeetingResponse = new CreateMeetingResponse(200);  // OPTIONS needs a 200 response
 				
 				// dateResponseJson is the object created earlier to hold the JSON response
 		        dateResponseJson.put("body", new Gson().toJson(createMeetingResponse)); // puts the 200 response into the JSON body
@@ -91,7 +91,7 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 		} catch (ParseException pe) {
 			logger.log("exceptionL::" + pe.toString());
 		
-			createMeetingResponse = new CreateMeetingResponse("", "", "", "", 422);  // Send a 422 code (unable to process input)
+			createMeetingResponse = new CreateMeetingResponse(422);  // Send a 422 code (unable to process input)
 	        dateResponseJson.put("body", new Gson().toJson(createMeetingResponse));
 	        processed = true;
 	        body = null;
