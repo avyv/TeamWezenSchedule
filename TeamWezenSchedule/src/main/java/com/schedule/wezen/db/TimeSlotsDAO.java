@@ -98,19 +98,19 @@ public class TimeSlotsDAO {
     public List<TimeSlot> getAllScheduleTimeSlots(String sid) throws Exception {
     	
     	List<TimeSlot> scheduleTS = new ArrayList<>();
-        try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE (sid) values (?);");
+        try { 
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE (sid) values (?);"); // selects all timeslots with the entered sid
             ps.setString(1,  sid);
             
             ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
+            while (resultSet.next()) { // adds all timeslots from the resultset to the returned list
                 TimeSlot ts = generateTimeSlot(resultSet);
                 scheduleTS.add(ts);
             }
             resultSet.close();
             ps.close();
-            return scheduleTS;
+            return scheduleTS; // return the list of timeslots in the database with the entered id
 
         } catch (Exception e) {
             throw new Exception("Failed in getting books: " + e.getMessage());
