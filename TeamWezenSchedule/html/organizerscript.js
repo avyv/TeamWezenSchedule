@@ -33,7 +33,7 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
-var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:"ImAnOrgCode"};
+var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:"ImAnOrgCode",fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
 var currts = dummySchedule.timeSlots[0];
 var currSchedule = dummySchedule;
 var orgCredentials = "";
@@ -243,7 +243,7 @@ function createMtng(name){
     alert("You must enter a valid name");
   }  else{
       let data = {};
-      data["requestSchedID"] = currSchedule.id;
+      data["requestSchedID"] = String(currSchedule.id);
       data["requestWeekStart"] = currSchedule.startDate;
       data["requestTSId"] = currts.id;
       data["requestMtngName"] = name;
@@ -340,21 +340,60 @@ function filter(){
 function openSlot(ts){
   alert("opening "+ts.date+" at " + ts.startTime);
   currts = ts;
+  let data = {};
+  data["requestSchedID"] = currSchedule.id;
+  data["requestWeekStart"] = currSchedule.startDate;
+  data["requestTSId"] = currts.id;
+  let open_url = base_url + "/opensingleslot";
+  sendData(data,open_url,processSchedule);
 }
 function closeSlot(ts){
   alert("closing "+ts.date+" at " + ts.startTime);
   currts = ts;
+  let data = {};
+  data["requestSchedID"] = currSchedule.id;
+  data["requestWeekStart"] = currSchedule.startDate;
+  data["requestTSId"] = currts.id;
+  let close_url = base_url + "/closesingleslot";
+  sendData(data,close_url,processSchedule);
 }
 function bulkEdit(){
   alert("Bulk Edit");
+  let toggle = document.getElementById("setopenclose").value;
+  let weekday = document.getElementById("openclosedayofweek").value;
+  let month = document.getElementById("openclosemonth").value;
+  let date = document.getElementById("openclosedate").value;
+  let year = document.getElementById("opencloseyear").value;
+  let ts = document.getElementById("opencloseTime").value;
+  let data = {};
+  data["requestSchedID"] = currSchedule.id;
+  data["requestWeekStart"] = currSchedule.startDate;
+  data["requestToggle"] = toggle;
+  data["requestWeekday"] = weekday;
+  data["requestMonth"] = month;
+  data["requestYear"] = year;
+  data["requestDate"] = date;
+  data["requestStartTime"] = ts;
+  let bulk_url = base_url + "/bulkedit";
+  sendData(data,bulk_url,processSchedule);
 }
 
 function getNextWeek(){
   alert("next week");
+  let data = {};
+  data["requestSchedID"] = String(currSchedule.id);
+  data["requestWeekStart"] = String(currSchedule.startDate);
+  let next_url = base_url + "/getnextweek";
+  sendData(data,next_url,processSchedule);
 }
 
 function getPreviousWeek(){
   alert("previous week");
+  let data = {};
+  data["requestSchedID"] = String(currSchedule.id);
+  data["requestWeekStart"] = String(currSchedule.startDate);
+  let previous_url = base_url + "/getpreviousweek";
+  sendData(data,previous_url,processSchedule);
 }
 function promptSchedParamEdit(){
   //I need the start and end dates of the full schedule to do this bit
@@ -362,10 +401,25 @@ function promptSchedParamEdit(){
   document.getElementById("editschedparamPrompt").style.display='block';
 }
 function updateScheduleParams(){
-  let nsd = document.getElementById("newStartDate").value;
-  let ned = document.getElementById("newEndDate").value;
+  var nsd = document.getElementById("newStartDate").value;
+  var ned = document.getElementById("newEndDate").value;
+  if(nsd == ""){
+    nsd = currSchedule.fullStartDate;
+  }
+  if(ned == ""){
+    ned = currSchedule.fullEndDate;
+  }
   alert("New Start Date = " + nsd + ", New End Date = " + ned);
   document.getElementById("editschedparamPrompt").style.display='none';
+
+
+  let data = {};
+  data["requestSchedID"] = String(currSchedule.id);
+  data["requestNewStart"] = String(nsd);
+  data["requestNewEnd"] = String(ned);
+  let extend_url = base_url + "/extenddates";
+  sendData(data,extend_url,processSchedule);
+
 }
 /*********************** SUBMIT DATA TO JAVA *********************************/
 function sendData(data,url,callback){
@@ -396,6 +450,8 @@ function processSchedule(xhrResult){
   currSchedule.orgCode = js["responseSecretCode"];
   currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
   currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
+  currSchedule.fullStartDate = js["responseScheduleStartDate"];
+  currSchedule.fullEndDate = js["responseScheduleEndDate"];
   //add if schedule couldnt be opened, display "could not find schedule"
   generateCalendar();
 }
@@ -410,6 +466,9 @@ function createResponse(xhrResult){
   currSchedule.orgCode = js["responseSecretCode"];
   currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
   currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
+  currSchedule.fullStartDate = js["responseScheduleStartDate"];
+  currSchedule.fullEndDate = js["responseScheduleEndDate"];
+
   document.getElementById("orgcode").innerHTML = currSchedule.orgCode;
   document.getElementById("idPrompt").style.display='block';
 }

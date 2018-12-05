@@ -32,7 +32,7 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
-var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",orgCode:10, id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots};
+var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",orgCode:10, id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
 var currts = dummySchedule.timeSlots[0];
 var currSchedule = dummySchedule;
 // window.onload = initialize;
@@ -202,10 +202,20 @@ function filter(){
 
 function getNextWeek(){
   alert("next week");
+  let data = {};
+  data["requestSchedID"] = String(currSchedule.id);
+  data["requestWeekStart"] = String(currSchedule.startDate);
+  let next_url = base_url + "/getnextweek";
+  sendData(data,next_url,processSchedule);
 }
 
 function getPreviousWeek(){
   alert("previous week");
+  let data = {};
+  data["requestSchedID"] = String(currSchedule.id);
+  data["requestWeekStart"] = String(currSchedule.startDate);
+  let previous_url = base_url + "/getpreviousweek";
+  sendData(data,previous_url,processSchedule);
 }
 /*********************** SUBMIT DATA TO JAVA *********************************/
 function sendData(data,url){
@@ -237,6 +247,8 @@ function processSchedule(xhrResult){
   currSchedule.orgCode = js["responseSecretCode"];
   currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
   currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
+  currSchedule.fullStartDate = js["responseScheduleStartDate"];
+  currSchedule.fullEndDate = js["responseScheduleEndDate"];
   alert("received Schedule");
   //add if schedule couldnt be opened, display "could not find schedule"
   generateCalendar();
