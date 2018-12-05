@@ -3,23 +3,23 @@
 package com.schedule.wezen.demo.http;
 
 public class CreateScheduleRequest {
-	public final String startDate;
-	public final String endDate;
-	public final String startTime;
-	public final String endTime;
-	public final String slotDuration;
-	public final String id;
+	public final String requestStartDate;
+	public final String requestEndDate;
+	public final String requestStartTime;
+	public final String requestEndTime;
+	public final String requestSlotDuration;
+	public final String requestID;
 	
 	public CreateScheduleRequest(String startDate, String endDate, String startTime, String endTime, String slotDuration, String id) {
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.startTime = startTime;
-		this.endTime = endTime;
-		this.slotDuration = slotDuration;
-		this.id = id;
+		this.requestStartDate = startDate;
+		this.requestEndDate = endDate;
+		this.requestStartTime = startTime;
+		this.requestEndTime = endTime;
+		this.requestSlotDuration = slotDuration;
+		this.requestID = id;
 	}
 	
 	public String toString() {
-		return "CreateSchedule( Start Date: " + startDate + ", End Date : " + endDate + ", Start Time : " + startTime + ", End Time : " + endTime + ", Slot Duration : " + slotDuration + ", ID : " + id + " )";
+		return "CreateSchedule( Start Date: " + requestStartDate + ", End Date : " + requestEndDate + ", Start Time : " + requestStartTime + ", End Time : " + requestEndTime + ", Slot Duration : " + requestSlotDuration + ", ID : " + requestID + " )";
 	}
 }

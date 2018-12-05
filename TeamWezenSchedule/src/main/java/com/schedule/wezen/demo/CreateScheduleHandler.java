@@ -193,11 +193,11 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				// DATABASE STUFF!!!
 				
-				if (createScheduleLambda(req.startDate, req.endDate, req.startTime, req.endTime, req.slotDuration, req.id)) {
+				if (createScheduleLambda(req.requestStartDate, req.requestEndDate, req.requestStartTime, req.requestEndTime, req.requestSlotDuration, req.requestID)) {
 					
 					
 					try { //
-						retrievedSchedule = dao.getSchedule(req.id);
+						retrievedSchedule = dao.getSchedule(req.requestID);
 						didRetrieveSchedule = true;
 					} catch (Exception e) {
 						resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
@@ -205,7 +205,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					
 					if(didRetrieveSchedule) {
-						resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, retrievedSchedule.getSlotDuration(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
+						resp = new CreateScheduleResponse("Successfully created schedule", req.requestStartDate, req.requestEndDate, req.requestStartTime, retrievedSchedule.getSlotDuration(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
 					}
 					
 					
