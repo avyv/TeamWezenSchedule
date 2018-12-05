@@ -9,20 +9,9 @@ import java.time.format.DateTimeFormatter;
 public class Model {
 	
 	ArrayList<Schedule> schedules;
-	ArrayList<TimeSlot> allTimeSlots;
 	
 	public Model() {
 		
-	}
-	
-	public void sortSlots() {
-		for(Schedule s: schedules) {
-			for(TimeSlot ts: allTimeSlots) {
-				if(s.getId() == ts.getSid()) {
-					s.addTimeSlot(ts);
-				}
-			}
-		}
 	}
 	
 	public LocalDate stringToDate(String stringDate) throws Exception {

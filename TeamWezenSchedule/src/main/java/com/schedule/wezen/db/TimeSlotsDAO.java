@@ -24,8 +24,8 @@ public class TimeSlotsDAO {
         try {
         	TimeSlot timeSlot = null;
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE (startTime, slotDate) values (?,?);");
-            ps.setTime(2,  Time.valueOf(time));
-            ps.setDate(4, Date.valueOf(date));
+            ps.setTime(1,  Time.valueOf(time));
+            ps.setDate(2, Date.valueOf(date));
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
@@ -42,11 +42,12 @@ public class TimeSlotsDAO {
         }
     }
     
+    
     public boolean addTimeSlot(TimeSlot timeSlot) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE (startTime, slotDate) values (?,?);");
-            ps.setTime(2,  Time.valueOf(timeSlot.getStartTime()));
-            ps.setDate(4, Date.valueOf(timeSlot.getDate()));
+            ps.setTime(1,  Time.valueOf(timeSlot.getStartTime()));
+            ps.setDate(2, Date.valueOf(timeSlot.getDate()));
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
@@ -88,6 +89,28 @@ public class TimeSlotsDAO {
             resultSet.close();
             statement.close();
             return allTS;
+
+        } catch (Exception e) {
+            throw new Exception("Failed in getting books: " + e.getMessage());
+        }
+    }
+    
+    public List<TimeSlot> getAllScheduleTimeSlots(String sid) throws Exception {
+    	
+    	List<TimeSlot> scheduleTS = new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE (sid) values (?);");
+            ps.setString(1,  sid);
+            
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                TimeSlot ts = generateTimeSlot(resultSet);
+                scheduleTS.add(ts);
+            }
+            resultSet.close();
+            ps.close();
+            return scheduleTS;
 
         } catch (Exception e) {
             throw new Exception("Failed in getting books: " + e.getMessage());

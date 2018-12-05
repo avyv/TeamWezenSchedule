@@ -25,7 +25,7 @@ public class SchedulesDAO {
         try {
             Schedule schedule = null;
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE id=?;");
-            ps.setString(5,  id);
+            ps.setString(1,  id);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
@@ -46,8 +46,8 @@ public class SchedulesDAO {
         try {
             //PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
         	PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE secretCode = ?;");
-            //ps.setString(5, schedule.getId());
-        	ps.setInt(6, schedule.getSecretCode()); // changed this
+            //ps.setString(1, schedule.getId());
+        	ps.setInt(1, schedule.getSecretCode()); // changed this
             int numAffected = ps.executeUpdate();
             ps.close();
             
@@ -80,7 +80,7 @@ public class SchedulesDAO {
     public boolean addSchedule(Schedule schedule) throws Exception {
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedule WHERE id = ?;");
-            ps.setString(5, schedule.getId());
+            ps.setString(1, schedule.getId());
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
@@ -137,7 +137,15 @@ public class SchedulesDAO {
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
 
-        return new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
+        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
+        
+        TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();
+        List<TimeSlot> scheduleTimeSlots = getTimeSlots.getAllScheduleTimeSlots(id);
+        for(TimeSlot ts: scheduleTimeSlots) {
+        	toRet.addTimeSlot(ts);
+        }
+        
+        return toRet;
     }
 
 }
