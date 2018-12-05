@@ -90,7 +90,7 @@ public class SchedulesDAO {
                 return false;
             }*/
 
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO Schedules VALUES (?,?,?,?,?,?,?);"); //(startDate,endDate,startTime,endTime,duration,id,secretCode)
             ps.setDate(1, Date.valueOf(schedule.getStartDate()));	//schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate()));		//schedule.getEndDate().toString()));
         	ps.setTime(3, Time.valueOf(schedule.getStartTime()));	//schedule.getStartTime().toString()));
