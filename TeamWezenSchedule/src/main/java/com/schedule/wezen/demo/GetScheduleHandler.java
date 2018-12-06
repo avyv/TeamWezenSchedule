@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,7 +20,6 @@ import com.google.gson.Gson;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.demo.http.GetScheduleRequest;
 import com.schedule.wezen.demo.http.GetScheduleResponse;
-import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 
 import java.time.LocalDate;
@@ -101,26 +99,34 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				String scheduleStartDate = retrievedSchedule.getStartDate().toString();
 				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
 				
+				
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
+				Schedule byWeek = null;
 				
-				int index = 0;
-				int week = 0;
-				
-				for(Schedule schedule : scheduleDividedByWeeks)
-				{
-					index++;
-					
-					LocalDate listStartDate = schedule.getStartDate();
-					String arrayListStartDate = listStartDate.toString();
-					String requestStart = getScheduleRequest.requestStartDateOfWeek;
-					
-					if(arrayListStartDate.equals(requestStart)) {
-						week = index - 1;
-					}
+				if(getScheduleRequest.requestWeekStart.equals("")) {
+					byWeek = scheduleDividedByWeeks.get(0);
 				}
 				
-				Schedule byWeek = scheduleDividedByWeeks.get(week);
-				
+				else if(!(getScheduleRequest.requestWeekStart.equals(""))) {
+					
+					int index = 0;
+					int week = 0;
+					
+					for(Schedule schedule : scheduleDividedByWeeks)
+					{
+						index++;
+						
+						LocalDate listStartDate = schedule.getStartDate();
+						String arrayListStartDate = listStartDate.toString();
+						String requestStart = getScheduleRequest.requestWeekStart;
+						
+						if(arrayListStartDate.equals(requestStart)) {
+							week = index - 1;
+						}
+					}
+					
+					byWeek = scheduleDividedByWeeks.get(week);
+				}
 				
 				String response = "Successfully retrieved schedule";
 				
