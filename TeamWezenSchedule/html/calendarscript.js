@@ -32,11 +32,11 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
-var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:"01:00:00",orgCode:10, id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
+var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:15,id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:1234,fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
 var currts = dummySchedule.timeSlots[0];
 var currSchedule = dummySchedule;
 // window.onload = initialize;
-//
+// //
 // function initialize(){
 //
 //   generateCalendar();
@@ -65,16 +65,27 @@ function generateCalendar(){
     }
     /********* Calendar *********/
     let st = dummySchedule.startTime.split(":");
-    let dur = dummySchedule.slotDuration.split(":");
+    let dur = dummySchedule.slotDuration;
     let timelabel = document.createElement("td");
     var tsiterator = 0;
     let filt = document.getElementById("filterTime");//update filter while im here
     filt.innerHTML = "<option value=0>--none--</option>"
+    var hrs;
+    var mins;
     for(let row=1; row<=(dummySchedule.numSlotsPerDay); row++){
       let filteroption = document.createElement("OPTION");
       /********** Time Slot Label **********/
-       let hrs = parseInt(st[0]) + (parseInt(dur[0])*(row-1));
-       let mins = parseInt(st[1]) + (parseInt(dur[1])*(row-1));
+      if(dur == 60){
+         hrs = parseInt(st[0]) + (1*(row-1));
+         mins = 0;
+      }else{
+        mins = dur*row;
+        hrs = parseInt(st[0]);
+        if(mins >= 60){
+          mins = mins-60;
+          hrs = hrs + 1;
+        }
+      }
        if(mins<10){
          label = "<b>" + hrs + ":" + 0 + mins + "</b>";
        }else{label = "<b>" + hrs + ":" + mins + "</b>";}

@@ -29,6 +29,7 @@ public class Schedule {
 	}
 	
 	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode){
+		sortTimeSlots(timeSlots, numSlotsDay);
 		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>(); 
 		LocalDate copySD = startDate;
 		LocalDate copyED;
@@ -37,10 +38,17 @@ public class Schedule {
 			copySD = startDate.minusDays(startDayOfWeek - 1);
 		}
 		copyED = startDate.plusDays(6);
+		int counter = 0;
+		int numSlotsWeek = (7*numSlotsDay)-1;
 		while(!(copySD.isAfter(endDate))) {
+			ArrayList<TimeSlot> ts = new ArrayList<TimeSlot>();
+			for(int i = 0; i<numSlotsWeek; i++) {
+				ts.add(timeSlots.get(counter+i));
+			}
+			counter+=numSlotsWeek;
 			weeklySchedules.add(new Schedule(copySD, copyED, startTime, endTime, duration, id, secretCode));
-			copySD.plusDays(7);
-			copyED.plusDays(7);
+			copySD = copySD.plusDays(7);
+			copyED = copyED.plusDays(7);
 		}
 		return weeklySchedules;
 	}
@@ -55,6 +63,7 @@ public class Schedule {
 				if(k>=ts.size()) {return false;}
 			}
 		}
+		ts = sortedTs;
 		return true;
 	}
 	
@@ -89,17 +98,22 @@ public class Schedule {
 	}
 	
 	public int calculateDayOfWeek(LocalDate startDate) {
-		String date = startDate.toString();
+		LocalDate copyDate = startDate;
+		if(startDate.getMonthValue() == 1 || startDate.getMonthValue() == 2) {
+			copyDate = startDate.minusYears(1);
+		}
+		String date = copyDate.toString();
 		int k = Integer.parseInt(date.substring(8, 10));
 		int m = Integer.parseInt(date.substring(5, 7));
 		if(m > 2) {m -= 2;}
 		else {m += 10;}
 		int d = Integer.parseInt(date.substring(2, 4));
 		int c = Integer.parseInt(date.substring(0, 2));
-		int dayOfWeek = (k + doubleToInt((13*m-1)/5) + d + doubleToInt(d/4) + doubleToInt(c/4) + (c*2));
+		int dayOfWeek = (k + doubleToInt((13*m-1)/5) + d + doubleToInt(d/4) + doubleToInt(c/4) - (c*2));
 		if (dayOfWeek > 7) {
 			dayOfWeek = dayOfWeek % 7;
 		}
+		if (dayOfWeek == 0) {dayOfWeek = 7;}
 		return dayOfWeek; //1=Monday, 2=Tuesday,...
 	}
 	
@@ -128,7 +142,6 @@ public class Schedule {
 	}*/
 	
 	boolean populateTimeSlots(LocalDate sd, LocalDate ed, LocalTime st, LocalTime et, int dur, int numSlotsDay, String id, ArrayList<TimeSlot> timeSlots) {
-//		return true;
 		if(ed.isBefore(sd) || (ed.isEqual(sd) && et.isBefore(st))) {
 			return false;
 		}
@@ -143,36 +156,16 @@ public class Schedule {
 			if(ed.getYear() > year){
 				endMonth = 12;
 			}
-			for(int mon = sd.getMonthValue(); mon <= endMonth; mon++) {
+			int mon = 1;
+			if(year == sd.getYear()) {mon = sd.getMonthValue();}
+			for( ; mon <= endMonth; mon++) {
 				int endDay = ed.getDayOfMonth();
 				if(ed.getMonthValue() > mon || ed.getYear() > year){
 					endDay = sd.lengthOfMonth();
 				} 
-				for(int day = sd.getDayOfMonth(); day <= endDay; day++) {
-//					for(int hour = 0; hour < 24; hour++) {
-//						for(int min = 0; min < 60; min += dur.getMinute()) {
-//							if(dur.getMinute() == 0) {
-//								hour++;
-//								dur.get
-//								
-//								if(hour >= st.getHour() && hour < et.getHour()) {
-//									LocalTime start = LocalTime.parse(hour + ":00:00");
-//									LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
-//									
-//									timeSlots.add(new TimeSlot(start, dur, date));
-//								}
-//								
-//								break;
-//							}
-//
-//							if(hour >= st.getHour() && hour <= et.getHour() && min >= st.getMinute() && min <= et.getMinute()) {
-//								LocalTime start = LocalTime.parse(hour + ":" + min +":00");
-//								LocalDate date = LocalDate.parse(year + "-" + mon + "-" + day);
-//								
-//								timeSlots.add(new TimeSlot(start, dur, date));
-//							}
-//						}
-//					}
+				int day = 1;
+				if(mon == sd.getMonthValue() && year == sd.getYear()) {day = sd.getDayOfMonth();}
+				for( ; day <= endDay; day++) {
 					int overflowMinutes = 0;
 					for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
 						int endMinutes = et.getMinute();
@@ -215,8 +208,6 @@ public class Schedule {
 							}
 							LocalDate slotDate = LocalDate.parse(year+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 							timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode()));
-
-							
 						}
 					}
 				}
@@ -280,7 +271,7 @@ public class Schedule {
 					timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode(), false, false));
 				}
 			}
-			sd.plusDays(1);
+			sd = sd.plusDays(1);
 		}
 		return true;
 	}
