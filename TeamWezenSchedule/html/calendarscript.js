@@ -1,40 +1,40 @@
 var base_url = "https://xdk3131931.execute-api.us-east-2.amazonaws.com/Alpha";
 
-// var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:{name:"Mtng1"},date:"2018-12-03",isOpen:false},
-//                     {startTime:"01:00:00",meeting:{name:"Mtng2"},secretCode:0002,id:"fourth1",date:"2018-12-04",isOpen:true},
-//                     {startTime:"01:00:00",secretCode:0003,id:"fifth1",meeting:{name:"Mtng3"},date:"2018-12-05",isOpen:false},
-//                     {startTime:"01:00:00",meeting:{name:"Mtng4"},secretCode:0004,id:"sixth1",date:"2018-12-06",isOpen:true},
-//                     {startTime:"01:00:00",meeting:{name:"Mtng5"},secretCode:0005,id:"seventh1",date:"2018-12-07",isOpen:true},
-//                     {startTime:"01:00:00",secretCode:0006,id:"eighth1",meeting:{name:"Mtng6"},date:"2018-12-08",isOpen:false},
-//                     {startTime:"01:00:00",meeting:{name:"Mtng7"},secretCode:0007,id:"nineth1",date:"2018-12-09",isOpen:true},
-//
-//                     {startTime:"02:00:00",secretCode:0008,id:"third2",meeting:{name:" "},date:"2018-12-03",isOpen:true},
-//                     {startTime:"02:00:00",meeting:{name:" "},secretCode:0009,id:"fourth2",date:"2018-12-04",isOpen:true},
-//                     {startTime:"02:00:00",secretCode:0010,id:"fifth2",meeting:{name:" "},date:"2018-12-05",isOpen:false},
-//                     {startTime:"02:00:00",meeting:{name:" "},secretCode:0011,id:"sixth2",date:"2018-12-06",isOpen:true},
-//                     {startTime:"02:00:00",meeting:{name:" "},secretCode:0012,id:"seventh2",date:"2018-12-07",isOpen:false},
-//                     {startTime:"02:00:00",secretCode:0013,id:"eighth2",meeting:{name:" "},date:"2018-12-08",isOpen:false},
-//                     {startTime:"02:00:00",meeting:{name:" "},secretCode:0014,id:"nineth2",date:"2018-12-09",isOpen:true},
-//
-//                     {startTime:"03:00:00",secretCode:0015,id:"third3",meeting:{name:"Mtng8"},date:"2018-12-03",isOpen:false},
-//                     {startTime:"03:00:00",meeting:{name:" "},secretCode:0016,id:"fourth3",date:"2018-12-04",isOpen:false},
-//                     {startTime:"03:00:00",secretCode:0017,id:"fifth3",meeting:{name:"Mtng9"},date:"2018-12-05",isOpen:false},
-//                     {startTime:"03:00:00",meeting:{name:" "},secretCode:0018,id:"sixth3",date:"2018-12-06",isOpen:false},
-//                     {startTime:"03:00:00",meeting:{name:"Mtng10"},secretCode:0019,id:"seventh3",date:"2018-12-07",isOpen:true},
-//                     {startTime:"03:00:00",secretCode:0020,id:"eighth3",meeting:{name:" "},date:"2018-12-08",isOpen:false},
-//                     {startTime:"03:00:00",meeting:{name:"Mtng11"},secretCode:0021,id:"nineth3",date:"2018-12-09",isOpen:false},
-//
-//                     {startTime:"04:00:00",secretCode:0022,id:"third4",meeting:{name:"Mtng12"},date:"2018-12-03",isOpen:false},
-//                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0023,id:"fourth4",date:"2018-12-04",isOpen:true},
-//                     {startTime:"04:00:00",secretCode:0024,id:"fifth4",meeting:{name:"Mtng13"},date:"2018-12-05",isOpen:false},
-//                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0025,id:"sixth4",date:"2018-12-06",isOpen:true},
-//                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0026,id:"seventh4",date:"2018-12-07",isOpen:true},
-//                     {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
-//                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
-//
-// var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:15,id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:1234,fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
-var currts;// = dummySchedule.timeSlots[0];
-var currSchedule;// = dummySchedule;
+var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:{name:"Mtng1"},date:"2018-12-03",isOpen:false},
+                    {startTime:"01:00:00",meeting:{name:"Mtng2"},secretCode:0002,id:"fourth1",date:"2018-12-04",isOpen:true},
+                    {startTime:"01:00:00",secretCode:0003,id:"fifth1",meeting:{name:"Mtng3"},date:"2018-12-05",isOpen:false},
+                    {startTime:"01:00:00",meeting:{name:"Mtng4"},secretCode:0004,id:"sixth1",date:"2018-12-06",isOpen:true},
+                    {startTime:"01:00:00",meeting:{name:"Mtng5"},secretCode:0005,id:"seventh1",date:"2018-12-07",isOpen:true},
+                    {startTime:"01:00:00",secretCode:0006,id:"eighth1",meeting:{name:"Mtng6"},date:"2018-12-08",isOpen:false},
+                    {startTime:"01:00:00",meeting:{name:"Mtng7"},secretCode:0007,id:"nineth1",date:"2018-12-09",isOpen:true},
+
+                    {startTime:"02:00:00",secretCode:0008,id:"third2",meeting:{name:" "},date:"2018-12-03",isOpen:true},
+                    {startTime:"02:00:00",meeting:{name:" "},secretCode:0009,id:"fourth2",date:"2018-12-04",isOpen:true},
+                    {startTime:"02:00:00",secretCode:0010,id:"fifth2",meeting:{name:" "},date:"2018-12-05",isOpen:false},
+                    {startTime:"02:00:00",meeting:{name:" "},secretCode:0011,id:"sixth2",date:"2018-12-06",isOpen:true},
+                    {startTime:"02:00:00",meeting:{name:" "},secretCode:0012,id:"seventh2",date:"2018-12-07",isOpen:false},
+                    {startTime:"02:00:00",secretCode:0013,id:"eighth2",meeting:{name:" "},date:"2018-12-08",isOpen:false},
+                    {startTime:"02:00:00",meeting:{name:" "},secretCode:0014,id:"nineth2",date:"2018-12-09",isOpen:true},
+
+                    {startTime:"03:00:00",secretCode:0015,id:"third3",meeting:{name:"Mtng8"},date:"2018-12-03",isOpen:false},
+                    {startTime:"03:00:00",meeting:{name:" "},secretCode:0016,id:"fourth3",date:"2018-12-04",isOpen:false},
+                    {startTime:"03:00:00",secretCode:0017,id:"fifth3",meeting:{name:"Mtng9"},date:"2018-12-05",isOpen:false},
+                    {startTime:"03:00:00",meeting:{name:" "},secretCode:0018,id:"sixth3",date:"2018-12-06",isOpen:false},
+                    {startTime:"03:00:00",meeting:{name:"Mtng10"},secretCode:0019,id:"seventh3",date:"2018-12-07",isOpen:true},
+                    {startTime:"03:00:00",secretCode:0020,id:"eighth3",meeting:{name:" "},date:"2018-12-08",isOpen:false},
+                    {startTime:"03:00:00",meeting:{name:"Mtng11"},secretCode:0021,id:"nineth3",date:"2018-12-09",isOpen:false},
+
+                    {startTime:"04:00:00",secretCode:0022,id:"third4",meeting:{name:"Mtng12"},date:"2018-12-03",isOpen:false},
+                    {startTime:"04:00:00",meeting:{name:" "},secretCode:0023,id:"fourth4",date:"2018-12-04",isOpen:true},
+                    {startTime:"04:00:00",secretCode:0024,id:"fifth4",meeting:{name:"Mtng13"},date:"2018-12-05",isOpen:false},
+                    {startTime:"04:00:00",meeting:{name:" "},secretCode:0025,id:"sixth4",date:"2018-12-06",isOpen:true},
+                    {startTime:"04:00:00",meeting:{name:" "},secretCode:0026,id:"seventh4",date:"2018-12-07",isOpen:true},
+                    {startTime:"04:00:00",secretCode:0027,id:"eighth4",meeting:{name:"Mtng14"},date:"2018-12-08",isOpen:false},
+                    {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
+
+var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:15,id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:1234,fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
+var currts = dummySchedule.timeSlots[0];
+var currSchedule = dummySchedule;
 // window.onload = initialize;
 // //
 // function initialize(){
@@ -79,7 +79,7 @@ function generateCalendar(){
          hrs = parseInt(st[0]) + (1*(row-1));
          mins = 0;
       }else{
-        mins = dur*row;
+        mins = dur*(row-1);
         hrs = parseInt(st[0]);
         if(mins >= 60){
           mins = mins-60;
@@ -102,14 +102,14 @@ function generateCalendar(){
         let thisSlot = tsrow.insertCell(-1);
         let myslot = dummySchedule.timeSlots[tsiterator];
 
-        if((myslot.meeting.name == " ")&&(myslot.isOpen)){
+        if((myslot.meetingName == " ")&&(myslot.isOpen)){
           let freebtn = document.createElement("BUTTON");
           freebtn.innerText = "Schedule Mtng";
           freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
           thisSlot.appendChild(freebtn);
-        }else if(myslot.meeting.name != " "){
+        }else if(myslot.meetingName != " "){
           let mtng = document.createElement("P");
-          mtng.innerText = myslot.meeting.name;
+          mtng.innerText = myslot.meetingName;
           let cancelbtn = document.createElement("BUTTON");
           cancelbtn.innerText = "Cancel Mtng";
           cancelbtn.addEventListener('click',function(){cancelMtng(myslot)});
@@ -144,7 +144,7 @@ function createMtng(name){
     data["requestTSId"] = currts.id;
     data["requestMtngName"] = name;
     let createmtng_url = base_url + "/createmeeting";
-    sendData(data,createmtng_url);
+    sendData(data,createmtng_url,processScheduleMtng);
   }
 }
 
@@ -168,7 +168,7 @@ function checkMeetingAuthorization(){
   data["requestWeekStart"] = currSchedule.startDate;
   data["requestTSId"] = currts.id;
   let deletemtng_url = base_url + "/cancelmeeting";
-  sendData(data,deletemtng_url);
+  sendData(data,deletemtng_url,processSchedule);
 }
 
 function openSchedPrompt(e){
@@ -187,7 +187,7 @@ function openSchedule(){
     let data = {};
     data["requestId"] = enteredID;
     let openschedule_url = base_url + "/getschedule";
-    sendData(data,openschedule_url);
+    sendData(data,openschedule_url,processSchedule);
     document.getElementById("schedprompt").style.display ='none';
   }
 }
@@ -207,7 +207,7 @@ function filter(){
   data["requestDate"] = date;
   data["requestTime"] = time;
   let filter_url = base_url + "/filterschedule";
-  sendData(data,filter_url);
+  sendData(data,filter_url,processSchedule);
 }
 
 
@@ -229,7 +229,7 @@ function getPreviousWeek(){
   sendData(data,previous_url,processSchedule);
 }
 /*********************** SUBMIT DATA TO JAVA *********************************/
-function sendData(data,url){
+function sendData(data,url,callback){
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();
@@ -240,9 +240,9 @@ function sendData(data,url){
     console.log(xhr.request);
     if(xhr.readyState == XMLHttpRequest.DONE) {
       console.log("XHR:" + xhr.responseText);
-      processSchedule(xhr.responseText);
+      callback(xhr.responseText);
     } else {
-      processSchedule(xhr.responseText);
+      callback(xhr.responseText);
     }
   };
 }
@@ -250,17 +250,51 @@ function sendData(data,url){
 function processSchedule(xhrResult){
 	console.log("result:" + xhrResult);
 	let js = JSON.parse(xhrResult);
-  // let startdate = js["responseSchedule"];
-  currSchedule.startDate = js["responseStartDateOfWeek"];
-  currSchedule.startTime = js["responseStartTime"];
-  currSchedule.id = js["responseID"];
-  currSchedule.slotDuration = js["responseSlotDuration"];
-  currSchedule.orgCode = js["responseSecretCode"];
-  currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
-  currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
-  currSchedule.fullStartDate = js["responseScheduleStartDate"];
-  currSchedule.fullEndDate = js["responseScheduleEndDate"];
-  alert("received Schedule");
+
   //add if schedule couldnt be opened, display "could not find schedule"
-  generateCalendar();
+  if((js["response"]=="Successfully retrieved schedule")|| (js["response"]=="Successfully created schedule")){
+    currSchedule.startDate = js["responseStartDateOfWeek"];
+    currSchedule.startTime = js["responseStartTime"];
+    currSchedule.id = js["responseID"];
+    currSchedule.slotDuration = js["responseSlotDuration"];
+    currSchedule.orgCode = js["responseSecretCode"];
+    currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
+    currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
+    currSchedule.fullStartDate = js["responseScheduleStartDate"];
+    currSchedule.fullEndDate = js["responseScheduleEndDate"];
+    generateCalendar();
+  }else{
+    alert(js["response"]);
+  }
+}
+
+
+function processScheduleMtng(xhrResult){
+	console.log("result:" + xhrResult);
+	let js = JSON.parse(xhrResult);
+
+  //add if schedule couldnt be opened, display "could not find schedule"
+  if(js["response"]=="Successfully retrieved schedule"){
+    currSchedule.startDate = js["responseStartDateOfWeek"];
+    currSchedule.startTime = js["responseStartTime"];
+    currSchedule.id = js["responseID"];
+    currSchedule.slotDuration = js["responseSlotDuration"];
+    currSchedule.orgCode = js["responseSecretCode"];
+    currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
+    currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
+    currSchedule.fullStartDate = js["responseScheduleStartDate"];
+    currSchedule.fullEndDate = js["responseScheduleEndDate"];
+    var this_slot;
+    for(let i=0; i<currSchedule.timeSlots.length;i++){
+      this_slot = currSchedule.timeSlots[i];
+      if(this_slot.id == currts.id){
+        break;
+      }
+    }
+    document.getElementById("mtngcode").innerHTML = this_slot.secretCode;
+    document.getElementById("mtngIDPrompt").style.display='block';
+    generateCalendar();
+  }else{
+    alert(js["response"]);
+  }
 }
