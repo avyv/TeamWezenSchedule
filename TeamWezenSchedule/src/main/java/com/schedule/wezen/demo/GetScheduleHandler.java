@@ -103,10 +103,16 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
 				Schedule byWeek = null;
 				
+				/**
+				 * This will return the schedule for the first week
+				 */
 				if(getScheduleRequest.requestWeekStart.equals("")) {
 					byWeek = scheduleDividedByWeeks.get(0);
 				}
 				
+				/**
+				 * This will return the schedule for the week beginning at requestWeekStart
+				 */
 				else if(!(getScheduleRequest.requestWeekStart.equals(""))) {
 					
 					int index = 0;
