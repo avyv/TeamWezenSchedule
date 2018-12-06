@@ -139,10 +139,10 @@ function createMtng(name){
     alert("You must enter a valid name");
   }  else{
     let data = {};
-    data["requestSchedID"] = currSchedule.id;
-    data["requestWeekStart"] = currSchedule.startDate;
-    data["requestTSId"] = currts.id;
-    data["requestMtngName"] = name;
+    data["requestSchedID"] = String(currSchedule.id);
+    data["requestWeekStart"] = String(currSchedule.startDate);
+    data["requestTSId"] = String(currts.id);
+    data["requestMtngName"] = String(name);
     let createmtng_url = base_url + "/createmeeting";
     sendData(data,createmtng_url,processScheduleMtng);
   }
@@ -164,9 +164,9 @@ function checkMeetingAuthorization(){
   }
   alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
   let data = {};
-  data["requestSchedID"] = currSchedule.id;
-  data["requestWeekStart"] = currSchedule.startDate;
-  data["requestTSId"] = currts.id;
+  data["requestSchedID"] = String(currSchedule.id);
+  data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestTSId"] = String(currts.id);
   let deletemtng_url = base_url + "/cancelmeeting";
   sendData(data,deletemtng_url,processSchedule);
 }
@@ -185,7 +185,8 @@ function openSchedule(){
     //   generateCalendar();
     // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
-    data["requestId"] = enteredID;
+    data["requestId"] = String(enteredID);
+    data["requestWeekStart"] = "";
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
     document.getElementById("schedprompt").style.display ='none';
@@ -199,13 +200,13 @@ function filter(){
   let date = document.getElementById("selectdayofmonth").value;
   let time = document.getElementById("filterTime").value;
   let data = {};
-  data["requestSchedID"] = currSchedule.id;
-  data["requestWeekStart"] = currSchedule.startDate;
-  data["requestWeekday"] = day;
-  data["requestMonth"] = month;
-  data["requestYear"] = year;
-  data["requestDate"] = date;
-  data["requestTime"] = time;
+  data["requestSchedID"] = String(currSchedule.id);
+  data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(day);
+  data["requestMonth"] = String(month);
+  data["requestYear"] = String(year);
+  data["requestDate"] = String(date);
+  data["requestTime"] = String(time);
   let filter_url = base_url + "/filterschedule";
   sendData(data,filter_url,processSchedule);
 }

@@ -326,6 +326,7 @@ function openEditSchedule(){
     // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = String(enteredID);
+    data["requestWeekStart"] = "";
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
     document.getElementById("schededitprompt").style.display ='none';
