@@ -3,16 +3,17 @@ package com.schedule.wezen.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import com.schedule.wezen.model.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class populateSlotsTest {
-	public populateSlotsTest() {}
+public class calculateDayOfWeekTest {
+	public calculateDayOfWeekTest() {}
 	
 	@Test
-	public void testPopulate() throws Exception {
+	public void testOfWeek1() throws Exception {
 		Model model = new Model();
 		String stringDate1 = "2017-12-05";
 		String stringDate2 = "2018-01-03";
@@ -25,14 +26,14 @@ public class populateSlotsTest {
 		int duration = 30;
 		int secretCode = 1111;
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, duration, "id", secretCode);
-		assertTrue(schedule.populateTimeSlots(startDate, endDate, startTime, endTime, duration, schedule.getNumSlotsDay(), "id", schedule.getTimeSlots()));
+		assertEquals(schedule.calculateDayOfWeek(startDate),2);
 	}
 	
 	@Test
-	public void testPopulate1() throws Exception {
+	public void testOfWeek2() throws Exception {
 		Model model = new Model();
 		String stringDate1 = "2017-12-05";
-		String stringDate2 = "2018-01-03";
+		String stringDate2 = "2018-12-02";
 		LocalDate startDate = model.stringToDate(stringDate1);
 		LocalDate endDate = model.stringToDate(stringDate2);
 		String stringTime1 = "09:00:00";
@@ -42,6 +43,7 @@ public class populateSlotsTest {
 		int duration = 30;
 		int secretCode = 1111;
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, duration, "id", secretCode);
-		assertEquals(schedule.getTimeSlots().size(), 350);
+		assertEquals(schedule.calculateDayOfWeek(endDate),7);
 	}
 }
+
