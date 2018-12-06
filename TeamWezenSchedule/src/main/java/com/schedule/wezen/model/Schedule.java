@@ -197,13 +197,13 @@ public class Schedule {
 								if(overflowMinutes<10) {
 									overflowMinutesString = "0"+overflowMinutesString;
 								}
-								startTime = LocalTime.parse(hourString+":"+overflowMinutesString, DateTimeFormatter.ofPattern("HH:mm"));
+								st = LocalTime.parse(hourString+":"+overflowMinutesString, DateTimeFormatter.ofPattern("HH:mm"));
 							}
 							if(min<60) {
 								if(min<10) {
 									minString = "0"+minString;
 								}
-								LocalTime startTime = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
+								st = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
 								
 							}
 							String dayString = Integer.toString(day);
@@ -215,7 +215,7 @@ public class Schedule {
 								monString = "0"+monString;
 							}
 							LocalDate slotDate = LocalDate.parse(year+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-							timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode()));
+							timeSlots.add(new TimeSlot(st, slotDate, st.toString()+slotDate.toString(), id, createSecretCode()));
 						}
 					}
 				}
@@ -258,13 +258,13 @@ public class Schedule {
 						if(overflowMinutes<10) {
 							overflowMinutesString = "0"+overflowMinutesString;
 						}
-						startTime = LocalTime.parse(hourString+":"+overflowMinutesString, DateTimeFormatter.ofPattern("HH:mm"));
+						st = LocalTime.parse(hourString+":"+overflowMinutesString, DateTimeFormatter.ofPattern("HH:mm"));
 					}
 					if(min<60) {
 						if(min<10) {
 							minString = "0"+minString;
 						}
-						LocalTime startTime = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
+						st = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
 						
 					}
 					String dayString = Integer.toString(sd.getDayOfMonth());
@@ -276,7 +276,7 @@ public class Schedule {
 						monString = "0"+monString;
 					}
 					LocalDate slotDate = LocalDate.parse(sd.getYear()+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-					timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+slotDate.toString(), id, createSecretCode(), false, false));
+					timeSlots.add(new TimeSlot(st, slotDate, st.toString()+slotDate.toString(), id, createSecretCode(), false, false));
 				}
 			}
 			sd = sd.plusDays(1);
