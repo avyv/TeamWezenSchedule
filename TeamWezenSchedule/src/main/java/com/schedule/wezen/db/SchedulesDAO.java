@@ -40,6 +40,7 @@ public class SchedulesDAO {
 
         } catch (Exception e) {
         	e.printStackTrace();
+        	
             throw new Exception("Failed in getting schedule: " + e.getMessage());
         }
     }

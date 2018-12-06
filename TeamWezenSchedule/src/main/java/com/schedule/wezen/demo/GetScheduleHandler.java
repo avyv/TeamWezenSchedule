@@ -88,7 +88,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 			logger.log(getScheduleRequest.toString());
 			
 			try {
-				Schedule retrievedSchedule = retrieveSchedule(getScheduleRequest.requestSchedID);
+				Schedule retrievedSchedule = retrieveSchedule(getScheduleRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
 				String startDateOfWeek = retrievedSchedule.getStartDate().toString();
 				String startTime = retrievedSchedule.getStartTime().toString();
@@ -107,7 +107,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				
 				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
-				getScheduleResponse = new GetScheduleResponse("Unable to retrieve schedule: " + e.getMessage(), 403);
+				getScheduleResponse = new GetScheduleResponse("Unable to retrieve schedule, incorrect ID: " + e.getMessage(), 403);
 			}
 			
 			// compute proper response
