@@ -10,7 +10,7 @@ public class CreateScheduleResponse {
 	public final String responseStartTime;
 	public final String responseID;
 	public final int responseSlotDuration;
-	public final String responseSecretCode;
+	public final int responseSecretCode;
 	public final int responseNumSlotsDay;
 	public final String responseScheduleStartDate;
 	public final String responseScheduleEndDate;
@@ -18,41 +18,49 @@ public class CreateScheduleResponse {
 	public final String response; // necessary
 	public final int httpCode;
 	
-	public CreateScheduleResponse (String resp, String sd, String ed, String st, int duration, int ns, int secretCode, ArrayList<TimeSlot> ts, int code) {
-		this.createScheduleResponse = resp;
-		this.responseStartDate = sd;
-		this.responseEndDate = ed;
+	public CreateScheduleResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String resp, int code) {
+		this.responseStartDateOfWeek = sdow;
 		this.responseStartTime = st;
-		this.responseSlotDuration = duration;
-		this.responseNumSlotsDay = ns;
-		this.secretCode = secretCode;
-		this.responseTimeSlots = ts;
+		this.responseID = id;
+		this.responseSlotDuration = sd;
+		this.responseSecretCode = sc;
+		this.responseNumSlotsDay = nsd;
+		this.responseScheduleStartDate = ssd;
+		this.responseScheduleEndDate = sed;
+		this.responseWeeklyTimeSlots = wts;
+		this.response = resp;
 		this.httpCode = code;
 	}
 	
-	public CreateScheduleResponse (String resp, String sd, String ed, String st, int duration, int ns, int secretCode, ArrayList<TimeSlot> ts) {
-		this.createScheduleResponse = resp;
-		this.responseStartDate = sd;
-		this.responseEndDate = ed;
+	public CreateScheduleResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String resp) {
+		this.responseStartDateOfWeek = sdow;
 		this.responseStartTime = st;
-		this.responseSlotDuration = duration;
-		this.responseNumSlotsDay = ns;
-		this.secretCode = secretCode;
-		this.responseTimeSlots = ts;
+		this.responseID = id;
+		this.responseSlotDuration = sd;
+		this.responseSecretCode = sc;
+		this.responseNumSlotsDay = nsd;
+		this.responseScheduleStartDate = ssd;
+		this.responseScheduleEndDate = sed;
+		this.responseWeeklyTimeSlots = wts;
+		this.response = resp;
 		this.httpCode = 200;
 	}
 	
 	public CreateScheduleResponse (String resp, int code) {
-		this.createScheduleResponse = resp;
-		this.responseStartDate = null;
-		this.responseEndDate = null;
-		this.responseStartTime = null;
+		this.responseStartDateOfWeek = "";
+		this.responseStartTime = "";
+		this.responseID = "";
 		this.responseSlotDuration = 0;
+		this.responseSecretCode = 0;
 		this.responseNumSlotsDay = 0;
+		this.responseScheduleStartDate = "";
+		this.responseScheduleEndDate = "";
+		this.responseWeeklyTimeSlots = null;
+		this.response = resp;
 		this.httpCode = code;
 	}
 	
 	public String toString() {
-		return "CreateScheduleResponse(" + createScheduleResponse + ")";
+		return "CreateScheduleResponse(" + this.response + ")";
 	}
 }

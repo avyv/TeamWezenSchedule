@@ -15,11 +15,11 @@ public class DatabaseUtil {
 	public final static String rdsMySqlDatabasePort = "3306";
 	public final static String multiQueries = "?allowMultiQueries=true";
 	   
-	public final static String dbName = "schedulerdb";
+	public final static String dbName = "innodb"; // schedulerdb 
 	//public final static String dbName = "innodb";    // default created from MySQL WorkBench
 	
 	// pooled across all usages.
-	static Connection conn;
+	public static Connection conn;
  
 	/**
 	 * Singleton access to DB connection to share resources effectively across multiple accesses.
@@ -37,7 +37,8 @@ public class DatabaseUtil {
 			System.out.println("Database has been connected successfully.");
 			return conn;
 		} catch (Exception ex) {
-			throw new Exception("Failed in database connection");
+			ex.printStackTrace();
+			throw new Exception("Failed in database connection:" + ex.getMessage());
 		}
 	}
 }

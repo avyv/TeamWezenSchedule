@@ -21,9 +21,12 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.google.gson.Gson;
-
+import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.demo.http.CreateMeetingRequest;
 import com.schedule.wezen.demo.http.CreateMeetingResponse;
+import com.schedule.wezen.demo.http.CreateScheduleResponse;
+import com.schedule.wezen.model.Model;
+import com.schedule.wezen.model.Schedule;
 
 
 public class CreateMeetingHandler implements RequestStreamHandler {
@@ -91,7 +94,7 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 		} catch (ParseException pe) {
 			logger.log("exceptionL::" + pe.toString());
 		
-			createMeetingResponse = new CreateMeetingResponse(422);  // Send a 422 code (unable to process input)
+			createMeetingResponse = new CreateMeetingResponse("Unable to process", 422);  // Send a 422 code (unable to process input)
 	        dateResponseJson.put("body", new Gson().toJson(createMeetingResponse));
 	        processed = true;
 	        body = null;
@@ -105,12 +108,43 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 
 			// This is where stuff starts happening
 
+			
+			CreateMeetingResponse cmResp = null; //
+			
+			
+			SchedulesDAO dao = new SchedulesDAO();
+			
+			Schedule retrievedSchedule = null;
+			
+			boolean didRetrieveSchedule = false; //
+			
+			
+			
+			try { //
+				retrievedSchedule = dao.getSchedule(cmRequest.requestSchedID);
+				didRetrieveSchedule = true;
+			} catch (Exception e) {
+				cmResp = new CreateMeetingResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+			} //
+			
+			
+			if(didRetrieveSchedule) {
+				
+				Model m = new Model();
+				
+				String startTime = m.stringToTime(stringTime);
+				String endTime = m.stringToDate(stringDate);
+				
+				
+				cmResp = new CreateMeetingResponse(cmRequest.requestWeekStart, retrievedSchedule.getStartTime(), cmRequest.requestSchedID, retrievedSchedule.getSlotDuration(), retrievedSchedule.getSecretCode(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getTimeSlots(), "Successfully created schedule", 200); // Take name, store it in a new add response with a 200 code
+			}
+			
+			
+			
+			
 			// compute proper response
-			String meetName = cmRequest.requestName;
-			String meetDate = cmRequest.requestDate;
-			String meetTime = cmRequest.requestTime;
-			CreateMeetingResponse cmResponse = new CreateMeetingResponse(meetName, meetDate, meetTime, "Meeting successfully created", 200); // Take name, store it in a new add response with a 200 code
-	        dateResponseJson.put("body", new Gson().toJson(cmResponse)); // put it in responseJson 
+			
+	        dateResponseJson.put("body", new Gson().toJson(cmResp)); // put it in responseJson 
 		}
 		
         logger.log("end result:" + dateResponseJson.toJSONString()); // log that the process is finished

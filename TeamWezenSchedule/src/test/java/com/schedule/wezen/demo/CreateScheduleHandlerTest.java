@@ -18,6 +18,8 @@ import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
+import com.schedule.wezen.db.DatabaseUtil;
+import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.db.TestContext;
 import com.schedule.wezen.demo.http.CreateScheduleRequest;
 import com.schedule.wezen.demo.http.PostResponse;
@@ -64,6 +66,8 @@ public class CreateScheduleHandlerTest {
     
     @Test
     public void testCreateScheduleHandlerFromFile() throws IOException {
+    	SchedulesDAO dao = new SchedulesDAO();
+    	Assert.assertTrue (DatabaseUtil.conn != null);
         CreateScheduleHandler  handler = new CreateScheduleHandler ();
 
         FileInputStream input = new FileInputStream( new File("src/test/resources/sampleCreateSchedule.in"));

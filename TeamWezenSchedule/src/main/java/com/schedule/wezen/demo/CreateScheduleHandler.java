@@ -35,7 +35,7 @@ import java.time.LocalDate;
 
 public class CreateScheduleHandler implements RequestStreamHandler {
 	
-	public LambdaLogger logger = null;
+	public static LambdaLogger logger = null;
 	
 	
 	/**
@@ -246,7 +246,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					
 					if(didRetrieveSchedule) {
-						resp = new CreateScheduleResponse("Successfully created schedule", req.requestStartDate, req.requestEndDate, req.requestStartTime, retrievedSchedule.getSlotDuration(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
+						resp = new CreateScheduleResponse(req.requestStartDate, req.requestStartTime, req.requestID, retrievedSchedule.getSlotDuration(), retrievedSchedule.getSecretCode(), retrievedSchedule.getNumSlotsDay(), req.requestStartDate, req.requestEndDate, retrievedSchedule.getTimeSlots(), "Successfully created schedule", 200);
 					}
 					
 					

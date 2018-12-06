@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.schedule.wezen.demo.CreateScheduleHandler;
 import com.schedule.wezen.model.*;
 
 public class SchedulesDAO {
@@ -16,6 +17,7 @@ public class SchedulesDAO {
     	try  {
     		conn = DatabaseUtil.connect();
     	} catch (Exception e) {
+    		e.printStackTrace();
     		conn = null;
     	}
     }
@@ -78,6 +80,7 @@ public class SchedulesDAO {
     
     
     public boolean addSchedule(Schedule schedule) throws Exception {
+    	String str2="";
         try {
             /*PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE id = ?;");
             ps.setString(1, schedule.getId());
@@ -90,6 +93,7 @@ public class SchedulesDAO {
                 return false;
             }*/
 
+        	str2 = "pre-prepare";
             PreparedStatement ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
             ps.setDate(1, Date.valueOf(schedule.getStartDate()));	//schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate()));		//schedule.getEndDate().toString()));
@@ -99,11 +103,14 @@ public class SchedulesDAO {
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
             
+        	str2 = ps.toString();
             ps.execute();
             return true;
 
         } catch (Exception e) {
-            throw new Exception("Failed to insert schedule: " + e.getMessage());
+        	e.printStackTrace();
+        	
+            throw new Exception("Failed to insert schedule: " + str2 + ":" + e.getMessage());
         }
     }
 

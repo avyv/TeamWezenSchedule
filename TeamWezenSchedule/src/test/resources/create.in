@@ -1,0 +1,8 @@
+{
+  "requestStartDate": "2018-03-24",
+  "requestEndDate": "2018-05-05",
+  "requestStartTime": "15:00:00",
+  "requestEndTime": "16:00:00",
+  "requestSlotDuration": "15",
+  "requestID": "hello!!"
+}

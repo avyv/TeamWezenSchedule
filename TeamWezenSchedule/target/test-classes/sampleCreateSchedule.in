@@ -120,5 +120,12 @@
     "httpMethod": "POST",
     "queryStringParameters": null,
     "stageVariables": null,
-    "body": "{\"startDate\":\"2018-11-30\",\"endDate\":\"2018-12-01\",\"startTime\":\"08:00\",\"endTime\":\"17:00\",\"slotDuration\":\"10\"}"
+    "body": {
+  "requestStartDate": "2018-03-24",
+  "requestEndDate": "2018-05-05",
+  "requestStartTime": "15:00:00",
+  "requestEndTime": "16:00:00",
+  "requestSlotDuration": "15",
+  "requestID": "hello!!"
+}
 }

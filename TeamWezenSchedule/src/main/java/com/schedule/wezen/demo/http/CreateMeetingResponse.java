@@ -8,7 +8,7 @@ public class CreateMeetingResponse {
 	public final String responseStartTime;
 	public final String responseID;
 	public final int responseSlotDuration;
-	public final String responseSecretCode;
+	public final int responseSecretCode;
 	public final int responseNumSlotsDay;
 	public final String responseScheduleStartDate;
 	public final String responseScheduleEndDate;
@@ -16,39 +16,45 @@ public class CreateMeetingResponse {
 	public final String response; // necessary
 	public final int httpCode;
 	
-	public CreateMeetingResponse (String sdow, String st, String id, int sd, String sc, int nsd, ArrayList<TimeSlot> ts, String resp, int code) {
-		this.responseStartDateOfWeek = sdow;
-		this.responseStartTime = st;
+	public CreateMeetingResponse (String startDateOfWeek, String startTime, String id, int slotDuration, int secretCode, int numSlotsDay, String scheduleStartDate, String scheduleEndDate, ArrayList<TimeSlot> weeklyTimeSlots, String response, int code) {
+		this.responseStartDateOfWeek = startDateOfWeek;
+		this.responseStartTime = startTime;
 		this.responseID = id;
-		this.responseSlotDuration = sd;
-		this.responseSecretCode = sc;
-		this.responseNumSlotsDay = nsd;
-		this.responseWeeklyTimeSlots = ts;
-		this.response = resp;
+		this.responseSlotDuration = slotDuration;
+		this.responseSecretCode = secretCode;
+		this.responseNumSlotsDay = numSlotsDay;
+		this.responseScheduleStartDate = scheduleStartDate;
+		this.responseScheduleEndDate = scheduleEndDate;
+		this.responseWeeklyTimeSlots = weeklyTimeSlots;
+		this.response = response;
 		this.httpCode = code;
 	}
 	
-	public CreateMeetingResponse(String sdow, String st, String id, int sd, String sc, int nsd, ArrayList<TimeSlot> ts, String resp) {
-		this.responseStartDateOfWeek = sdow;
-		this.responseStartTime = st;
+	public CreateMeetingResponse(String startDateOfWeek, String startTime, String id, int slotDuration, int secretCode, int numSlotsDay, String scheduleStartDate, String scheduleEndDate, ArrayList<TimeSlot> weeklyTimeSlots, String response) {
+		this.responseStartDateOfWeek = startDateOfWeek;
+		this.responseStartTime = startTime;
 		this.responseID = id;
-		this.responseSlotDuration = sd;
-		this.responseSecretCode = sc;
-		this.responseNumSlotsDay = nsd;
-		this.responseWeeklyTimeSlots = ts;
-		this.response = resp;
+		this.responseSlotDuration = slotDuration;
+		this.responseSecretCode = secretCode;
+		this.responseNumSlotsDay = numSlotsDay;
+		this.responseScheduleStartDate = scheduleStartDate;
+		this.responseScheduleEndDate = scheduleEndDate;
+		this.responseWeeklyTimeSlots = weeklyTimeSlots;
+		this.response = response;
 		this.httpCode = 200;
 	}
 	
-	public CreateMeetingResponse(int code) {
+	public CreateMeetingResponse(String response, int code) {
 		this.responseStartDateOfWeek = "";
 		this.responseStartTime = "";
 		this.responseID = "";
 		this.responseSlotDuration = 0;
-		this.responseSecretCode = "";
+		this.responseSecretCode = 0;
 		this.responseNumSlotsDay = 0;
-		this.responseWeeklyTimeSlots = new ArrayList<TimeSlot>();
-		this.response = "";
+		this.responseScheduleStartDate = "";
+		this.responseScheduleEndDate = "";
+		this.responseWeeklyTimeSlots = null;
+		this.response = response;
 		this.httpCode = code;
 	}
 	
