@@ -46,14 +46,14 @@ public class GetScheduleResponse {
 	}
 	
 	public GetScheduleResponse (String response, int code) {
-		this.responseStartDateOfWeek = "GetSchedule: error";
-		this.responseStartTime = "GetSchedule: error";
-		this.responseID = "GetSchedule: error";
+		this.responseStartDateOfWeek = "";
+		this.responseStartTime = "";
+		this.responseID = "";
 		this.responseSlotDuration = 0;
 		this.responseSecretCode = 0;
 		this.responseNumSlotsDay = 0;
-		this.responseScheduleStartDate = "GetSchedule: error";
-		this.responseScheduleEndDate = "GetSchedule: error";
+		this.responseScheduleStartDate = "";
+		this.responseScheduleEndDate = "";
 		this.responseWeeklyTimeSlots = null;
 		this.response = response;
 		this.httpCode = 200;

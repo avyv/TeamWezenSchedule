@@ -107,7 +107,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				
 				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
-				getScheduleResponse = new GetScheduleResponse(e.getMessage(), 403);
+				getScheduleResponse = new GetScheduleResponse("Unable to retrieve schedule: " + e.getMessage(), 403);
 			}
 			
 			// compute proper response
