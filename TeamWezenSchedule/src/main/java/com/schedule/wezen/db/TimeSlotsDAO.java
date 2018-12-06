@@ -113,7 +113,7 @@ public class TimeSlotsDAO {
             return scheduleTS; // return the list of timeslots in the database with the entered id
 
         } catch (Exception e) {
-            throw new Exception("Failed in getting books: " + e.getMessage());
+            throw new Exception("Failed in getting timeSlots: " + e.getMessage());
         }
     }
     
