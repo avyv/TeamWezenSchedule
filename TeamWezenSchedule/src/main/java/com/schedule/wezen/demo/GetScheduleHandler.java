@@ -24,6 +24,8 @@ import com.schedule.wezen.demo.http.GetScheduleResponse;
 import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 
+import java.time.LocalDate;
+
 /**
  * Found gson JAR file from
  * https://repo1.maven.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar
@@ -100,12 +102,29 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
 				
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
-				Schedule firstWeek = scheduleDividedByWeeks.get(0);
+				
+				int index = 0;
+				int week = 0;
+				
+				for(Schedule schedule : scheduleDividedByWeeks)
+				{
+					index++;
+					
+					LocalDate listStartDate = schedule.getStartDate();
+					String arrayListStartDate = listStartDate.toString();
+					String requestStart = getScheduleRequest.requestStartDateOfWeek;
+					
+					if(arrayListStartDate.equals(requestStart)) {
+						week = index - 1;
+					}
+				}
+				
+				Schedule byWeek = scheduleDividedByWeeks.get(week);
 				
 				
 				String response = "Successfully retrieved schedule";
 				
-				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
+				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
 				getScheduleResponse = new GetScheduleResponse("Unable to retrieve schedule, incorrect ID: " + e.getMessage(), 403);
 			}
