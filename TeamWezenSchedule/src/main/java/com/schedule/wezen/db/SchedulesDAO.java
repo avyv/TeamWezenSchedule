@@ -80,7 +80,7 @@ public class SchedulesDAO {
     
     
     public boolean addSchedule(Schedule schedule) throws Exception {
-    	//String str2="";
+    	String str2="";
         try {
             /*PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE id = ?;");
             ps.setString(1, schedule.getId());
@@ -93,12 +93,14 @@ public class SchedulesDAO {
                 return false;
             }*/
 
-        	//str2 = "pre-prepare";
             PreparedStatement ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
-            ps.setDate(1, Date.valueOf(schedule.getStartDate()));	//schedule.getStartDate().toString()));
-        	ps.setDate(2, Date.valueOf(schedule.getEndDate()));		//schedule.getEndDate().toString()));
-        	ps.setTime(3, Time.valueOf(schedule.getStartTime()));	//schedule.getStartTime().toString()));
-        	ps.setTime(4, Time.valueOf(schedule.getEndTime()));		//schedule.getEndTime().toString()));
+           
+            str2 = "pre-prepare";
+            
+            ps.setDate(1, Date.valueOf(schedule.getStartDate()));
+        	ps.setDate(2, Date.valueOf(schedule.getEndDate()));
+        	ps.setTime(3, Time.valueOf(schedule.getStartTime()));
+        	ps.setTime(4, Time.valueOf(schedule.getEndTime()));
         	ps.setInt(5, schedule.getSlotDuration());
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
@@ -110,7 +112,7 @@ public class SchedulesDAO {
         } catch (Exception e) {
         	e.printStackTrace();
         	
-            throw new Exception("Failed to insert schedule: " + str2 + ":" + e.getMessage());
+            throw new Exception("Failed to insert schedule: "/* + str2*/ + ":" + e.getMessage());
         }
     }
 
