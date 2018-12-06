@@ -14,7 +14,7 @@ public class CancelMeetingResponse {
 	public final String responseScheduleStartDate;
 	public final String responseScheduleEndDate;
 	public final ArrayList<TimeSlot> responseWeeklyTimeSlots;
-	public final String response; // necessary
+	public final String response;
 	public final int httpCode;
 	
 	public CancelMeetingResponse(String startDateOfWeek, String startTime, String id, int slotDuration, int secretCode, int numSlotsDay, String scheduleStartDate, String scheduleEndDate, ArrayList<TimeSlot> weeklyTimeSlots, String response, int code) {

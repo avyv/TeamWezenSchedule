@@ -28,7 +28,15 @@ public class Schedule {
 		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay, id, timeSlots);
 	}
 	
-	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode){
+	public ArrayList<Schedule> divideByWeeks(/*LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode*/){
+		LocalDate startDate = this.startDate;
+		LocalDate endDate = this.endDate;
+		LocalTime startTime = this.startTime;
+		LocalTime endTime = this.endTime;
+		int duration = this.slotDuration;
+		String id = this.id;
+		int secretCode = this.secretCode;
+		
 		sortTimeSlots(timeSlots, numSlotsDay);
 		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>(); 
 		LocalDate copySD = startDate;

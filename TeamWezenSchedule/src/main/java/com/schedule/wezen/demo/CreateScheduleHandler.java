@@ -224,11 +224,6 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			
 			
 			
-		
-			
-			
-			
-			
 			try {
 				/* NOTE: When the database is created, we will use these lines to create Schedules */
 				
@@ -256,7 +251,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					
 				} else {
-					resp = new CreateScheduleResponse("Unable to create schedule: ", 422);
+					resp = new CreateScheduleResponse("Unable to create schedule, duplicate name: ", 422);
 				}
 			} catch (Exception e) {
 				resp = new CreateScheduleResponse("Unable to create schedule: (" + e.getMessage() + ")", 403);
