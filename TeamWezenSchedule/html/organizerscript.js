@@ -424,6 +424,7 @@ function updateScheduleParams(){
 
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
+  data["requestWeekStart"] = String(currSchedule.startDate);
   data["requestNewStart"] = String(nsd);
   data["requestNewEnd"] = String(ned);
   let extend_url = base_url + "/extenddates";
