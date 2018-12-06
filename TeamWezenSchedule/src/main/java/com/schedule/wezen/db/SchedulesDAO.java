@@ -80,7 +80,6 @@ public class SchedulesDAO {
     
     
     public boolean addSchedule(Schedule schedule) throws Exception {
-    	String str2="";
         try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Schedules WHERE id = ?;");
             ps.setString(1, schedule.getId());
@@ -94,8 +93,6 @@ public class SchedulesDAO {
             }
 
             ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
-           
-            str2 = "pre-prepare";
             
             ps.setDate(1, Date.valueOf(schedule.getStartDate()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate()));
@@ -105,7 +102,6 @@ public class SchedulesDAO {
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
             
-        	//str2 = ps.toString();
             ps.execute();
             return true;
 
