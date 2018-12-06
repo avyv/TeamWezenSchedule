@@ -1,11 +1,10 @@
-// Team Wezen
-
 package com.schedule.wezen.demo.http;
+
 import java.util.ArrayList;
 
 import com.schedule.wezen.model.TimeSlot;
 
-public class CreateScheduleResponse {
+public class GetScheduleResponse {
 	public final String responseStartDateOfWeek;
 	public final String responseStartTime;
 	public final String responseID;
@@ -18,7 +17,7 @@ public class CreateScheduleResponse {
 	public final String response;
 	public final int httpCode;
 	
-	public CreateScheduleResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String resp, int code) {
+	public GetScheduleResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String response, int code) {
 		this.responseStartDateOfWeek = sdow;
 		this.responseStartTime = st;
 		this.responseID = id;
@@ -28,11 +27,11 @@ public class CreateScheduleResponse {
 		this.responseScheduleStartDate = ssd;
 		this.responseScheduleEndDate = sed;
 		this.responseWeeklyTimeSlots = wts;
-		this.response = resp;
+		this.response = response;
 		this.httpCode = code;
 	}
 	
-	public CreateScheduleResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String resp) {
+	public GetScheduleResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String response) {
 		this.responseStartDateOfWeek = sdow;
 		this.responseStartTime = st;
 		this.responseID = id;
@@ -42,25 +41,26 @@ public class CreateScheduleResponse {
 		this.responseScheduleStartDate = ssd;
 		this.responseScheduleEndDate = sed;
 		this.responseWeeklyTimeSlots = wts;
-		this.response = resp;
+		this.response = response;
 		this.httpCode = 200;
 	}
 	
-	public CreateScheduleResponse (String resp, int code) {
-		this.responseStartDateOfWeek = "";
-		this.responseStartTime = "";
-		this.responseID = "";
+	public GetScheduleResponse (String response, int code) {
+		this.responseStartDateOfWeek = "GetSchedule: error";
+		this.responseStartTime = "GetSchedule: error";
+		this.responseID = "GetSchedule: error";
 		this.responseSlotDuration = 0;
 		this.responseSecretCode = 0;
 		this.responseNumSlotsDay = 0;
-		this.responseScheduleStartDate = "";
-		this.responseScheduleEndDate = "";
+		this.responseScheduleStartDate = "GetSchedule: error";
+		this.responseScheduleEndDate = "GetSchedule: error";
 		this.responseWeeklyTimeSlots = null;
-		this.response = resp;
-		this.httpCode = code;
+		this.response = response;
+		this.httpCode = 200;
 	}
 	
 	public String toString() {
-		return "CreateScheduleResponse(" + this.response + ")";
+		return "GetScheduleResponse(" + response + ")";
 	}
+	
 }
