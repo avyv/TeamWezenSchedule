@@ -37,6 +37,7 @@ var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:
 var currts = dummySchedule.timeSlots[0];
 var currSchedule = dummySchedule;
 var orgCredentials = "";
+
 /**********  Create Calendar Display **********/
 function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
@@ -245,7 +246,7 @@ function generateCalendar(){
 function promptMeetingName(ts){
   currts = ts;
   let label = document.getElementById("mtnglabel");
-  label.innerHTML="<b>Name for Meeting on " + currts.slotDate + " at " + currts.startTime.hour + currts.startTime.minute + ": <b>";
+  label.innerHTML="<b>Name for Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":"currts.startTime.minute + ": <b>";
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
@@ -306,6 +307,7 @@ function openSchedule(){
     // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = String(enteredID);
+    data["requestWeekStart"] = "";
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
     document.getElementById("schedprompt").style.display ='none';
