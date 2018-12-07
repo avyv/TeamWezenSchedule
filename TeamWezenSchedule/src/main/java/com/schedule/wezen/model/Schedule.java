@@ -1,5 +1,6 @@
 package com.schedule.wezen.model;
 
+import java.math.*;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,15 +29,7 @@ public class Schedule {
 		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay, id, timeSlots);
 	}
 	
-	public ArrayList<Schedule> divideByWeeks(/*LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode*/){
-		LocalDate startDate = this.startDate;
-		LocalDate endDate = this.endDate;
-		LocalTime startTime = this.startTime;
-		LocalTime endTime = this.endTime;
-		int duration = this.slotDuration;
-		String id = this.id;
-		int secretCode = this.secretCode;
-		
+	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode){
 		sortTimeSlots(timeSlots, numSlotsDay);
 		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>(); 
 		LocalDate copySD = startDate;
@@ -61,18 +54,25 @@ public class Schedule {
 		return weeklySchedules;
 	}
 	
-	public boolean sortTimeSlots(ArrayList<TimeSlot> ts, int numSlotsDay) {
+	public ArrayList<TimeSlot> sortTimeSlots(ArrayList<TimeSlot> ts, int numSlotsDay) {
 		ArrayList<TimeSlot> sortedTs = new ArrayList<TimeSlot>();
-		for (int i = 0; i < numSlotsDay; i++) {
-			int k = i;
-			for (int j = 0; j < 7; j++) {
-				sortedTs.add(ts.get(k));
-				k += numSlotsDay;
-				if(k>=ts.size()) {return false;}
+		int numSlotsWeek = numSlotsDay * 7;
+		for (int h = 0; h < ts.size()-1; h+=numSlotsWeek) {
+			for (int i = 0; i < numSlotsDay; i++) {
+				int k = i + h;
+				for (int j = 0; j < 7; j++) {
+					//System.out.println("k: "+k);
+					//if(k>=ts.size()) {return false;}
+					sortedTs.add(ts.get(k));
+					k += numSlotsDay;
+				}
+				//System.out.println(k);
+				//System.out.println(ts.size());
 			}
 		}
-		ts = sortedTs;
-		return true;
+		return sortedTs;
+		//ts = sortedTs;
+		//return true;
 	}
 	
 	public int calculateNumTimeSlots(LocalTime st, LocalTime et, int dur) {
@@ -118,6 +118,8 @@ public class Schedule {
 		int d = Integer.parseInt(date.substring(2, 4));
 		int c = Integer.parseInt(date.substring(0, 2));
 		int dayOfWeek = (k + doubleToInt((13*m-1)/5) + d + doubleToInt(d/4) + doubleToInt(c/4) - (c*2));
+		//if(dayOfWeek < 0) {dayOfWeek++;}
+		while(dayOfWeek < 0) {dayOfWeek+=7;}
 		if (dayOfWeek > 7) {
 			dayOfWeek = dayOfWeek % 7;
 		}
@@ -159,6 +161,7 @@ public class Schedule {
 			LocalDate dummySd = sd.minusDays(startDayOfWeek - 1);
 			populateEmptyTS(dummySd, dummyEd, st, et, dur, numSlotsDay, id, timeSlots);
 		}
+		//System.out.println(timeSlots.size());
 		for(int year = sd.getYear(); year <= ed.getYear(); year++) {
 			int endMonth = ed.getMonthValue();
 			if(ed.getYear() > year){
@@ -166,67 +169,71 @@ public class Schedule {
 			}
 			int mon = 1;
 			if(year == sd.getYear()) {mon = sd.getMonthValue();}
+			int counter = 0;
 			for( ; mon <= endMonth; mon++) {
 				int endDay = ed.getDayOfMonth();
-				if(ed.getMonthValue() > mon || ed.getYear() > year){
-					endDay = sd.lengthOfMonth();
+				if(ed.getMonthValue() != mon || ed.getYear() > year){
+					String monString = Integer.toString(mon);
+					if(mon<10) {
+						monString = "0"+monString;
+					}
+					LocalDate tempDate = LocalDate.parse(year+"-"+monString+"-01", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					endDay = tempDate.lengthOfMonth();
 				} 
+				counter++;
 				int day = 1;
 				if(mon == sd.getMonthValue() && year == sd.getYear()) {day = sd.getDayOfMonth();}
 				for( ; day <= endDay; day++) {
+					//System.out.println(timeSlots.size()+" month/day:"+mon+"-"+day);
 					int overflowMinutes = 0;
 					for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
-						int endMinutes = et.getMinute();
-						if(et.getHour() > hour) {
-							endMinutes = 59;
-						} 
-						int min = overflowMinutes;
-						if(hour == st.getHour()) {
-							min = st.getMinute();
-						} 
-						while(min < endMinutes) {
-							min += dur;
-							String hourString = Integer.toString(hour);
-							String minString = Integer.toString(min);
-							if(hour<10) {
-								hourString = "0"+hourString;
-							}
-							if(min >= 59) {
-								overflowMinutes = min-59;
-								String overflowMinutesString = Integer.toString(overflowMinutes);
-								if(overflowMinutes<10) {
-									overflowMinutesString = "0"+overflowMinutesString;
+						int endMinutes = 60;
+						if(et.getHour() == hour) {
+							endMinutes = et.getMinute();
+						}
+						int meetingMin = 0 + overflowMinutes;
+						for(int min = 0; min < endMinutes; min++) {
+							if(min==endMinutes && et.getHour()==hour) {break;}
+							if(min==meetingMin) {
+								String hourString = Integer.toString(hour);
+								String minString = Integer.toString(min);
+								if(hour<10) {
+									hourString = "0"+hourString;
 								}
-								st = LocalTime.parse(hourString+":"+overflowMinutesString, DateTimeFormatter.ofPattern("HH:mm"));
-							}
-							if(min<60) {
 								if(min<10) {
 									minString = "0"+minString;
 								}
-								st = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
-								
+								LocalTime startTime = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
+								String dayString = Integer.toString(day);
+								String monString = Integer.toString(mon);
+								if(day<10) {
+									dayString = "0"+dayString;
+								}
+								if(mon<10) {
+									monString = "0"+monString;
+								}
+								LocalDate slotDate = LocalDate.parse(year+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+								timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+" "+slotDate.toString(), id, createSecretCode()));
+								//System.out.println((timeSlots.get(timeSlots.size()-1)).getId());
+								meetingMin += dur;
+								if(meetingMin>=endMinutes) {
+									overflowMinutes=meetingMin-60;
+									meetingMin=0;
+								}
 							}
-							String dayString = Integer.toString(day);
-							String monString = Integer.toString(mon);
-							if(day<10) {
-								dayString = "0"+dayString;
-							}
-							if(mon<10) {
-								monString = "0"+monString;
-							}
-							LocalDate slotDate = LocalDate.parse(year+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-							timeSlots.add(new TimeSlot(st, slotDate, st.toString()+slotDate.toString(), id, createSecretCode()));
 						}
 					}
 				}
 			}
 		}
+		//System.out.println(timeSlots.size());
 		int endDayOfWeek = calculateDayOfWeek(ed);
 		if(endDayOfWeek < 7) {
 			LocalDate dummySd = ed.plusDays(1);
 			LocalDate dummyEd = ed.plusDays(7 - endDayOfWeek);
 			populateEmptyTS(dummySd, dummyEd, st, et, dur, numSlotsDay, id, timeSlots);
 		}
+		//System.out.println(timeSlots.size());
 		return true;
 	}
 	
@@ -234,49 +241,44 @@ public class Schedule {
 		int sDayOfWeek = calculateDayOfWeek(sd);
 		int eDayOfWeek = calculateDayOfWeek(ed);
 		while(sDayOfWeek<=eDayOfWeek) {
+			//System.out.println(timeSlots.size()+" dayOfWeek:"+sDayOfWeek);
 			sDayOfWeek++;
 			int overflowMinutes = 0;
 			for(int hour = st.getHour(); hour <= et.getHour(); hour++) {
-				int endMinutes = et.getMinute();
-				if(et.getHour() > hour) {
-					endMinutes = 59;
-				} 
-				int min = overflowMinutes;
-				if(hour == st.getHour()) {
-					min = st.getMinute();
-				} 
-				while(min < endMinutes) {
-					min += dur;
-					String hourString = Integer.toString(hour);
-					String minString = Integer.toString(min);
-					if(hour<10) {
-						hourString = "0"+hourString;
-					}
-					if(min >= 59) {
-						overflowMinutes = min-59;
-						String overflowMinutesString = Integer.toString(overflowMinutes);
-						if(overflowMinutes<10) {
-							overflowMinutesString = "0"+overflowMinutesString;
+				int endMinutes = 60;
+				if(et.getHour() == hour) {
+					endMinutes = et.getMinute();
+				}
+				int meetingMin = 0 + overflowMinutes;
+				for(int min = 0; min < endMinutes; min++) {
+					if(min==endMinutes && et.getHour()==hour) {break;}
+					if(min==meetingMin) {
+						String hourString = Integer.toString(hour);
+						String minString = Integer.toString(min);
+						if(hour<10) {
+							hourString = "0"+hourString;
 						}
-						st = LocalTime.parse(hourString+":"+overflowMinutesString, DateTimeFormatter.ofPattern("HH:mm"));
-					}
-					if(min<60) {
 						if(min<10) {
 							minString = "0"+minString;
 						}
-						st = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
-						
+						LocalTime startTime = LocalTime.parse(hourString+":"+minString, DateTimeFormatter.ofPattern("HH:mm"));
+						String dayString = Integer.toString(sd.getDayOfMonth());
+						String monString = Integer.toString(sd.getMonthValue());
+						if(sd.getDayOfMonth()<10) {
+							dayString = "0"+dayString;
+						}
+						if(sd.getMonthValue()<10) {
+							monString = "0"+monString;
+						}
+						LocalDate slotDate = LocalDate.parse(sd.getYear()+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+						timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+" "+slotDate.toString(), id, createSecretCode(), false, false));
+						//System.out.println((timeSlots.get(timeSlots.size()-1)).getId());
+						meetingMin += dur;
+						if(meetingMin>=endMinutes) {
+							overflowMinutes=meetingMin-60;
+							meetingMin=0;
+						}
 					}
-					String dayString = Integer.toString(sd.getDayOfMonth());
-					String monString = Integer.toString(sd.getMonthValue());
-					if(sd.getDayOfMonth()<10) {
-						dayString = "0"+dayString;
-					}
-					if(sd.getMonthValue()<10) {
-						monString = "0"+monString;
-					}
-					LocalDate slotDate = LocalDate.parse(sd.getYear()+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-					timeSlots.add(new TimeSlot(st, slotDate, st.toString()+slotDate.toString(), id, createSecretCode(), false, false));
 				}
 			}
 			sd = sd.plusDays(1);
