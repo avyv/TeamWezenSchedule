@@ -41,9 +41,10 @@ public class Schedule {
 		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
 		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
 		//TODO this doesn't work
-		for(TimeSlot ts: timeSlots) {
-			this.addTimeSlot(ts);
-		}
+		this.timeSlots = timeSlots;
+//		for(TimeSlot ts: timeSlots) {
+//			this.addTimeSlot(ts);
+//		}
 	}
 	
 	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode){

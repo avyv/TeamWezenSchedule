@@ -63,7 +63,7 @@ public class SchedulesDAO {
 
     public boolean updateSchedule(Schedule schedule) throws Exception {
         try {
-        	String query = "UPDATE Schedules SET startDate=?, endDate=?, startTime=?, endTime = ? WHERE id=?;";
+        	String query = "UPDATE Schedules SET startDate=?, endDate=?, startTime=?, endTime=? WHERE id=?;";
         	PreparedStatement ps = conn.prepareStatement(query);
         	ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
@@ -160,7 +160,7 @@ public class SchedulesDAO {
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
         
-        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
+        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()).plusDays(1), LocalDate.parse(endDate.toString()).plusDays(1), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
         toRet.emptyTimeSlots();
         
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();
