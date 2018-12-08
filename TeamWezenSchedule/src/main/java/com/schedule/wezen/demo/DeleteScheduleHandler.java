@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.demo.http.DeleteScheduleRequest;
 import com.schedule.wezen.demo.http.DeleteScheduleResponse;
+import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 
 import java.time.LocalDate;
@@ -74,28 +75,58 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 		if (!processed) {
 			DeleteScheduleRequest req = new Gson().fromJson(body, DeleteScheduleRequest.class);
 			logger.log(req.toString());
+			
+			logger.log("Before SchedulesDAO");
 
 			SchedulesDAO dao = new SchedulesDAO();
 			
-			LocalDate sd = null;
-			LocalDate ed = null;
-			LocalTime st = null;
-			LocalTime et = null;
+			logger.log("After SchedulesDAO before model");
+			
+			Model m = new Model();
+			
+			logger.log("After model, before Strings");
+			
+			String startd = "2018-03-11";
+			String endd = "2018-03-12";
+			String startt = "11:00:00";
+			String endt = "12:00:00";
+			
+			LocalDate sd = m.stringToDate(startd);
+			LocalDate ed = m.stringToDate(endd);
+			LocalTime st = m.stringToTime(startt);
+			LocalTime et = m.stringToTime(endt);
 			int dur = 0;
 			String id = "";
+			
+			logger.log("After initializations");
 			
 			
 			// See how awkward it is to call delete with an object, when you only
 			// have one part of its information?
 			Schedule schedule = new Schedule(sd, ed, st, et, dur, id, req.scheduleSecretCode);
+			
+			logger.log("After creating new dummy schedule with real secret code");
+			
 			DeleteScheduleResponse resp;
 			try {
+				
+				logger.log("In try");
+				
 				if (dao.deleteSchedule(schedule)) {
+					
+					logger.log("After DAO delete schedule");
+					
 					resp = new DeleteScheduleResponse("Successfully deleted schedule:" + req.scheduleSecretCode);
 				} else {
+					
+					logger.log("In else");
+					
 					resp = new DeleteScheduleResponse("Unable to delete schedule, Secret Code did not match: " + req.scheduleSecretCode, 422);
 				}
 			} catch (Exception e) {
+				
+				logger.log("Exception caught");
+				
 				resp = new DeleteScheduleResponse("Unable to delete schedule, Secret Code did not match: " + req.scheduleSecretCode + "(" + e.getMessage() + ")", 403);
 			}
 			
