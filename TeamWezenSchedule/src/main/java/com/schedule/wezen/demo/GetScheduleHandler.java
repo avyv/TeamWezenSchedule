@@ -90,6 +90,8 @@ public class GetScheduleHandler implements RequestStreamHandler {
 			try {
 				Schedule retrievedSchedule = retrieveSchedule(getScheduleRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
+				logger.log("Retrieved Schedule");
+				
 				String startDateOfWeek = "";
 				String startTime = retrievedSchedule.getStartTime().toString();
 				String scheduleID = retrievedSchedule.getId();
@@ -101,20 +103,25 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				
 				
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay());
-				Schedule byWeek = null;
+				//Schedule byWeek = null;
+				Schedule byWeek = scheduleDividedByWeeks.get(0);
+				startDateOfWeek = byWeek.getStartDate().toString();
+				
+				
+				logger.log("Assigned values to variables");
 				
 				/**
 				 * This will return the schedule for the first week
 				 */
-				if(getScheduleRequest.requestWeekStart.equals("")) {
+				/*if(getScheduleRequest.requestWeekStart.equals("")) {
 					byWeek = scheduleDividedByWeeks.get(0);
 					startDateOfWeek = byWeek.getStartDate().toString();
-				}
+				}*/
 				
 				/**
 				 * This will return the schedule for the week beginning at requestWeekStart
 				 */
-				else if(!(getScheduleRequest.requestWeekStart.equals(""))) {
+				/*else if(!(getScheduleRequest.requestWeekStart.equals(""))) {
 					
 					int index = 0;
 					int week = 0;
@@ -134,12 +141,15 @@ public class GetScheduleHandler implements RequestStreamHandler {
 					
 					byWeek = scheduleDividedByWeeks.get(week);
 					startDateOfWeek = byWeek.getStartDate().toString();
-				}
+				}*/
+				
+				
 				
 				String response = "Successfully retrieved schedule";
 				
 				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
+				logger.log(e.getMessage());
 				getScheduleResponse = new GetScheduleResponse("Unable to retrieve schedule, incorrect ID: " + e.getMessage(), 403);
 			}
 			
