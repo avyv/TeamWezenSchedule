@@ -54,7 +54,7 @@ public class Schedule {
 		}
 		copyED = copySD.plusDays(6);
 		int counter = 0;
-		int numSlotsWeek = (7 * this.numSlotsDay);
+		int numSlotsWeek = (7*this.numSlotsDay);
 		while(!(copySD.isAfter(endDate))) {
 			ArrayList<TimeSlot> ts = new ArrayList<TimeSlot>();
 			for(int i = 0; i<numSlotsWeek; i++) {
