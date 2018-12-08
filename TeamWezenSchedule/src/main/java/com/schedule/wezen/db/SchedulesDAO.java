@@ -48,10 +48,8 @@ public class SchedulesDAO {
     
     public boolean deleteSchedule(Schedule schedule) throws Exception {
         try {
-            //PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
-        	PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE secretCode = ?;");
-            //ps.setString(1, schedule.getId());
-        	ps.setInt(1, schedule.getSecretCode()); // changed this
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
+            ps.setString(1, schedule.getId());
             int numAffected = ps.executeUpdate();
             ps.close();
             

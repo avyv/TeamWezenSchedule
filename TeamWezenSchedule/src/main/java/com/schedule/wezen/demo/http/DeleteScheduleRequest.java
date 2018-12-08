@@ -1,14 +1,14 @@
 package com.schedule.wezen.demo.http;
 
 public class DeleteScheduleRequest {
-	public final int scheduleSecretCode;
+	public final String requestSchedID;
 	
-	public DeleteScheduleRequest (int secretCode) {
-		this.scheduleSecretCode = secretCode;
+	public DeleteScheduleRequest (String id) {
+		this.requestSchedID = id;
 	}
 	
 	public String toString() {
-		return "DeleteScheduleRequest(" + scheduleSecretCode + ")";
+		return "DeleteScheduleRequest(" + requestSchedID + ")";
 	}
 }
 
