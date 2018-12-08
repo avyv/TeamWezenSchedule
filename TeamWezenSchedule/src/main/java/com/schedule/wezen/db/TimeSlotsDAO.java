@@ -23,7 +23,7 @@ public class TimeSlotsDAO {
         
         try {
         	TimeSlot timeSlot = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE (startTime, slotDate) values (?,?);");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE startTime=? AND slotDate=?;");
             ps.setTime(1,  Time.valueOf(time));
             ps.setDate(2, Date.valueOf(date));
             ResultSet resultSet = ps.executeQuery();
@@ -45,7 +45,7 @@ public class TimeSlotsDAO {
     
     public boolean addTimeSlot(TimeSlot timeSlot) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE (startTime, slotDate) values (?,?);");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE startTime=? AND slotDate=?;");
             ps.setTime(1,  Time.valueOf(timeSlot.getStartTime()));
             ps.setDate(2, Date.valueOf(timeSlot.getDate()));
             ResultSet resultSet = ps.executeQuery();
@@ -57,7 +57,7 @@ public class TimeSlotsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen) values(?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting) values(?,?,?,?,?,?,?,?);");
             ps.setString(1, timeSlot.getSid());
             ps.setTime(2,  Time.valueOf(timeSlot.getStartTime()));
             ps.setDate(3, Date.valueOf(timeSlot.getDate()));
