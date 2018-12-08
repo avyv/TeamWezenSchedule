@@ -36,8 +36,8 @@ public class GetScheduleHandler implements RequestStreamHandler {
 	 * 
 	 * @throws Exception
 	 */
-	Schedule retrieveSchedule(String scheduleID) throws Exception {
-		if (logger != null) { logger.log("in retrieveSchedule"); }
+	Schedule retrieveScheduleLambda(String scheduleID) throws Exception {
+		if (logger != null) { logger.log("in retrieveScheduleLambda"); }
 		
 		SchedulesDAO dao = new SchedulesDAO();
 		
@@ -96,7 +96,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 			logger.log("Before retrieveSchedule");
 			
 			try {
-				Schedule retrievedSchedule = retrieveSchedule(getScheduleRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
+				Schedule retrievedSchedule = retrieveScheduleLambda(getScheduleRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
 				logger.log("Retrieved Schedule: " + retrievedSchedule.getId());
 				

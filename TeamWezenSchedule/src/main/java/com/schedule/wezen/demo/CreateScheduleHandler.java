@@ -108,6 +108,20 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 //		}
 		
 	}
+	
+	Schedule retrieveScheduleLambda(String scheduleID) throws Exception {
+		if(logger != null) { logger.log("in retrieveScheduleLambda"); }
+		
+		SchedulesDAO dao = new SchedulesDAO();
+		
+		logger.log("After SchedulesDAO object in retrieveScheduleLambda");
+		
+		Schedule schedule = dao.getSchedule(scheduleID);
+		
+		logger.log("After creating schedule object and using getSchedule (in retrieveScheduleLambda)");
+		
+		return schedule;
+	}
 
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
@@ -177,11 +191,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			CreateScheduleResponse resp = null; //
 			
 			
-			SchedulesDAO dao = new SchedulesDAO();
-			
-			Schedule retrievedSchedule = null;
-			
-			boolean didRetrieveSchedule = false; //
+			SchedulesDAO dao = new SchedulesDAO(); //
 			
 			
 			/** 
@@ -263,22 +273,10 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				logger.log("Before retrieve schedule");
 				
-				retrievedSchedule = dao.getSchedule(req.requestID);
+				Schedule retrievedSchedule = dao.getSchedule(req.requestID);
 				
 				logger.log("After retrieve schedule");
 				
-				didRetrieveSchedule = true;
-				
-			} 
-			catch (Exception e) {
-				
-				logger.log("Unable to retrieve schedule exception");
-				
-				resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
-			} //
-
-
-			if(didRetrieveSchedule) {
 				String startDateOfWeek;
 				String startTime = retrievedSchedule.getStartTime().toString();
 				String scheduleID = retrievedSchedule.getId();
@@ -293,11 +291,20 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				Schedule firstWeek = scheduleDividedByWeeks.get(0);
 				startDateOfWeek = firstWeek.getStartDate().toString();
 				
+				logger.log("Assigned values to variables");
+				
 				resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
-			}
+					
+			} 
 			
-			
-			
+			catch (Exception e) {
+				
+				logger.log("Unable to retrieve schedule exception");
+				
+				logger.log(e.getMessage());
+				
+				resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+			} //
 
 			// compute proper response
 	        createScheduleResponseJson.put("body", new Gson().toJson(resp));
