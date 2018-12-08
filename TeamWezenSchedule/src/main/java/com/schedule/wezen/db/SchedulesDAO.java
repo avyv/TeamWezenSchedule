@@ -12,7 +12,7 @@ import com.schedule.wezen.model.*;
 public class SchedulesDAO {
 	
 	java.sql.Connection conn;
-	TimeSlotsDAO tsdao;
+	TimeSlotsDAO tsdao = new TimeSlotsDAO();
 
     public SchedulesDAO() {
     	try  {
@@ -48,6 +48,7 @@ public class SchedulesDAO {
     
     public boolean deleteSchedule(Schedule schedule) throws Exception {
         try {
+        	tsdao.deleteAllScheduleTimeSlots(schedule.getId());
             PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
             ps.setString(1, schedule.getId());
             int numAffected = ps.executeUpdate();
@@ -87,8 +88,8 @@ public class SchedulesDAO {
             
             // already present?
             while (resultSet.next()) {
-                Schedule s = generateSchedule(resultSet);
-                resultSet.close();
+//                Schedule s = generateSchedule(resultSet);
+//                resultSet.close();
                 return false;
             }
 
@@ -145,15 +146,15 @@ public class SchedulesDAO {
         int duration = resultSet.getInt("duration");
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
-
+        
+        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
+        toRet.emptyTimeSlots();
+        
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();
         List<TimeSlot> scheduleTimeSlots = getTimeSlots.getAllScheduleTimeSlots(id); // get a list of all the schedules timeSlots
-        ArrayList<TimeSlot> toAdd = new ArrayList<TimeSlot>();
         for(TimeSlot ts: scheduleTimeSlots) { // Add all of the schedules timeSlots to its timeSlot arraylist
-        	toAdd.add(ts);
+        	toRet.addTimeSlot(ts);
         }
-        
-        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode, toAdd);
         
         return toRet;
     }
