@@ -29,7 +29,7 @@ public class TimeSlotTests extends TestCase {
 		
 		dao.addTimeSlot(testSlot);
 		
-		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.startTime, testSlot.getDate());
+		TimeSlot returnedSlot = dao.getTimeSlot(testSlot);
 		assertTrue(testSlot.id.equals(returnedSlot.id));
 		assertTrue(testSlot.secretCode == returnedSlot.secretCode);
 		assertTrue(testSlot.sid.equals(returnedSlot.sid));

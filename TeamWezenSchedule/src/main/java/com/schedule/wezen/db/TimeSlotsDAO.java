@@ -19,13 +19,12 @@ public class TimeSlotsDAO {
     	}
     }
 
-    public TimeSlot getTimeSlot(LocalTime time, LocalDate date) throws Exception {
+    public TimeSlot getTimeSlot(TimeSlot ts) throws Exception {
         
         try {
         	TimeSlot timeSlot = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE startTime=? AND slotDate=?;");
-            ps.setTime(1,  Time.valueOf(time));
-            ps.setDate(2, Date.valueOf(date));
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=?;");
+            ps.setString(1,  ts.getId());
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
@@ -45,9 +44,8 @@ public class TimeSlotsDAO {
     
     public boolean addTimeSlot(TimeSlot timeSlot) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE startTime=? AND slotDate=?;");
-            ps.setTime(1,  Time.valueOf(timeSlot.getStartTime()));
-            ps.setDate(2, Date.valueOf(timeSlot.getDate()));
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=?;");
+            ps.setString(1,  timeSlot.getId());
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
@@ -113,7 +111,7 @@ public class TimeSlotsDAO {
     	
     	List<TimeSlot> scheduleTS = new ArrayList<>();
         try { 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE sid=?;"); // selects all timeslots with the entered sid
+            PreparedStatement ps = conn.prepareStatement("SELECT FROM TimeSlots WHERE sid=?;"); // selects all timeslots with the entered sid
             ps.setString(1,  sid);
             
             ResultSet resultSet = ps.executeQuery();
