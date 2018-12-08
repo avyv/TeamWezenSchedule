@@ -29,14 +29,14 @@ public class TimeSlotTests extends TestCase {
 		
 		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.startTime, testSlot.getDate());
 		System.out.println(testSlot.slotDate.toString() + " == " + returnedSlot.slotDate.toString());
-		assertTrue(testSlot.id.equals(returnedSlot.id) &&
-				testSlot.secretCode == returnedSlot.secretCode &&
-				testSlot.sid.equals(returnedSlot.sid) &&
-				testSlot.hasMeeting == returnedSlot.hasMeeting &&
-				testSlot.isOpen == returnedSlot.isOpen &&
-				testSlot.meetingName == returnedSlot.meetingName &&
-				testSlot.slotDate.isEqual(returnedSlot.slotDate) &&
-				testSlot.startTime == returnedSlot.startTime);
+		assertTrue(testSlot.id.equals(returnedSlot.id));
+		assertTrue(testSlot.secretCode == returnedSlot.secretCode);
+		assertTrue(testSlot.sid.equals(returnedSlot.sid));
+		assertTrue(testSlot.hasMeeting == returnedSlot.hasMeeting);
+		assertTrue(testSlot.isOpen == returnedSlot.isOpen);
+		assertTrue(testSlot.meetingName.equals(returnedSlot.meetingName));
+		assertTrue(testSlot.slotDate.isEqual(returnedSlot.slotDate));
+		assertTrue(testSlot.startTime == returnedSlot.startTime);
 		
 		dao.deleteTimeSlot(testSlot);
 	}
