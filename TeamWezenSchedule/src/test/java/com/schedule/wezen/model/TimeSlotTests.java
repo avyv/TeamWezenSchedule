@@ -11,7 +11,7 @@ import com.schedule.wezen.db.TimeSlotsDAO;
 
 import junit.framework.TestCase;
 
-public class TimeSlotTests extends TestCase{
+public class TimeSlotTests extends TestCase {
 	TimeSlotsDAO dao;
 	TimeSlot testSlot;
 	
@@ -24,11 +24,22 @@ public class TimeSlotTests extends TestCase{
 	
 	//DAO
 	@Test
-	public void testDAO() throws Exception {
+	public void testAddGetDeleteTimeSlot() throws Exception{
 		dao.addTimeSlot(testSlot);
+		
+		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.startTime, testSlot.getDate());
+		System.out.println(testSlot.slotDate.toString() + " == " + returnedSlot.slotDate.toString());
+		assertTrue(testSlot.id.equals(returnedSlot.id) &&
+				testSlot.secretCode == returnedSlot.secretCode &&
+				testSlot.sid.equals(returnedSlot.sid) &&
+				testSlot.hasMeeting == returnedSlot.hasMeeting &&
+				testSlot.isOpen == returnedSlot.isOpen &&
+				testSlot.meetingName == returnedSlot.meetingName &&
+				testSlot.slotDate.isEqual(returnedSlot.slotDate) &&
+				testSlot.startTime == returnedSlot.startTime);
+		
+		dao.deleteTimeSlot(testSlot);
 	}
-	
-	
 
 	//TimeSlot
 	@Test
@@ -72,7 +83,7 @@ public class TimeSlotTests extends TestCase{
 	TimeSlot createTimeSlot() {
 		TimeSlot mySlot;
 		LocalTime startTime = LocalTime.parse("03:00:00");
-		LocalDate slotDate = LocalDate.parse("2018-12-13");
+		LocalDate slotDate = LocalDate.parse("2018-12-14");
 		String id = "test1";
 		String sid = "1";
 		int secretCode = 1234;

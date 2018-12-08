@@ -12,6 +12,7 @@ import com.schedule.wezen.model.*;
 public class SchedulesDAO {
 	
 	java.sql.Connection conn;
+	TimeSlotsDAO tsdao;
 
     public SchedulesDAO() {
     	try  {
@@ -102,6 +103,10 @@ public class SchedulesDAO {
         	ps.setInt(5, schedule.getSlotDuration());
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
+        	
+        	for(TimeSlot ts: schedule.getTimeSlots()) {
+        		tsdao.addTimeSlot(ts);
+        	}
             
             ps.execute();
             return true;

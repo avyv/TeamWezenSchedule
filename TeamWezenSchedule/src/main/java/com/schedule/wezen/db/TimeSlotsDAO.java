@@ -73,6 +73,20 @@ public class TimeSlotsDAO {
             throw new Exception("Failed to insert time slot: " + e.getMessage());
         }
     }
+    
+    public boolean deleteTimeSlot(TimeSlot ts) throws Exception {
+        try {
+        	PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
+        	ps.setString(1, ts.getId());
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
+
+        } catch (Exception e) {
+            throw new Exception("Failed to delete schedule: " + e.getMessage());
+        }
+    }
 
     public List<TimeSlot> getAllTimeSlots() throws Exception {
         
@@ -126,6 +140,8 @@ public class TimeSlotsDAO {
     	int secretCode = resultSet.getInt("secretCode");
     	boolean isOpen = resultSet.getBoolean("isOpen");
     	boolean hasMeeting = resultSet.getBoolean("hasMeeting");
-        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()), id, meetingName, sid, secretCode, isOpen, hasMeeting);
+    	System.out.println();
+    	System.out.println(LocalDate.parse(slotDate.toString()).plusDays(1));
+        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()).plusDays(1), id, meetingName, sid, secretCode, isOpen, hasMeeting);
     }
 }
