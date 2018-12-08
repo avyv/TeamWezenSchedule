@@ -33,8 +33,9 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
 var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:15,id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:1234,fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
-var currts = dummySchedule.timeSlots[0];
-var currSchedule = dummySchedule;
+var currSchedule = currSchedule;
+var currts = currSchedule.timeSlots[0];
+
 // window.onload = initialize;
 // //
 // function initialize(){
@@ -46,7 +47,7 @@ var currSchedule = dummySchedule;
 function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
     var weekdays = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-    let date = dummySchedule.startDate;
+    let date = currSchedule.startDate;
     let parseddate = date.split("-");
     let d = parseddate[2];
     let m = parseddate[1];
@@ -64,32 +65,23 @@ function generateCalendar(){
       head.innerHTML = html;
     }
     /********* Calendar *********/
-    let st = dummySchedule.startTime.split(":");
-    let dur = dummySchedule.slotDuration;
+    let st = currSchedule.startTime.split(":");
+    let dur = currSchedule.slotDuration;
     let timelabel = document.createElement("td");
     var tsiterator = 0;
     let filt = document.getElementById("filterTime");//update filter while im here
     filt.innerHTML = "<option value=0>--none--</option>"
     var hrs;
     var mins;
-    for(let row=1; row<=(dummySchedule.numSlotsPerDay); row++){
+    for(let row=1; row<=(currSchedule.numSlotsPerDay); row++){
       let filteroption = document.createElement("OPTION");
       /********** Time Slot Label **********/
-      if(dur == 60){
-         hrs = parseInt(st[0]) + (1*(row-1));
-         mins = 0;
-      }else{
-        mins = dur*(row-1);
-        hrs = parseInt(st[0]);
-        if(mins >= 60){
-          mins = mins-60;
-          hrs = hrs + 1;
-        }
+      let labelslot = currSchedule.timeSlots[tsiterator];
+      var min = labelslot.startTime.minute;
+      if(min<10){
+        min = "0" + min;
       }
-       if(mins<10){
-         label = "<b>" + hrs + ":" + 0 + mins + "</b>";
-       }else{label = "<b>" + hrs + ":" + mins + "</b>";}
-
+      label = labelslot.startTime.hour + ":" + min;
       let tsrow = calendar.insertRow(-1);
       timeslot = tsrow.insertCell(0);
       timeslot.innerHTML = label;
@@ -100,7 +92,7 @@ function generateCalendar(){
       /********** Time Slots **********/
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
-        let myslot = dummySchedule.timeSlots[tsiterator];
+        let myslot = currSchedule.timeSlots[tsiterator];
 
         if((myslot.meetingName == " ")&&(myslot.isOpen)){
           let freebtn = document.createElement("BUTTON");
@@ -129,7 +121,7 @@ function generateCalendar(){
 function promptMeetingName(ts){
   currts = ts;
   let label = document.getElementById("mtnglabel");
-  label.innerHTML="<b>Name for Meeting on " + currts.date + " at " + currts.startTime + ": <b>";
+  label.innerHTML="<b>Name for Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":" + currts.startTime.minute + ": <b>";
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
@@ -162,7 +154,7 @@ function checkMeetingAuthorization(){
     alert("Invalid Code");
     return;
   }
-  alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
+  alert("Deleting Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":" + currts.startTime.minute + ": <b>");
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
@@ -181,9 +173,6 @@ function openSchedule(){
   if((enteredID == " ") || (enteredID == "")){
     alert("You Must enter a valid id");
   }else{
-    // if(enteredID == currSchedule.id){
-    //   generateCalendar();
-    // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = String(enteredID);
     data["requestWeekStart"] = "";

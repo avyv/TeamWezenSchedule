@@ -48,6 +48,7 @@ function generateCalendar(){
     let m = parseddate[1];
     let y = parseddate[0];
     let calendar = document.getElementById("daysview");
+
     /********** header ************/
     let header = calendar.insertRow(0);
     header.id = "timelbl";
@@ -73,21 +74,13 @@ function generateCalendar(){
       let filteroption2 = document.createElement("OPTION");
 
       /********** Time Slot Label **********/
-      if(dur == 60){
-         hrs = parseInt(st[0]) + (1*(row-1));
-         mins = 0;
-      }else{
-        mins = dur*(row-1);
-        hrs = parseInt(st[0]);
-        if(mins >= 60){
-          mins = mins-60;
-          hrs = hrs + 1;
-        }
-      }
-       if(mins<10){
-         label = "<b>" + hrs + ":" + 0 + mins + "</b>";
-       }else{label = "<b>" + hrs + ":" + mins + "</b>";}
 
+      let labelslot = currSchedule.timeSlots[tsiterator];
+      var min = labelslot.startTime.minute;
+      if(min<10){
+        min = "0" + min;
+      }
+      label = labelslot.startTime.hour + ":" + min;
       let tsrow = calendar.insertRow(-1);
       timeslot = tsrow.insertCell(0);
       timeslot.innerHTML = label;
@@ -143,6 +136,7 @@ function generateCalendar(){
     //if not already visible, make visible
     document.getElementById("calendarwindow").style.visibility = 'visible';
   }
+
 
 
   /********************* Create Schedule *********************/
@@ -246,7 +240,7 @@ function generateCalendar(){
 function promptMeetingName(ts){
   currts = ts;
   let label = document.getElementById("mtnglabel");
-  label.innerHTML="<b>Name for Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":"currts.startTime.minute + ": <b>";
+  label.innerHTML="<b>Name for Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":" + currts.startTime.minute + ": <b>";
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
@@ -302,9 +296,6 @@ function openSchedule(){
   if((enteredID == " ") || (enteredID == "")){
     alert("You Must enter a valid id");
   }else{
-    // if(enteredID == currSchedule.id){
-    //   generateCalendar();
-    // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = String(enteredID);
     data["requestWeekStart"] = "";
@@ -323,15 +314,11 @@ function openEditSchedule(){
   if((enteredID == " ") || (enteredID == "") || (orgCredentials == "")){
     alert("Please Fill Out All Inputs");
   }else{
-    // if((enteredID == currSchedule.id) && (orgCredentials == currSchedule.orgCode)){
-    //   generateCalendar();
-    // }/////////////////////////////////////////////////////////////////for testing only.
     let data = {};
     data["requestId"] = String(enteredID);
     data["requestWeekStart"] = "";
     let openschedule_url = base_url + "/getschedule";
-    sendData(data,openschedule_url,processSchedule);
-    document.getElementById("schededitprompt").style.display ='none';
+    sendData(data,openschedule_url,processEditSchedule);
   }
 }
 function filter(){
@@ -525,6 +512,30 @@ function processScheduleMtng(xhrResult){
     document.getElementById("mtngcode").innerHTML = this_slot.secretCode;
     document.getElementById("mtngIDPrompt").style.display='block';
     generateCalendar();
+  }else{
+    alert(js["response"]);
+  }
+}
+
+function processEditSchedule(xhrResult){
+	console.log("result:" + xhrResult);
+	let js = JSON.parse(xhrResult);
+
+  //add if schedule couldnt be opened, display "could not find schedule"
+  if(js["response"]=="Successfully retrieved schedule"){
+    currSchedule.startDate = js["responseStartDateOfWeek"];
+    currSchedule.startTime = js["responseStartTime"];
+    currSchedule.id = js["responseID"];
+    currSchedule.slotDuration = js["responseSlotDuration"];
+    currSchedule.orgCode = js["responseSecretCode"];
+    currSchedule.numSlotsPerDay = js["responseNumSlotsDay"];
+    currSchedule.timeSlots = js["responseWeeklyTimeSlots"];
+    currSchedule.fullStartDate = js["responseScheduleStartDate"];
+    currSchedule.fullEndDate = js["responseScheduleEndDate"];
+    if(orgCredentials == currSchedule.orgCode){
+      generateCalendar();
+      document.getElementById("schededitprompt").style.display ='none';
+    }else{alert("Incorrect Credentials");}
   }else{
     alert(js["response"]);
   }
