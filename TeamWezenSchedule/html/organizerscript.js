@@ -244,7 +244,11 @@ function generateCalendar(){
 function promptMeetingName(ts){
   currts = ts;
   let label = document.getElementById("mtnglabel");
-  label.innerHTML="<b>Name for Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":" + currts.startTime.minute + ": <b>";
+  var mins =  currts.startTime.minute;
+  if(mins<10){
+    mins = "0"+mins;
+  }
+  label.innerHTML="<b>Name for Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":" + mins+ ": <b>";
   let prompt = document.getElementById('mtngPrompt');
   prompt.style.display='block';
 }
