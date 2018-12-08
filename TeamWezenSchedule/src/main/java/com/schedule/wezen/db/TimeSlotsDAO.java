@@ -51,7 +51,7 @@ public class TimeSlotsDAO {
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 TimeSlot ts = generateTimeSlot(resultSet);
                 resultSet.close();
                 return false;
