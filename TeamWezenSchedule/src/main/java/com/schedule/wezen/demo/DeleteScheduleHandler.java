@@ -116,18 +116,18 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 					
 					logger.log("After DAO delete schedule");
 					
-					resp = new DeleteScheduleResponse("Successfully deleted schedule:" + req.scheduleSecretCode);
+					resp = new DeleteScheduleResponse("Successfully deleted schedule:" + req.requestSchedID);
 				} else {
 					
 					logger.log("In else");
 					
-					resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.scheduleSecretCode, 422);
+					resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.requestSchedID, 422);
 				}
 			} catch (Exception e) {
 				
 				logger.log("Exception caught");
 				
-				resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.scheduleSecretCode + "(" + e.getMessage() + ")", 403);
+				resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.requestSchedID + "(" + e.getMessage() + ")", 403);
 			}
 			
 			// compute proper response
