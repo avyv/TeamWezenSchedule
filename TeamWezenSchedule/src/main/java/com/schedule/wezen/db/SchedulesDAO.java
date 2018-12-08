@@ -48,11 +48,11 @@ public class SchedulesDAO {
     
     public boolean deleteSchedule(Schedule schedule) throws Exception {
         try {
-        	//tsdao.deleteAllScheduleTimeSlots(schedule.getId());
-        	PreparedStatement psts = conn.prepareStatement("DELETE FROM TimeSlots WHERE sid = ?;");
-        	psts.setString(1, schedule.getId());
-        	psts.executeUpdate();
-        	psts.close();
+        	tsdao.deleteAllScheduleTimeSlots(schedule.getId());
+//        	PreparedStatement psts = conn.prepareStatement("DELETE FROM TimeSlots WHERE sid = ?;");
+//        	psts.setString(1, schedule.getId());
+//        	psts.execute();
+//        	psts.close();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
             ps.setString(1, schedule.getId());
             int numAffected = ps.executeUpdate();
@@ -108,29 +108,29 @@ public class SchedulesDAO {
         	ps.setInt(7, schedule.getSecretCode());
         	
         	for(TimeSlot ts: schedule.getTimeSlots()) {
-        		//tsdao.addTimeSlot(ts);
+        		tsdao.addTimeSlot(ts);
         		//TODO does this work
-        		PreparedStatement psts = conn.prepareStatement("SELECT * FROM TimeSlots WHERE startTime=? AND slotDate=?;");
-                ps.setTime(1,  Time.valueOf(ts.getStartTime()));
-                ps.setDate(2, Date.valueOf(ts.getDate()));
-                ResultSet resultSetTS = ps.executeQuery();
-                
-                // already present?
-                if (resultSetTS.next()) {
-                    return false;
-                }
-
-                psts = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting) values(?,?,?,?,?,?,?,?);");
-                psts.setString(1, ts.getSid());
-                psts.setTime(2,  Time.valueOf(ts.getStartTime()));
-                psts.setDate(3, Date.valueOf(ts.getDate()));
-                psts.setString(4, ts.getId());
-                psts.setString(5,  ts.getMeeting());
-                psts.setInt(6, ts.getSecretCode());
-                psts.setBoolean(7, ts.getIsOpen());
-                psts.setBoolean(8, ts.getHasMeeting());
-                psts.execute();
-                psts.close();
+//        		PreparedStatement psts = conn.prepareStatement("SELECT * FROM TimeSlots WHERE startTime=? AND slotDate=?;");
+//                ps.setTime(1,  Time.valueOf(ts.getStartTime()));
+//                ps.setDate(2, Date.valueOf(ts.getDate()));
+//                ResultSet resultSetTS = ps.executeQuery();
+//                
+//                // already present?
+//                if (resultSetTS.next()) {
+//                    return false;
+//                }
+//
+//                psts = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting) values(?,?,?,?,?,?,?,?);");
+//                psts.setString(1, ts.getSid());
+//                psts.setTime(2,  Time.valueOf(ts.getStartTime()));
+//                psts.setDate(3, Date.valueOf(ts.getDate()));
+//                psts.setString(4, ts.getId());
+//                psts.setString(5,  ts.getMeeting());
+//                psts.setInt(6, ts.getSecretCode());
+//                psts.setBoolean(7, ts.getIsOpen());
+//                psts.setBoolean(8, ts.getHasMeeting());
+//                psts.execute();
+//                psts.close();
         	}
             
             ps.execute();
