@@ -87,7 +87,7 @@ public class SchedulesDAO {
             ResultSet resultSet = ps.executeQuery();
             
             // already present?
-            while (resultSet.next()) {
+            if (resultSet.next()) {
 //                Schedule s = generateSchedule(resultSet);
 //                resultSet.close();
                 return false;
