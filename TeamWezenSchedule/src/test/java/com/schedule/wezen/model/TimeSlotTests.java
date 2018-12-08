@@ -7,8 +7,6 @@ import java.time.LocalTime;
 
 import org.junit.Test;
 
-//TODO
-import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.db.TimeSlotsDAO;
 
 import junit.framework.TestCase;
@@ -21,21 +19,6 @@ public class TimeSlotTests extends TestCase {
 	protected void setUp() throws Exception {
 		dao = new TimeSlotsDAO();
 		testSlot = createTimeSlot();
-	}
-
-	//TODO
-	SchedulesDAO sched = new SchedulesDAO();
-	Schedule s = new Schedule(LocalDate.parse("2018-12-13"), LocalDate.parse("2018-12-30"), LocalTime.parse("08:00:00"), LocalTime.parse("10:00:00"), 60, "anid", 1);
-	
-	@Test
-	public void testDeleteThisTest() throws Exception {
-		sched.addSchedule(s);
-		
-		sched.addSchedule(s);
-		
-		Schedule newS = sched.getSchedule("anid");
-		
-		sched.deleteSchedule(s);
 	}
 	
 	//DAO
@@ -55,6 +38,8 @@ public class TimeSlotTests extends TestCase {
 		
 		dao.deleteTimeSlot(testSlot);
 	}
+	
+	
 
 	//TimeSlot
 	@Test

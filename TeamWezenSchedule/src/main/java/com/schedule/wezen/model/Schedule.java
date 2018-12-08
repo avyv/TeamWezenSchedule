@@ -354,12 +354,12 @@ public class Schedule {
 		return (sc == secretCode);
 	}
 	
-	public void addTimeSlot(TimeSlot ts) {
-		this.timeSlots.add(ts);
-	}
-	
 	public void emptyTimeSlots() {
 		this.timeSlots = new ArrayList<TimeSlot>();
+	}
+	
+	public void addTimeSlot(TimeSlot ts) {
+		this.timeSlots.add(ts);
 	}
 	
 	public LocalDate getStartDate() {return startDate;}
