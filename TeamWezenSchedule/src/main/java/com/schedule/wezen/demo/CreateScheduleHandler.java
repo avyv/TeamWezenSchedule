@@ -234,9 +234,18 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					
 					try { //
+						
+						logger.log("Before retrieve schedule");
+						
 						retrievedSchedule = dao.getSchedule(req.requestID);
+						
+						logger.log("After retrieve schedule");
+						
 						didRetrieveSchedule = true;
 					} catch (Exception e) {
+						
+						logger.log("Unable to retrieve schedule exception");
+						
 						resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
 					} //
 					
@@ -269,6 +278,11 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					resp = new CreateScheduleResponse("Unable to create schedule, duplicate name: ", 422);
 				}
 			} catch (Exception e) {
+				
+				logger.log((e.getStackTrace().toString()));
+				
+				logger.log(e.getMessage());
+				
 				resp = new CreateScheduleResponse("Unable to create schedule: (" + e.getMessage() + ")", 403);
 			}
 
