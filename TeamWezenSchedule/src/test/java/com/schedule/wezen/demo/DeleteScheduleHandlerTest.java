@@ -1,13 +1,9 @@
-package com.schedule.wezen.demo;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 import org.json.simple.JSONObject;
@@ -17,18 +13,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.google.gson.Gson;
-import com.schedule.wezen.db.DatabaseUtil;
-import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.db.TestContext;
-import com.schedule.wezen.demo.http.CreateScheduleRequest;
-import com.schedule.wezen.demo.http.PostResponse;
 
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class CreateScheduleHandlerTest {
+public class DeleteScheduleHandlerTest {
+
 	Context createContext(String apiCall) {
         TestContext ctx = new TestContext();
         ctx.setFunctionName(apiCall);
@@ -36,17 +28,17 @@ public class CreateScheduleHandlerTest {
     }
 
 	
-    private static final String SAMPLE_INPUT_STRING = "{\"requestStartDate\":\"2018-12-10\",\"requestEndDate\":\"2018-12-12\",\"requestStartTime\":\"01:00:00\",\"requestEndTime\":\"02:00:00\",\"requestSlotDuration\":\"10\",\"requestID\":\"mysched\"}";
+    private static final String SAMPLE_INPUT_STRING = "{\"requestName\":\"dfgd\",\"requestDate\":\"December 2, 2018\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
-    public void testCreateScheduleHandler() throws IOException {
-        CreateScheduleHandler handler = new CreateScheduleHandler();
+    public void testDeleteScheduleHandler() throws IOException {
+        LambdaFunctionHandler handler = new LambdaFunctionHandler();
 
-        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());
+        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
         OutputStream output = new ByteArrayOutputStream();
 
-        handler.handleRequest(input, output, createContext("sample")); 
+        handler.handleRequest(input, output, createContext("sample"));
 
         // TODO: validate output here if needed.
         String sampleOutputString = output.toString();
@@ -55,7 +47,7 @@ public class CreateScheduleHandlerTest {
 			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("Successfully created schedule", bson.get("createScheduleResponse"));
+			Assert.assertEquals("dfgd", bson.get("responseName"));
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -65,27 +57,28 @@ public class CreateScheduleHandlerTest {
     }
     
     @Test
-    public void testCreateScheduleHandlerFromFile() throws IOException {
-    	SchedulesDAO dao = new SchedulesDAO();
-    	Assert.assertTrue (DatabaseUtil.conn != null);
-        CreateScheduleHandler  handler = new CreateScheduleHandler ();
+    public void testDeleteScheduleHandlerFromFile() throws IOException {
+        LambdaFunctionHandler handler = new LambdaFunctionHandler();
 
-        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleCreateSchedule.in"));
+        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleCreateMeeting.in"));
         
         OutputStream output = new ByteArrayOutputStream();
 
         handler.handleRequest(input, output, createContext("sample"));
 
         // TODO: validate output here if needed.
-        PostResponse pr = new Gson().fromJson(output.toString(), PostResponse.class);
+        String sampleOutputString = output.toString();
         JSONParser json = new JSONParser();
-		JSONObject bson = null;
-		try {
-			bson = (JSONObject) json.parse(pr.body);
+        try {
+			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
+			String body = (String) obj.get("body");
+			JSONObject bson = (JSONObject) json.parse(body);
+			Assert.assertEquals("dfgd", bson.get("responseName"));
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Assert.assertEquals("Successfully created schedule", bson.get("createScheduleResponse"));        
+        
     }
 }
