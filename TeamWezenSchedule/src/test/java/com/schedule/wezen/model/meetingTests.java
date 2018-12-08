@@ -10,7 +10,7 @@ import org.junit.Test;
 public class meetingTests {
 	TimeSlot testSlot;
 	@Test
-	public void testMeetings() {
+	public void testMeetingsInit1() {
 		LocalTime startTime = LocalTime.parse("03:00:00");
 		LocalDate slotDate = LocalDate.parse("2018-12-13");
 		String id = "test1";
@@ -27,7 +27,87 @@ public class meetingTests {
 		assertEquals(secretCode, testSlot.getSecretCode());
 		assertEquals(isOpen, testSlot.getIsOpen());
 		assertEquals(hasMeeting, testSlot.getHasMeeting());
+		assertEquals(" ", testSlot.getMeeting());
+	}
+	
+	@Test
+	public void testMeetingsInit2() {
+		LocalTime startTime = LocalTime.parse("03:00:00");
+		LocalDate slotDate = LocalDate.parse("2018-12-13");
+		String id = "test1";
+		String sid = "1";
+		int secretCode = 1234;
+		boolean isOpen = true;
+		boolean hasMeeting = false;
+		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode);
 		
+		assertEquals(startTime, testSlot.getStartTime());
+		assertEquals(slotDate, testSlot.getDate());
+		assertEquals(id, testSlot.getId());
+		assertEquals(sid, testSlot.getSid());
+		assertEquals(secretCode, testSlot.getSecretCode());
+		assertEquals(isOpen, testSlot.getIsOpen());
+		assertEquals(hasMeeting, testSlot.getHasMeeting());
+		assertEquals(" ", testSlot.getMeeting());
+	}
+	
+	@Test
+	public void testMeetingsInit3() {
+		LocalTime startTime = LocalTime.parse("03:00:00");
+		LocalDate slotDate = LocalDate.parse("2018-12-13");
+		String id = "test1";
+		String sid = "1";
+		int secretCode = 1234;
+		boolean isOpen = true;
+		boolean hasMeeting = false;
+		String meetingName = "Meeting";
+		testSlot = new TimeSlot(startTime, slotDate, id, meetingName, sid, secretCode, isOpen, hasMeeting);
+
+		
+		assertEquals(startTime, testSlot.getStartTime());
+		assertEquals(slotDate, testSlot.getDate());
+		assertEquals(id, testSlot.getId());
+		assertEquals(sid, testSlot.getSid());
+		assertEquals(secretCode, testSlot.getSecretCode());
+		assertEquals(isOpen, testSlot.getIsOpen());
+		assertEquals(hasMeeting, testSlot.getHasMeeting());
+		assertEquals("Meeting", testSlot.getMeeting());
 	}
 
+	@Test
+	public void testMeetingsFunctionality() {
+		LocalTime startTime = LocalTime.parse("03:00:00");
+		LocalDate slotDate = LocalDate.parse("2018-12-13");
+		String id = "test1";
+		String sid = "1";
+		int secretCode = 1234;
+		boolean isOpen = true;
+		boolean hasMeeting = false;
+		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting);
+		//test setting open or closed
+		testSlot.setIsOpen(false);
+		assertFalse(testSlot.getIsOpen());
+		testSlot.setIsOpen(true);
+		assertTrue(testSlot.getIsOpen());
+		
+		//test create and delete a meeting
+		testSlot.setIsOpen(false);
+		assertFalse(testSlot.createMeeting("ImAMeeting"));
+		testSlot.setIsOpen(true);
+		assertTrue(testSlot.createMeeting("ImAMeeting"));
+		assertEquals("ImAMeeting", testSlot.getMeeting());
+		assertTrue(testSlot.getHasMeeting());
+		
+
+		testSlot.setIsOpen(true);
+		assertFalse(testSlot.deleteMeeting());
+		testSlot.setIsOpen(false);
+		assertTrue(testSlot.deleteMeeting());
+		assertEquals(" ",testSlot.getMeeting());
+		assertFalse(testSlot.getHasMeeting());
+		assertTrue(testSlot.getIsOpen());
+
+	}
+
+	
 }
