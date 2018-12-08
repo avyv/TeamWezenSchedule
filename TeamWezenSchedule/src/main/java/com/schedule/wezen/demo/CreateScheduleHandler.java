@@ -220,63 +220,34 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 			
 			logger.log("SecretCode: " + secretCode + "");
 			
+			String response = "";
 			
-			
-			
-			
+			boolean notDuplicate = true;
 			
 			try {
 				/* NOTE: When the database is created, we will use these lines to create Schedules */
 				
 				// DATABASE STUFF!!!
 				
-				if (createScheduleLambda(startD, endD, startT, endT, slotD, secretCode, req.requestID)) {
+				logger.log("In try statement, before createScheduleLambda");
+				
+				if(createScheduleLambda(startD, endD, startT, endT, slotD, secretCode, req.requestID)) {
 					
+					logger.log("createScheduleLambda passed");
 					
-					try { //
-						
-						logger.log("Before retrieve schedule");
-						
-						retrievedSchedule = dao.getSchedule(req.requestID);
-						
-						logger.log("After retrieve schedule");
-						
-						didRetrieveSchedule = true;
-					} catch (Exception e) {
-						
-						logger.log("Unable to retrieve schedule exception");
-						
-						resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
-					} //
+					notDuplicate = true;
 					
+					response = "Successfully created schedule";
 					
-					if(didRetrieveSchedule) {
-						String startDateOfWeek;
-						String startTime = retrievedSchedule.getStartTime().toString();
-						String scheduleID = retrievedSchedule.getId();
-						int slotDuration = retrievedSchedule.getSlotDuration();
-						int sc = retrievedSchedule.getSecretCode();
-						int numSlotsDay = retrievedSchedule.getNumSlotsDay();
-						String scheduleStartDate = retrievedSchedule.getStartDate().toString();
-						String scheduleEndDate = retrievedSchedule.getEndDate().toString();
-						
-						
-						ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay());
-						Schedule firstWeek = scheduleDividedByWeeks.get(0);
-						startDateOfWeek = firstWeek.getStartDate().toString();
-						
-						resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), "Successfully created schedule", 200);
-					}
+				} 
+				
+				else {
 					
+					logger.log("In else statement, dublicate ID");
 					
-					
-					//resp = new CreateScheduleResponse("Successfully created schedule", req.startDate, req.endDate, req.startTime, req.slotDuration, retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getSecretCode(), retrievedSchedule.getTimeSlots(), 200);
-					
-					
-					
-				} else {
 					resp = new CreateScheduleResponse("Unable to create schedule, duplicate name: ", 422);
 				}
+				
 			} catch (Exception e) {
 				
 				logger.log((e.getStackTrace().toString()));
@@ -285,6 +256,48 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				resp = new CreateScheduleResponse("Unable to create schedule: (" + e.getMessage() + ")", 403);
 			}
+			
+			
+			
+			try { //
+				
+				logger.log("Before retrieve schedule");
+				
+				retrievedSchedule = dao.getSchedule(req.requestID);
+				
+				logger.log("After retrieve schedule");
+				
+				didRetrieveSchedule = true;
+				
+			} 
+			catch (Exception e) {
+				
+				logger.log("Unable to retrieve schedule exception");
+				
+				resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+			} //
+
+
+			if(didRetrieveSchedule) {
+				String startDateOfWeek;
+				String startTime = retrievedSchedule.getStartTime().toString();
+				String scheduleID = retrievedSchedule.getId();
+				int slotDuration = retrievedSchedule.getSlotDuration();
+				int sc = retrievedSchedule.getSecretCode();
+				int numSlotsDay = retrievedSchedule.getNumSlotsDay();
+				String scheduleStartDate = retrievedSchedule.getStartDate().toString();
+				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+				
+				
+				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay());
+				Schedule firstWeek = scheduleDividedByWeeks.get(0);
+				startDateOfWeek = firstWeek.getStartDate().toString();
+				
+				resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
+			}
+			
+			
+			
 
 			// compute proper response
 	        createScheduleResponseJson.put("body", new Gson().toJson(resp));
@@ -299,3 +312,4 @@ public class CreateScheduleHandler implements RequestStreamHandler {
     }
 
 }
+
