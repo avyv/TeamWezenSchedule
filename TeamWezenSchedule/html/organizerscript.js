@@ -52,14 +52,10 @@ function generateCalendar(){
     /********** header ************/
     let header = calendar.insertRow(0);
     header.id = "timelbl";
-    for(let j=0;j<weekdays.length;j++){
-      let head = header.insertCell(-1);
-      if(j>0){
-        var html = weekdays[j] + "<br>" + m + "/" + d ;
-        d++;
-      }else{var html = weekdays[j];}//dont put date on time label
-      head.innerHTML = html;
-    }
+    let head = header.insertCell(-1);
+    var html = weekdays[0];
+    head.innerHTML = html;
+
     /********* Calendar *********/
     let st = currSchedule.startTime.split(":");
     var dur = currSchedule.slotDuration;
@@ -95,6 +91,14 @@ function generateCalendar(){
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
         let myslot = currSchedule.timeSlots[tsiterator];
+
+
+        if(row==1){
+            let head = header.insertCell(-1);
+            var html = weekdays[d] + "<br>" + myslot.slotDate.month + "/" + myslot.slotDate.day;
+            head.innerHTML = html;
+        }
+
         if((myslot.isOpen)&&(orgCredentials == currSchedule.orgCode)){
           let closebtn = document.createElement("BUTTON");
           closebtn.innerText = "Set Closed";
@@ -131,6 +135,7 @@ function generateCalendar(){
       document.getElementById("bulkts").style.display = 'inline';
     }else{
       document.getElementById("bulkts").style.display = 'none';
+      document.getElementById("editschedbtn").style.display = 'none';
       document.getElementById("deleteschedbtn").style.display = 'none';
     }
     //if not already visible, make visible
@@ -162,10 +167,9 @@ function generateCalendar(){
       document.getElementById("calendarwindow").style.visibility = 'hidden';
       let sid = currSchedule.id;
       let data = {};
-      data["requestid"] = String(sid);
+      data["requestSchedID"] = String(sid);
       let deleteschedule_url = base_url + "/deleteschedule";
-      sendData(data,deleteschedule_url,processSchedule);
-      alert("Deleted Schedule");
+      sendData(data,deleteschedule_url,deleteScheduleCallback);
     }
   }
   //ensure all fields have been filled out
@@ -297,7 +301,7 @@ function openSchedule(){
     alert("You Must enter a valid id");
   }else{
     let data = {};
-    data["requestId"] = String(enteredID);
+    data["requestSchedID"] = String(enteredID);
     data["requestWeekStart"] = "";
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
@@ -315,7 +319,7 @@ function openEditSchedule(){
     alert("Please Fill Out All Inputs");
   }else{
     let data = {};
-    data["requestId"] = String(enteredID);
+    data["requestSchedID"] = String(enteredID);
     data["requestWeekStart"] = "";
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processEditSchedule);
@@ -380,7 +384,6 @@ function bulkEdit(){
 }
 
 function getNextWeek(){
-  alert("next week");
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
@@ -389,7 +392,6 @@ function getNextWeek(){
 }
 
 function getPreviousWeek(){
-  alert("previous week");
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
@@ -539,4 +541,10 @@ function processEditSchedule(xhrResult){
   }else{
     alert(js["response"]);
   }
+}
+
+function deleteScheduleCallback(xhrResult){
+  console.log("result:" + xhrResult);
+  let js = JSON.parse(xhrResult);
+  alert(js["deleteScheduleResponse"]);
 }

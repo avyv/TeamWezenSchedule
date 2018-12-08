@@ -1,4 +1,4 @@
-var base_url = "https://xdk3131931.execute-api.us-east-2.amazonaws.com/Alpha";
+var base_url = "https://kiljpq1n4a.execute-api.us-east-2.amazonaws.com/Alpha";
 
 var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:{name:"Mtng1"},date:"2018-12-03",isOpen:false},
                     {startTime:"01:00:00",meeting:{name:"Mtng2"},secretCode:0002,id:"fourth1",date:"2018-12-04",isOpen:true},
@@ -33,7 +33,7 @@ var dummyTimeslots = [{startTime:"01:00:00",secretCode:0001,id:"third1",meeting:
                     {startTime:"04:00:00",meeting:{name:" "},secretCode:0028,id:"nineth4",date:"2018-12-09",isOpen:true}];
 
 var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:15,id:"Test",numSlotsPerDay:4,timeSlots:dummyTimeslots,orgCode:1234,fullEndDate:"2018-12-09",fullStartDate:"2018-12-03"};
-var currSchedule = currSchedule;
+var currSchedule = dummySchedule;
 var currts = currSchedule.timeSlots[0];
 
 // window.onload = initialize;
@@ -56,14 +56,10 @@ function generateCalendar(){
     /********** header ************/
     let header = calendar.insertRow(0);
     header.id = "timelbl";
-    for(let j=0;j<weekdays.length;j++){
-      let head = header.insertCell(-1);
-      if(j>0){
-        var html = weekdays[j] + "<br>" + m + "/" + d ;
-        d++;
-      }else{var html = weekdays[j];}//dont put date on time label
-      head.innerHTML = html;
-    }
+    let head = header.insertCell(-1);
+    var html = weekdays[0];
+    head.innerHTML = html;
+
     /********* Calendar *********/
     let st = currSchedule.startTime.split(":");
     let dur = currSchedule.slotDuration;
@@ -93,6 +89,13 @@ function generateCalendar(){
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
         let myslot = currSchedule.timeSlots[tsiterator];
+
+
+        if(row==1){
+            let head = header.insertCell(-1);
+            var html = weekdays[d] + "<br>" + myslot.slotDate.month + "/" + myslot.slotDate.day;
+            head.innerHTML = html;
+        }
 
         if((myslot.meetingName == " ")&&(myslot.isOpen)){
           let freebtn = document.createElement("BUTTON");
@@ -174,7 +177,7 @@ function openSchedule(){
     alert("You Must enter a valid id");
   }else{
     let data = {};
-    data["requestId"] = String(enteredID);
+    data["requestSchedID"] = String(enteredID);
     data["requestWeekStart"] = "";
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
@@ -202,7 +205,6 @@ function filter(){
 
 
 function getNextWeek(){
-  alert("next week");
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
@@ -211,7 +213,6 @@ function getNextWeek(){
 }
 
 function getPreviousWeek(){
-  alert("previous week");
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
