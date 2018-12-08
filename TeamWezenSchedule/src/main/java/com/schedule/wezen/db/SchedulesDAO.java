@@ -148,13 +148,14 @@ public class SchedulesDAO {
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
 
-        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
-        
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();
         List<TimeSlot> scheduleTimeSlots = getTimeSlots.getAllScheduleTimeSlots(id); // get a list of all the schedules timeSlots
+        ArrayList<TimeSlot> toAdd = new ArrayList<TimeSlot>();
         for(TimeSlot ts: scheduleTimeSlots) { // Add all of the schedules timeSlots to its timeSlot arraylist
-        	toRet.addTimeSlot(ts);
+        	toAdd.add(ts);
         }
+        
+        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode, toAdd);
         
         return toRet;
     }
