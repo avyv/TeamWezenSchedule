@@ -1,3 +1,5 @@
+package com.schedule.wezen.demo;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,12 +30,12 @@ public class DeleteScheduleHandlerTest {
     }
 
 	
-    private static final String SAMPLE_INPUT_STRING = "{\"requestName\":\"dfgd\",\"requestDate\":\"December 2, 2018\"}";
+    private static final String SAMPLE_INPUT_STRING = "{\"requestSchedID\":\"hello!!\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
     public void testDeleteScheduleHandler() throws IOException {
-        LambdaFunctionHandler handler = new LambdaFunctionHandler();
+        DeleteScheduleHandler handler = new DeleteScheduleHandler();
 
         InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());;
         OutputStream output = new ByteArrayOutputStream();
@@ -47,7 +49,7 @@ public class DeleteScheduleHandlerTest {
 			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("dfgd", bson.get("responseName"));
+			Assert.assertEquals("Successfully deleted schedule: hello!!", bson.get("deleteScheduleResponse"));
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -58,9 +60,9 @@ public class DeleteScheduleHandlerTest {
     
     @Test
     public void testDeleteScheduleHandlerFromFile() throws IOException {
-        LambdaFunctionHandler handler = new LambdaFunctionHandler();
+        DeleteScheduleHandler handler = new DeleteScheduleHandler();
 
-        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleCreateMeeting.in"));
+        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleDeleteSchedule.in"));
         
         OutputStream output = new ByteArrayOutputStream();
 
@@ -73,7 +75,7 @@ public class DeleteScheduleHandlerTest {
 			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("dfgd", bson.get("responseName"));
+			Assert.assertEquals("Unable to delete schedule: hello!!", bson.get("deleteScheduleResponse"));
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

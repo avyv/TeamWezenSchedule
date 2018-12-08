@@ -36,12 +36,12 @@ public class GetScheduleHandlerTest {
     }
 
 	
-    private static final String SAMPLE_INPUT_STRING = "{\"requestSchedID\":\"hello!!\",\"requestStartDateOfWeek\":\"\"}";
+    private static final String SAMPLE_INPUT_STRING = "{\"requestSchedID\":\"hello!!\",\"requestWeekStart\":\"\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
     public void testGetScheduleHandler() throws IOException {
-        LambdaFunctionHandler handler = new LambdaFunctionHandler();
+        GetScheduleHandler handler = new GetScheduleHandler();
 
         InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());
         OutputStream output = new ByteArrayOutputStream();
@@ -55,7 +55,7 @@ public class GetScheduleHandlerTest {
 			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("Successfully retrieved schedule", bson.get("getScheduleResponse"));
+			Assert.assertEquals("Successfully retrieved schedule", bson.get("response"));
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -68,7 +68,7 @@ public class GetScheduleHandlerTest {
     public void testGetScheduleHandlerFromFile() throws IOException {
     	SchedulesDAO dao = new SchedulesDAO();
     	Assert.assertTrue (DatabaseUtil.conn != null);
-        CreateScheduleHandler  handler = new CreateScheduleHandler ();
+        GetScheduleHandler  handler = new GetScheduleHandler ();
 
         FileInputStream input = new FileInputStream( new File("src/test/resources/sampleGetSchedule.in"));
         
@@ -86,6 +86,6 @@ public class GetScheduleHandlerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Assert.assertEquals("Successfully retrieved schedule", bson.get("getScheduleResponse"));        
+		Assert.assertEquals("Successfully retrieved schedule", bson.get("response"));        
     }
 }

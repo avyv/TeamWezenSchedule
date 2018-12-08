@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.schedule.wezen.db.DatabaseUtil;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.db.TestContext;
+import com.schedule.wezen.db.TimeSlotsDAO;
 import com.schedule.wezen.demo.http.CreateScheduleRequest;
 import com.schedule.wezen.demo.http.PostResponse;
 
@@ -41,6 +42,9 @@ public class CreateScheduleHandlerTest {
 
     @Test
     public void testCreateScheduleHandler() throws IOException {
+    	SchedulesDAO dao = new SchedulesDAO();
+    	TimeSlotsDAO tsdao = new TimeSlotsDAO();
+    	
         CreateScheduleHandler handler = new CreateScheduleHandler();
 
         InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());
@@ -55,18 +59,24 @@ public class CreateScheduleHandlerTest {
 			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("Successfully created schedule", bson.get("createScheduleResponse"));
+			Assert.assertEquals("Successfully created schedule", bson.get("response"));
+			
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         
+        dao.deleteAllSchedules();
+		tsdao.deleteAllTimeSlots();
+        
     }
     
     @Test
     public void testCreateScheduleHandlerFromFile() throws IOException {
     	SchedulesDAO dao = new SchedulesDAO();
+    	TimeSlotsDAO tsdao = new TimeSlotsDAO();
+    	
     	Assert.assertTrue (DatabaseUtil.conn != null);
         CreateScheduleHandler  handler = new CreateScheduleHandler ();
 
@@ -82,10 +92,14 @@ public class CreateScheduleHandlerTest {
 		JSONObject bson = null;
 		try {
 			bson = (JSONObject) json.parse(pr.body);
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Assert.assertEquals("Successfully created schedule", bson.get("createScheduleResponse"));        
+		Assert.assertEquals("Successfully created schedule", bson.get("response")); 
+		
+		dao.deleteAllSchedules();
+		tsdao.deleteAllTimeSlots();
     }
 }
