@@ -96,14 +96,14 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 			LocalTime st = m.stringToTime(startt);
 			LocalTime et = m.stringToTime(endt);
 			int dur = 0;
-			String id = "";
+			int secretCode = 0;
 			
 			logger.log("After initializations");
 			
 			
 			// See how awkward it is to call delete with an object, when you only
 			// have one part of its information?
-			Schedule schedule = new Schedule(sd, ed, st, et, dur, id, req.scheduleSecretCode);
+			Schedule schedule = new Schedule(sd, ed, st, et, dur, req.requestSchedID, secretCode);
 			
 			logger.log("After creating new dummy schedule with real secret code");
 			
@@ -116,18 +116,18 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 					
 					logger.log("After DAO delete schedule");
 					
-					resp = new DeleteScheduleResponse("Successfully deleted schedule:" + req.scheduleSecretCode);
+					resp = new DeleteScheduleResponse("Successfully deleted schedule:" + req.requestSchedID);
 				} else {
 					
 					logger.log("In else");
 					
-					resp = new DeleteScheduleResponse("Unable to delete schedule, Secret Code did not match: " + req.scheduleSecretCode, 422);
+					resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.requestSchedID, 422);
 				}
 			} catch (Exception e) {
 				
 				logger.log("Exception caught");
 				
-				resp = new DeleteScheduleResponse("Unable to delete schedule, Secret Code did not match: " + req.scheduleSecretCode + "(" + e.getMessage() + ")", 403);
+				resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.requestSchedID + "(" + e.getMessage() + ")", 403);
 			}
 			
 			// compute proper response
