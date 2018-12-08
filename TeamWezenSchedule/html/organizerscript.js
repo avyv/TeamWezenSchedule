@@ -41,6 +41,15 @@ var orgCredentials = "";
 /**********  Create Calendar Display **********/
 function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
+    //date input for filter schedule options
+    let setBounds = document.getElementById("selectdayofmonth");
+    setBounds.min = currSchedule.fullStartDate;
+    setBounds.max = currSchedule.fullEndDate;
+    //date input for filter schedule options
+    let setBounds = document.getElementById("selectdayofmonth");
+    setBounds.min = currSchedule.fullStartDate;
+    setBounds.max = currSchedule.fullEndDate;
+    //header for calendar
     var weekdays = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     let date = currSchedule.startDate;
     let parseddate = date.split("-");
@@ -112,10 +121,15 @@ function generateCalendar(){
             freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
             thisSlot.appendChild(freebtn);
           }else if(orgCredentials == currSchedule.orgCode){
-            let openbtn = document.createElement("BUTTON");
-            openbtn.innerText = "Set Free";
-            openbtn.addEventListener('click', function(){openSlot(myslot)});
-            thisSlot.appendChild(openbtn);
+            let mydate = myslot.startDate;
+            let scheddate = currSchedule.fullStartDate;
+            var checkdate = (mydate.year<scheddate.year)||(mydate.month<scheddate.month)||(mydate.day<scheddate.day);
+            if(!checkdate){
+              let openbtn = document.createElement("BUTTON");
+              openbtn.innerText = "Set Free";
+              openbtn.addEventListener('click', function(){openSlot(myslot)});
+              thisSlot.appendChild(openbtn);
+            }
           }
         }else{
           let mtng = document.createElement("P");

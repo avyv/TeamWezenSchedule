@@ -24,10 +24,10 @@
               <input type="text" id="setschedid"  required>
 
               <label for="setstartday"><b><br>Start Date </label>
-              <input type="date" id="setstartday"  required>
+              <input type="date" id="setstartday" onchange="JavaScript:updateEndDate(this);"  required>
 
               <label for="setendday"><b><br>End Date </label>
-              <input type="date" id="setendday"   required>
+              <input type="date" id="setendday"  onchange="JavaScript:updateStartDate(this);" required>
 
               <label for="settimestart"><b><br>Daily Start Time </label>
               <select id="settimestart" onchange="updateEndTime()" required>

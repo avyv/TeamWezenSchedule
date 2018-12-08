@@ -45,7 +45,13 @@ var currts = currSchedule.timeSlots[0];
 
 /**********  Create Calendar Display **********/
 function generateCalendar(){
+    //reset display
     document.getElementById("daysview").innerHTML = "";
+    //date input for filter schedule options
+    let setBounds = document.getElementById("selectdayofmonth");
+    setBounds.min = currSchedule.fullStartDate;
+    setBounds.max = currSchedule.fullEndDate;
+    //header for calendar
     var weekdays = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     let date = currSchedule.startDate;
     let parseddate = date.split("-");
