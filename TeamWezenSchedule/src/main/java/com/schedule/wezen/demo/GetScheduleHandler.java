@@ -158,7 +158,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
 				logger.log(e.getMessage());
-				getScheduleResponse = new GetScheduleResponse("Unable to retrieve schedule, incorrect ID: " + e.getMessage(), 403);
+				getScheduleResponse = new GetScheduleResponse("A schedule with that ID does not exist in our database: " + e.getMessage(), 403);
 			}
 			
 			// compute proper response
