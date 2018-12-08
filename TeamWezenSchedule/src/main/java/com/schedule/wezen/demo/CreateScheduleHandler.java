@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.simple.JSONObject;
@@ -241,7 +242,21 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					
 					if(didRetrieveSchedule) {
-						resp = new CreateScheduleResponse(req.requestStartDate, req.requestStartTime, req.requestID, retrievedSchedule.getSlotDuration(), retrievedSchedule.getSecretCode(), retrievedSchedule.getNumSlotsDay(), req.requestStartDate, req.requestEndDate, retrievedSchedule.getTimeSlots(), "Successfully created schedule", 200);
+						String startDateOfWeek;
+						String startTime = retrievedSchedule.getStartTime().toString();
+						String scheduleID = retrievedSchedule.getId();
+						int slotDuration = retrievedSchedule.getSlotDuration();
+						int sc = retrievedSchedule.getSecretCode();
+						int numSlotsDay = retrievedSchedule.getNumSlotsDay();
+						String scheduleStartDate = retrievedSchedule.getStartDate().toString();
+						String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+						
+						
+						ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
+						Schedule firstWeek = scheduleDividedByWeeks.get(0);
+						startDateOfWeek = firstWeek.getStartDate().toString();
+						
+						resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), "Successfully created schedule", 200);
 					}
 					
 					

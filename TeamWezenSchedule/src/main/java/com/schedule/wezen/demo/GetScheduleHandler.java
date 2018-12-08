@@ -90,7 +90,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 			try {
 				Schedule retrievedSchedule = retrieveSchedule(getScheduleRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
-				String startDateOfWeek = retrievedSchedule.getStartDate().toString();
+				String startDateOfWeek = "";
 				String startTime = retrievedSchedule.getStartTime().toString();
 				String scheduleID = retrievedSchedule.getId();
 				int slotDuration = retrievedSchedule.getSlotDuration();
@@ -108,6 +108,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				 */
 				if(getScheduleRequest.requestWeekStart.equals("")) {
 					byWeek = scheduleDividedByWeeks.get(0);
+					startDateOfWeek = byWeek.getStartDate().toString();
 				}
 				
 				/**
@@ -132,6 +133,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 					}
 					
 					byWeek = scheduleDividedByWeeks.get(week);
+					startDateOfWeek = byWeek.getStartDate().toString();
 				}
 				
 				String response = "Successfully retrieved schedule";
