@@ -32,7 +32,16 @@ public class ScheduleTests extends TestCase{
 		
 		Schedule newSched = dao.getSchedule("thisSchedule");
 		
-		assertEquals(newSched.timeSlots.size(), sched.timeSlots.size());
+		int numCont = 0;
+		for(TimeSlot schedTS: sched.timeSlots) {
+			for(TimeSlot newSchedTS: newSched.timeSlots) {
+				if(schedTS.id.equals(newSchedTS.id))
+					numCont++;
+			}
+		}
+		
+		assertEquals(sched.timeSlots.size(), numCont);
+		
 		assertEquals(newSched.id, sched.id);
 		assertEquals(newSched.numSlotsDay, sched.numSlotsDay);
 		assertEquals(newSched.secretCode, sched.secretCode);
