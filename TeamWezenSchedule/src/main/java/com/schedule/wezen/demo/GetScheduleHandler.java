@@ -41,7 +41,13 @@ public class GetScheduleHandler implements RequestStreamHandler {
 		
 		SchedulesDAO dao = new SchedulesDAO();
 		
-		return dao.getSchedule(scheduleID);
+		logger.log("After SchedulesDAO object");
+		
+		Schedule schedule = dao.getSchedule(scheduleID);
+		
+		logger.log("After creating schedule object and using getSchedule from the DAO");
+		
+		return schedule;
 	}
 	
 	
@@ -87,10 +93,12 @@ public class GetScheduleHandler implements RequestStreamHandler {
 			GetScheduleRequest getScheduleRequest = new Gson().fromJson(body, GetScheduleRequest.class);
 			logger.log(getScheduleRequest.toString());
 			
+			logger.log("Before retrieveSchedule");
+			
 			try {
 				Schedule retrievedSchedule = retrieveSchedule(getScheduleRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
-				logger.log("Retrieved Schedule");
+				logger.log("Retrieved Schedule: " + retrievedSchedule.getId());
 				
 				String startDateOfWeek = "";
 				String startTime = retrievedSchedule.getStartTime().toString();
