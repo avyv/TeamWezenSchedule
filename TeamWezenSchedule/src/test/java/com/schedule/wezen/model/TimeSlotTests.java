@@ -19,11 +19,14 @@ public class TimeSlotTests extends TestCase {
 	protected void setUp() throws Exception {
 		dao = new TimeSlotsDAO();
 		testSlot = createTimeSlot();
+		dao.deleteAllTimeSlots();
 	}
 	
 	//DAO
 	@Test
 	public void testAddGetDeleteTimeSlot() throws Exception{
+		dao.addTimeSlot(testSlot);
+		
 		dao.addTimeSlot(testSlot);
 		
 		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.startTime, testSlot.getDate());
@@ -39,7 +42,39 @@ public class TimeSlotTests extends TestCase {
 		dao.deleteTimeSlot(testSlot);
 	}
 	
-	
+	@Test
+	public void testAddGetAll() throws Exception{
+		dao.addTimeSlot(testSlot);
+		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-14"), "11:00:00 2018-12-14", "1", 2345);
+		dao.addTimeSlot(alsoTestSlot);
+		
+		TimeSlot[] toTest = new TimeSlot[2];
+		toTest[0] = dao.getAllTimeSlots().get(0);
+		toTest[1] = dao.getAllTimeSlots().get(1);
+		
+		assertTrue(testSlot.id.equals(toTest[0].id));
+		System.out.println(testSlot.secretCode + " " + toTest[0].secretCode);
+		assertTrue(testSlot.secretCode == toTest[0].secretCode);
+		assertTrue(testSlot.sid.equals(toTest[0].sid));
+		assertTrue(testSlot.hasMeeting == toTest[0].hasMeeting);
+		assertTrue(testSlot.isOpen == toTest[0].isOpen);
+		assertTrue(testSlot.meetingName.equals(toTest[0].meetingName));
+		assertTrue(testSlot.slotDate.isEqual(toTest[0].slotDate));
+		assertTrue(testSlot.startTime == toTest[0].startTime);
+		
+		assertTrue(alsoTestSlot.id.equals(toTest[1].id));
+		assertTrue(alsoTestSlot.secretCode == toTest[1].secretCode);
+		assertTrue(alsoTestSlot.sid.equals(toTest[1].sid));
+		assertTrue(alsoTestSlot.hasMeeting == toTest[1].hasMeeting);
+		assertTrue(alsoTestSlot.isOpen == toTest[1].isOpen);
+		assertTrue(alsoTestSlot.meetingName.equals(toTest[1].meetingName));
+		assertTrue(alsoTestSlot.slotDate.isEqual(toTest[1].slotDate));
+		assertTrue(alsoTestSlot.startTime == toTest[1].startTime);
+		
+		dao.getAllScheduleTimeSlots("1");
+		
+		dao.deleteAllScheduleTimeSlots("1");
+	}
 
 	//TimeSlot
 	@Test
@@ -84,7 +119,7 @@ public class TimeSlotTests extends TestCase {
 		TimeSlot mySlot;
 		LocalTime startTime = LocalTime.parse("03:00:00");
 		LocalDate slotDate = LocalDate.parse("2018-12-14");
-		String id = "test1";
+		String id = "03:00:00 2018-12-14";
 		String sid = "1";
 		int secretCode = 1234;
 		boolean isOpen = true;

@@ -146,6 +146,19 @@ public class TimeSlotsDAO {
         }
     }
     
+    public void deleteAllTimeSlots() {
+    	PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement("DELETE FROM TimeSlots;");
+			
+			ps.execute();
+			
+			ps.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
     private TimeSlot generateTimeSlot(ResultSet resultSet) throws Exception {
     	String sid = resultSet.getString("sid");
     	Time startTime = resultSet.getTime("startTime");

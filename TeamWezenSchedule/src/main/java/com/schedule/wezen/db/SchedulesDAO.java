@@ -138,6 +138,19 @@ public class SchedulesDAO {
         }
     }
     
+    public void deleteAllSchedules() {
+    	PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement("DELETE FROM Schedules;");
+			
+			ps.execute();
+			
+			ps.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
     private Schedule generateSchedule(ResultSet resultSet) throws Exception {
         Date startDate = resultSet.getDate("startDate");
         Date endDate = resultSet.getDate("endDate");
