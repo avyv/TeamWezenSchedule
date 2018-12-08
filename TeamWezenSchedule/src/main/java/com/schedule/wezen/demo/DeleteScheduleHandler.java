@@ -116,7 +116,7 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 					
 					logger.log("After DAO delete schedule");
 					
-					resp = new DeleteScheduleResponse("Successfully deleted schedule:" + req.requestSchedID);
+					resp = new DeleteScheduleResponse("Successfully deleted schedule: " + req.requestSchedID);
 				} else {
 					
 					logger.log("In else");

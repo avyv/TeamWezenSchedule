@@ -129,7 +129,8 @@ function promptMeetingName(ts){
   prompt.style.display='block';
 }
 
-function createMtng(name){
+function createMtng(){
+  let name = document.getElementById("mtngName").value;
   if ((name == "") || (name == " ")) {
     alert("You must enter a valid name");
   }  else{

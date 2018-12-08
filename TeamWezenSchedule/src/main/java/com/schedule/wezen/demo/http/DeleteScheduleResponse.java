@@ -14,5 +14,3 @@ public class DeleteScheduleResponse {
 		this.httpCode = 200;
 	}
 }
-
-// may need alterations

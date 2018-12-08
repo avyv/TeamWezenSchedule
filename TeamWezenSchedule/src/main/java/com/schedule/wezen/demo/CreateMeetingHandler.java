@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.simple.JSONObject;
@@ -27,6 +28,7 @@ import com.schedule.wezen.demo.http.CreateMeetingResponse;
 import com.schedule.wezen.demo.http.CreateScheduleResponse;
 import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
+import com.schedule.wezen.model.TimeSlot;
 
 
 public class CreateMeetingHandler implements RequestStreamHandler {
@@ -103,48 +105,103 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 		// If the request is a body or a get request
 		logger.log("processedL" + processed);
 		if (!processed) {
-			CreateMeetingRequest cmRequest = new Gson().fromJson(body, CreateMeetingRequest.class); // create a new DateRequest
-			logger.log(cmRequest.toString()); // log request
+			
+			logger.log("in not processed");
+			
+			CreateMeetingRequest createMeetingRequest = new Gson().fromJson(body, CreateMeetingRequest.class); // create a new DateRequest
+			logger.log(createMeetingRequest.toString()); // log request
 
 			// This is where stuff starts happening
-
 			
-			CreateMeetingResponse cmResp = null; //
+			
+			logger.log("Before creating SchedulesDAO object");
 			
 			
 			SchedulesDAO dao = new SchedulesDAO();
 			
 			Schedule retrievedSchedule = null;
 			
-			boolean didRetrieveSchedule = false; //
+			boolean didRetrieveSchedule = false; 
 			
 			
-			
-			try { //
-				retrievedSchedule = dao.getSchedule(cmRequest.requestSchedID);
+			try { 
+				
+				logger.log("Before attempt at retrieving schedule");
+				
+				retrievedSchedule = dao.getSchedule(createMeetingRequest.requestSchedID);
+				
+				logger.log("After retrieving schedule: " + retrievedSchedule.getId());
+				
 				didRetrieveSchedule = true;
+				
 			} catch (Exception e) {
-				cmResp = new CreateMeetingResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
-			} //
+				
+				logger.log("Caught exception: " + e.getMessage());
+				
+				createMeetingResponse = new CreateMeetingResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+			} 
 			
 			
 			if(didRetrieveSchedule) {
 				
-				Model m = new Model();
-				
-				String startTime = m.stringToTime(stringTime);
-				String endTime = m.stringToDate(stringDate);
+				logger.log("After schedule was successfully retrieved");
 				
 				
-				cmResp = new CreateMeetingResponse(cmRequest.requestWeekStart, retrievedSchedule.getStartTime(), cmRequest.requestSchedID, retrievedSchedule.getSlotDuration(), retrievedSchedule.getSecretCode(), retrievedSchedule.getNumSlotsDay(), retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getTimeSlots(), "Successfully created schedule", 200); // Take name, store it in a new add response with a 200 code
+				String startDateOfWeek = "";
+				String startTime = retrievedSchedule.getStartTime().toString();
+				String scheduleID = retrievedSchedule.getId();
+				int slotDuration = retrievedSchedule.getSlotDuration();
+				int secretCode = retrievedSchedule.getSecretCode();
+				int numSlotsDay = retrievedSchedule.getNumSlotsDay();
+				String scheduleStartDate = retrievedSchedule.getStartDate().toString();
+				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+				
+				
+				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay());
+				
+				logger.log("After initializing variables, before retrieving the correct weekly schedule");
+				
+				Schedule byWeek = null;
+				int week = -1;
+				
+				for(Schedule schedule: scheduleDividedByWeeks) {
+					
+					week++;
+					
+					if((schedule.getStartDate().toString()).equals(createMeetingRequest.requestWeekStart)) {
+						
+						logger.log("Found the correct week");
+						
+						byWeek = scheduleDividedByWeeks.get(week);
+					}
+				}
+				
+				logger.log("After 1st for loop, before 2nd");
+				
+				
+				for(TimeSlot timeslot : byWeek.getTimeSlots()) {
+					
+					if(timeslot.getId().equals(createMeetingRequest.requestTSId)) {
+						
+						logger.log("Found the correct timeslot to insert meeting");
+						
+						timeslot.createMeeting(createMeetingRequest.requestMtngName);
+					}
+				}
+				
+				logger.log("After 2nd for loop");
+				
+				startDateOfWeek = byWeek.getStartDate().toString();
+				
+				String response = "Successfully created meeting";
+				
+				createMeetingResponse = new CreateMeetingResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
+				
 			}
-			
-			
-			
 			
 			// compute proper response
 			
-	        dateResponseJson.put("body", new Gson().toJson(cmResp)); // put it in responseJson 
+	        dateResponseJson.put("body", new Gson().toJson(createMeetingResponse)); // put it in responseJson 
 		}
 		
         logger.log("end result:" + dateResponseJson.toJSONString()); // log that the process is finished

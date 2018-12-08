@@ -44,7 +44,7 @@ public class Schedule {
 	}
 	
 	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode){
-		ArrayList<TimeSlot> sortedTs = sortTimeSlots(timeSlots, numSlotsDay);
+		ArrayList<TimeSlot> sortedTs = sortTimeSlots(this.timeSlots, this.numSlotsDay);
 		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>(); 
 		LocalDate copySD = startDate;
 		LocalDate copyED;
@@ -54,7 +54,7 @@ public class Schedule {
 		}
 		copyED = copySD.plusDays(6);
 		int counter = 0;
-		int numSlotsWeek = (7*numSlotsDay);
+		int numSlotsWeek = (7*this.numSlotsDay);
 		while(!(copySD.isAfter(endDate))) {
 			ArrayList<TimeSlot> ts = new ArrayList<TimeSlot>();
 			for(int i = 0; i<numSlotsWeek; i++) {
