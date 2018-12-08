@@ -29,8 +29,20 @@ public class Schedule {
 		populateTimeSlots(startDate, endDate, startTime, endTime, slotDuration, numSlotsDay, id, timeSlots);
 	}
 	
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, ArrayList<TimeSlot> timeSlots) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.startTime = startTime;
+		this.slotDuration = slotDuration;
+		this.id = id;
+		this.secretCode = secretCode;
+		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
+		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
+		this.timeSlots = timeSlots;
+	}
+	
 	public ArrayList<Schedule> divideByWeeks(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int duration, String id, int secretCode){
-		sortTimeSlots(timeSlots, numSlotsDay);
+		ArrayList<TimeSlot> sortedTs = sortTimeSlots(timeSlots, numSlotsDay);
 		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>(); 
 		LocalDate copySD = startDate;
 		LocalDate copyED;
@@ -38,16 +50,16 @@ public class Schedule {
 		if(startDayOfWeek > 1) {
 			copySD = startDate.minusDays(startDayOfWeek - 1);
 		}
-		copyED = startDate.plusDays(6);
+		copyED = copySD.plusDays(6);
 		int counter = 0;
-		int numSlotsWeek = (7*numSlotsDay)-1;
+		int numSlotsWeek = (7*numSlotsDay);
 		while(!(copySD.isAfter(endDate))) {
 			ArrayList<TimeSlot> ts = new ArrayList<TimeSlot>();
 			for(int i = 0; i<numSlotsWeek; i++) {
-				ts.add(timeSlots.get(counter+i));
+				ts.add(sortedTs.get(counter+i));
 			}
 			counter+=numSlotsWeek;
-			weeklySchedules.add(new Schedule(copySD, copyED, startTime, endTime, duration, id, secretCode));
+			weeklySchedules.add(new Schedule(copySD, copyED, startTime, endTime, duration, id, secretCode, ts));
 			copySD = copySD.plusDays(7);
 			copyED = copyED.plusDays(7);
 		}

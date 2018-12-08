@@ -26,10 +26,14 @@ public class divideByWeekTest {
 		int duration = 30;
 		int secretCode = 1111;
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, duration, "id", secretCode);
-		ArrayList<Schedule> weeklySchedules = schedule.divideByWeeks(/*startDate, endDate, startTime, endTime, duration, "id", secretCode*/);
+		ArrayList<Schedule> weeklySchedules = schedule.divideByWeeks(startDate, endDate, startTime, endTime, duration, "id", secretCode);
 		int counter = 0;
 		for(Schedule s : weeklySchedules) {
 			counter++;
+			System.out.println("New schedule");
+			for(TimeSlot ts: s.getTimeSlots()) {
+				System.out.println(ts.getId());
+			}
 		}
 		assertEquals(counter,5);
 	}
