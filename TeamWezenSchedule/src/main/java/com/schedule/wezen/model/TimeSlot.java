@@ -60,6 +60,7 @@ public class TimeSlot {
 	public void setMeeting(String m) {
 		this.meetingName = m;
 		this.hasMeeting = true;
+		this.isOpen = false;
 	}
 	
 	public boolean isCorrectCode(int sc) {

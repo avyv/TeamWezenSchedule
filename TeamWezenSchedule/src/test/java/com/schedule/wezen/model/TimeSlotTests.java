@@ -9,19 +9,64 @@ import org.junit.Test;
 
 import com.schedule.wezen.db.TimeSlotsDAO;
 
-public class TimeSlotTests {
+import junit.framework.TestCase;
+
+public class TimeSlotTests extends TestCase{
 	TimeSlotsDAO dao;
 	TimeSlot testSlot;
-	//DAO
-	@Test
-	public void testDAO() throws Exception {
+	
+	@Override
+	protected void setUp() throws Exception {
 		dao = new TimeSlotsDAO();
 		testSlot = createTimeSlot();
-		dao.addTimeSlot(testSlot);
-
 	}
 
 	
+	//DAO
+	@Test
+	public void testDAO() throws Exception {
+		dao.addTimeSlot(testSlot);
+	}
+	
+	
+
+	//TimeSlot
+	@Test
+	public void testSetMeeting() {
+		testSlot.setMeeting("howdy");
+		
+		assertEquals(testSlot.meetingName, "howdy");
+		assertEquals(testSlot.hasMeeting, true);
+		assertEquals(testSlot.isOpen, false);
+	}
+	
+	@Test
+	public void testIsCorrectCode() {
+		assertTrue(testSlot.isCorrectCode(1234));
+		
+		assertFalse(testSlot.isCorrectCode(0123));
+	}
+	
+	public void testDeleteMeeting() {
+		testSlot.setMeeting("howdy");
+		assertTrue(testSlot.deleteMeeting());
+		
+		assertEquals(testSlot.meetingName, " ");
+		assertEquals(testSlot.isOpen, true);
+		assertEquals(testSlot.hasMeeting, false);
+		
+		assertFalse(testSlot.deleteMeeting());
+	}
+	
+	public void testCreateMeeting() {
+		assertTrue(testSlot.createMeeting("help"));
+		
+		assertEquals(testSlot.meetingName, "help");
+		assertEquals(testSlot.isOpen, false);
+		assertEquals(testSlot.hasMeeting, true);
+		
+		assertFalse(testSlot.createMeeting("me"));
+	}
 	
 	
 	TimeSlot createTimeSlot() {
