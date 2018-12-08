@@ -111,7 +111,7 @@ public class TimeSlotsDAO {
     	
     	List<TimeSlot> scheduleTS = new ArrayList<>();
         try { 
-            PreparedStatement ps = conn.prepareStatement("SELECT FROM TimeSlots WHERE sid=?;"); // selects all timeslots with the entered sid
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE sid=?;"); // selects all timeslots with the entered sid
             ps.setString(1,  sid);
             
             ResultSet resultSet = ps.executeQuery();

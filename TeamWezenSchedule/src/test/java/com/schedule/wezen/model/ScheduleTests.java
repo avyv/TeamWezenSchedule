@@ -57,7 +57,11 @@ public class ScheduleTests extends TestCase{
 	
 	@Test
 	public void testSmall() throws Exception{
+		dao.addSchedule(small);
 		
+		
+		
+		dao.deleteSchedule(small);
 	}
 	
 	//Schedules
