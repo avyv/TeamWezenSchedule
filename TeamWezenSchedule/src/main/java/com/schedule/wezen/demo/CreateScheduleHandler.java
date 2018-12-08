@@ -273,7 +273,9 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				logger.log("Before retrieve schedule");
 				
-				Schedule retrievedSchedule = dao.getSchedule(req.requestID);
+				//Schedule retrievedSchedule = dao.getSchedule(req.requestID);
+				
+				Schedule retrievedSchedule = retrieveScheduleLambda(req.requestID);
 				
 				logger.log("After retrieve schedule");
 				
