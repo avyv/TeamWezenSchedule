@@ -64,7 +64,7 @@ public class GetPreviousWeekHandler implements RequestStreamHandler {
 		JSONObject responseJson = new JSONObject();
 		responseJson.put("headers", headerJson);
 		
-		GetPreviousWeekResponse getScheduleResponse = null;
+		GetPreviousWeekResponse getPreviousResponse = null;
 		
 		// extract body from incoming HTTP POST request. If any error, then return 422 error
 		String body;
@@ -83,20 +83,21 @@ public class GetPreviousWeekHandler implements RequestStreamHandler {
 			}
 		} catch (ParseException pe) {
 			logger.log(pe.toString());
-			getScheduleResponse = new GetPreviousWeekResponse("Bad Request: " + pe.getMessage(), 422); // unable to process input
-			responseJson.put("body", new Gson().toJson(getScheduleResponse));
+			getPreviousResponse = new GetPreviousWeekResponse("Bad Request: " + pe.getMessage(), 422); // unable to process input
+			responseJson.put("body", new Gson().toJson(getPreviousResponse));
 			processed = true;
 			body = null;
 		}
 		
 		if(!processed) {
-			GetPreviousWeekRequest getScheduleRequest = new Gson().fromJson(body, GetPreviousWeekRequest.class);
-			logger.log(getScheduleRequest.toString());
+			GetPreviousWeekRequest getPreviousRequest = new Gson().fromJson(body, GetPreviousWeekRequest.class);
+			
+			logger.log(getPreviousRequest.toString());
 			
 			logger.log("Before retrieveSchedule");
 			
 			try {
-				Schedule retrievedSchedule = retrieveScheduleLambda(getScheduleRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
+				Schedule retrievedSchedule = retrieveScheduleLambda(getPreviousRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
 				logger.log("Retrieved Schedule: " + retrievedSchedule.getId());
 				
@@ -112,57 +113,48 @@ public class GetPreviousWeekHandler implements RequestStreamHandler {
 				
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
 				//Schedule byWeek = null;
-				Schedule byWeek = scheduleDividedByWeeks.get(0);
-				startDateOfWeek = byWeek.getStartDate().toString();
+//				Schedule byWeek = scheduleDividedByWeeks.get(0);
+//				startDateOfWeek = byWeek.getStartDate().toString();
 				
 				
 				logger.log("Assigned values to variables");
 				
 				/**
-				 * This will return the schedule for the first week
-				 */
-				/*if(getScheduleRequest.requestWeekStart.equals("")) {
-					byWeek = scheduleDividedByWeeks.get(0);
-					startDateOfWeek = byWeek.getStartDate().toString();
-				}*/
-				
-				/**
 				 * This will return the schedule for the week beginning at requestWeekStart
 				 */
-				/*else if(!(getScheduleRequest.requestWeekStart.equals(""))) {
 					
-					int index = 0;
-					int week = 0;
+				Schedule byWeek = null;
+				
+				int index = 0;
+				int week = 0;
+				
+				for(Schedule schedule : scheduleDividedByWeeks)
+				{
+					LocalDate listStartDate = schedule.getStartDate();
+					String arrayListStartDate = listStartDate.toString();
+					String requestStart = getPreviousRequest.requestWeekStart;
 					
-					for(Schedule schedule : scheduleDividedByWeeks)
-					{
-						index++;
-						
-						LocalDate listStartDate = schedule.getStartDate();
-						String arrayListStartDate = listStartDate.toString();
-						String requestStart = getScheduleRequest.requestWeekStart;
-						
-						if(arrayListStartDate.equals(requestStart)) {
-							week = index - 1;
-						}
+					if(arrayListStartDate.equals(requestStart)) {
+						week = index - 1;
 					}
 					
-					byWeek = scheduleDividedByWeeks.get(week);
-					startDateOfWeek = byWeek.getStartDate().toString();
-				}*/
+					index++;
+				}
 				
-				
+				byWeek = scheduleDividedByWeeks.get(week);
+				startDateOfWeek = byWeek.getStartDate().toString();
+			
 				
 				String response = "Successfully retrieved schedule";
 				
-				getScheduleResponse = new GetPreviousWeekResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
+				getPreviousResponse = new GetPreviousWeekResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
 				logger.log(e.getMessage());
-				getScheduleResponse = new GetPreviousWeekResponse("A schedule with that ID does not exist in our database: " + e.getMessage(), 403);
+				getPreviousResponse = new GetPreviousWeekResponse("A schedule with that ID does not exist in our database: " + e.getMessage(), 403);
 			}
 			
 			// compute proper response
-			responseJson.put("body", new Gson().toJson(getScheduleResponse));
+			responseJson.put("body", new Gson().toJson(getPreviousResponse));
 			
 		}
 		
