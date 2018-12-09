@@ -32,6 +32,21 @@ import com.schedule.wezen.model.TimeSlot;
 
 
 public class CreateMeetingHandler implements RequestStreamHandler {
+	
+	public static LambdaLogger logger = null;
+	
+	
+	boolean createMeetingLambda() throws Exception {
+		if(logger != null) { logger.log("in createMeetingLambda"); }
+		
+		SchedulesDAO dao = new SchedulesDAO();
+		
+		logger.log("DAO created");
+		
+		return true;
+		
+	}
+	
 
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
@@ -43,7 +58,7 @@ public class CreateMeetingHandler implements RequestStreamHandler {
             output.write(Character.toUpperCase(letter));
         }*/
     	
-    	LambdaLogger logger = context.getLogger();
+    	logger = context.getLogger();
 		logger.log("Loading Java Lambda handler of RequestStreamHandler");
 		
 		// This is the header for all the JSON code

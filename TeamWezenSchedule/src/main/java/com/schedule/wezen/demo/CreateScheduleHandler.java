@@ -45,39 +45,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 	 * @throws Exception
 	 */
 	boolean createScheduleLambda(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, int secretCode, String id) throws Exception {
-		if(logger != null) { logger.log("in createSchedule");}
-		
-		/* turn the times and dates into appropriate objects */
-//		Model m = new Model();
-//		
-//		logger.log("after model, before LocalDate");
-//		
-//		LocalDate startD = m.stringToDate(startDate);
-//		
-//		logger.log("Date: " + startDate + "");
-//		
-//		LocalDate endD = m.stringToDate(endDate);
-//		
-//		logger.log("Date: " + endDate + "");
-//		
-//		LocalTime startT = m.stringToTime(startTime);
-//		
-//		logger.log("Time: " + startTime + "");
-//		
-//		LocalTime endT = m.stringToTime(endTime);
-//		
-//		logger.log("Time: " + endTime + "");
-//		
-//		int slotD = Integer.parseInt(slotDuration);
-//		
-//		logger.log("before secret code");
-//		
-//		int secretCode = m.createSecretCode(); //
-//		
-//		//int secretCode = 5;
-//		
-//		logger.log("SecretCode: " + secretCode + "");
-//		
+		if(logger != null) { logger.log("in createScheduleLambda");}
 
 		SchedulesDAO dao = new SchedulesDAO();
 		
@@ -85,9 +53,9 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		//Schedule exist = dao.getSchedule(id);
 		
-		Schedule exist = null; //
+		//Schedule exist = null; //
 		
-		logger.log("past exists");
+		//logger.log("past exists");
 		
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, secretCode);
 		
