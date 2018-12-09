@@ -41,6 +41,39 @@ public class TimeSlotsDAO {
         }
     }
     
+    public boolean setMeeting(TimeSlot timeSlot, String mName) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET meetingName=?, isOpen=?, hasMeeting=? WHERE id=?;");
+    		ps.setString(1, mName);
+    		ps.setBoolean(2, false);
+    		ps.setBoolean(3, true);
+    		ps.setString(4, timeSlot.getId());
+    		
+    		ps.execute();
+    		ps.close();
+    		return true;
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to add meeting to timeslot: " + e.getMessage());
+    	}
+    }
+    
+    public boolean deleteMeeting(TimeSlot timeSlot) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET meetingName=?, isOpen=?, hasMeeting=? WHERE id=?;");
+    		ps.setString(1, " ");
+    		ps.setBoolean(2, true);
+    		ps.setBoolean(3, false);
+    		ps.setString(4, timeSlot.getId());
+    		
+    		ps.execute();
+    		ps.close();
+    		return true;
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to delete meeting from timeslot: " + e.getMessage());
+    	}
+    }
     
     public boolean addTimeSlot(TimeSlot timeSlot) throws Exception {
         try {
@@ -65,6 +98,7 @@ public class TimeSlotsDAO {
             ps.setBoolean(7, timeSlot.getIsOpen());
             ps.setBoolean(8, timeSlot.getHasMeeting());
             ps.execute();
+            ps.close();
             return true;
 
         } catch (Exception e) {
