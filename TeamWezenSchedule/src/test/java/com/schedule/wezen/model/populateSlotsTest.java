@@ -25,7 +25,7 @@ public class populateSlotsTest {
 		int duration = 30;
 		int secretCode = 1111;
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, duration, "id", secretCode);
-		assertTrue(schedule.populateTimeSlots(startDate, endDate, startTime, endTime, duration, schedule.getNumSlotsDay(), "id", schedule.getTimeSlots()));
+		assertTrue(schedule.populateTimeSlots(/*startDate, endDate, startTime, endTime, duration, schedule.getNumSlotsDay(), "id", schedule.getTimeSlots()*/));
 	}
 	
 	@Test

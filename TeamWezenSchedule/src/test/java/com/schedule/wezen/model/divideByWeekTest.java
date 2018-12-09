@@ -30,10 +30,10 @@ public class divideByWeekTest {
 		int counter = 0;
 		for(Schedule s : weeklySchedules) {
 			counter++;
-//			System.out.println("New schedule");
-//			for(TimeSlot ts: s.getTimeSlots()) {
-//				System.out.println(ts.getId());
-//			}
+			System.out.println("New schedule");
+			for(TimeSlot ts: s.getTimeSlots()) {
+				System.out.println(ts.getId());
+			}
 		}
 		assertEquals(counter,5);
 	}
