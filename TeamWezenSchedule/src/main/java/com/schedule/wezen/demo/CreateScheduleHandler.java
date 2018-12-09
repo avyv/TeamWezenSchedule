@@ -27,6 +27,7 @@ import com.schedule.wezen.demo.http.CreateScheduleRequest;
 import com.schedule.wezen.demo.http.CreateScheduleResponse;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.model.Schedule;
+import com.schedule.wezen.model.TimeSlot;
 import com.schedule.wezen.model.Model;
 
 import java.time.LocalTime;
@@ -262,6 +263,11 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				startDateOfWeek = firstWeek.getStartDate().toString();
 				
 				logger.log("Assigned values to variables");
+				
+				for(TimeSlot ts: firstWeek.getTimeSlots())
+				{
+					logger.log(ts.getId());
+				}
 				
 				resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
 					
