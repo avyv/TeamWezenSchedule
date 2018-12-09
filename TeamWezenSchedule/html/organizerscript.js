@@ -176,7 +176,6 @@ function generateCalendar(){
   function deleteSchedule(){
     let cont = confirm("Are you sure you want to delete this schedule?");
     if(cont){
-      document.getElementById("calendarwindow").style.visibility = 'hidden';
       let sid = currSchedule.id;
       let data = {};
       data["requestSchedID"] = String(sid);
@@ -570,4 +569,6 @@ function deleteScheduleCallback(xhrResult){
   console.log("result:" + xhrResult);
   let js = JSON.parse(xhrResult);
   alert(js["deleteScheduleResponse"]);
+  document.getElementById("calendarwindow").style.visibility = 'hidden';
+
 }
