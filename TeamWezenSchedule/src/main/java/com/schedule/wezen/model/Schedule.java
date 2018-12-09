@@ -92,7 +92,7 @@ public class Schedule {
 
 		LocalDate startOfWeekDate = scheduleStartDate;
 
-
+		int cntval = 0;
 		for(int week = 0; week < numWeeksInSchedule; week++)
 		{
 			for(int time = 0; time < this.numSlotsDay; time++)
@@ -101,7 +101,7 @@ public class Schedule {
 
 				for(int day = 0; day < 7; day++)
 				{
-					String tsID = this.id + " " + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
+					String tsID = this.id + " " + cntval;// + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
 
 					// populate with closed TimeSlots if the schedule does not start on Monday
 					if(timeSlotDate.isBefore(this.startDate) && (!(timeSlotDate.equals(this.startDate))))
@@ -120,7 +120,7 @@ public class Schedule {
 					}
 
 					timeSlotDate = timeSlotDate.plusDays(1);
-
+					cntval++;
 				}
 				timeSlotStartTime = timeSlotStartTime.plusMinutes(this.slotDuration);
 			}
@@ -153,7 +153,7 @@ public class Schedule {
 
 		for(int i = 0; i < numWeeks; i++)
 		{
-			ArrayList<TimeSlot> weeklyTimeSlots = new ArrayList<TimeSlot>();
+			ArrayList<TimeSlot> weeklyTimeSlots = new ArrayList<TimeSlot>(numSlotsPerWeek);
 
 			for(int j = 0; j < numSlotsPerWeek; j++)
 			{

@@ -59,7 +59,11 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		//logger.log("past exists");
 		
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, secretCode);
-		
+
+		for(TimeSlot ts: schedule.getTimeSlots())
+		{
+			logger.log(ts.getId());
+		}
 		logger.log("Schedule object created");
 		
 //		if(exist == null) {
@@ -261,7 +265,10 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
 				Schedule firstWeek = scheduleDividedByWeeks.get(0);
 				startDateOfWeek = firstWeek.getStartDate().toString();
-				
+				logger.log(firstWeek.getEndDate().toString());
+				String s = "size: " + firstWeek.getTimeSlots().size();
+				logger.log(s);
+
 				logger.log("Assigned values to variables");
 				
 				for(TimeSlot ts: firstWeek.getTimeSlots())
