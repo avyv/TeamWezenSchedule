@@ -106,17 +106,17 @@ public class Schedule {
 					// populate with closed TimeSlots if the schedule does not start on Monday
 					if(timeSlotDate.isBefore(this.startDate) && (!(timeSlotDate.equals(this.startDate))))
 					{
-						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false));
+						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
 					}
 					// populate with closed TimeSlots if the schedule does not end on Sunday
 					else if(timeSlotDate.isAfter(this.endDate) && (!(timeSlotDate.equals(this.endDate))))
 					{
-						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false));
+						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
 					}
 					// if the date is within the range of the schedule start and end dates, populate array with open time slots
 					else if (timeSlotDate.equals(this.startDate) || timeSlotDate.equals(this.endDate) || (timeSlotDate.isAfter(this.startDate) && timeSlotDate.isBefore(this.endDate)))
 					{
-						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false));
+						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false,cntval));
 					}
 
 					timeSlotDate = timeSlotDate.plusDays(1);
@@ -137,7 +137,7 @@ public class Schedule {
 	}
 
 	public ArrayList<Schedule> divideByWeeks() {
-		ArrayList<TimeSlot> rdsisdumb = fuckYouRDS();
+//		ArrayList<TimeSlot> rdsisdumb = fuckYouRDS();
 		int numSlotsPerWeek = 7 * this.numSlotsDay;
 
 		int numWeeks = (this.timeSlots.size()) / numSlotsPerWeek;
@@ -157,7 +157,7 @@ public class Schedule {
 
 			for(int j = 0; j < numSlotsPerWeek; j++)
 			{
-				weeklyTimeSlots.add(rdsisdumb.get(weekCounter));
+				weeklyTimeSlots.add(this.getTimeSlots().get(weekCounter));
 				weekCounter ++;
 			}
 
@@ -175,11 +175,13 @@ public class Schedule {
 		ArrayList<TimeSlot> tscopy = this.timeSlots;
 		ArrayList<TimeSlot> fuckRDS = new ArrayList<TimeSlot>();
 		int index = 0;
-		while(fuckRDS.size()<tscopy.size()){
+		int startsize = tscopy.size();
+		while(fuckRDS.size()<startsize){
 			for(TimeSlot tsbitch : tscopy){
 				String gohomeRDS = this.id + index;
 				if(tsbitch.id == gohomeRDS){
-					fuckRDS.add(index, tsbitch);
+					fuckRDS.add(tsbitch);
+					tscopy.remove(tsbitch);
 					break;
 				}
 			}

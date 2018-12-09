@@ -9,10 +9,10 @@ public class TimeSlot {
 	LocalDate slotDate;
 	//Meeting slotMeeting;
 	String id, sid, meetingName = " ";
-	int secretCode;
+	int secretCode, index;
 	boolean isOpen, hasMeeting;
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting,int index) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
@@ -21,6 +21,7 @@ public class TimeSlot {
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
 		this.hasMeeting = hasMeeting;
+		this.index = index;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
