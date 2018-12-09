@@ -165,7 +165,7 @@ public class SchedulesDAO {
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
         
-        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()).plusDays(1), LocalDate.parse(endDate.toString()).plusDays(1), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
+        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()).plusDays(1), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
         toRet.emptyTimeSlots();
         
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();
