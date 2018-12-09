@@ -19,12 +19,12 @@ public class TimeSlotsDAO {
     	}
     }
 
-    public TimeSlot getTimeSlot(TimeSlot ts) throws Exception {
+    public TimeSlot getTimeSlot(String tsId) throws Exception {
         
         try {
         	TimeSlot timeSlot = null;
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=?;");
-            ps.setString(1,  ts.getId());
+            ps.setString(1,  tsId);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
