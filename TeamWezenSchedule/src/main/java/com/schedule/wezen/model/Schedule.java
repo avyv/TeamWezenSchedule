@@ -97,8 +97,10 @@ public class Schedule {
 		{
 			for(int time = 0; time < this.numSlotsDay; time++)
 			{
+				timeSlotDate = startOfWeekDate;
+				
 				for(int day = 0; day < 7; day++)
-				{
+				{	
 					String tsID = this.id + " " + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
 					
 					// populate with closed TimeSlots if the schedule does not start on Monday
@@ -120,7 +122,6 @@ public class Schedule {
 					timeSlotDate = timeSlotDate.plusDays(1);
 					
 				}
-				timeSlotDate = startOfWeekDate;
 				timeSlotStartTime = timeSlotStartTime.plusMinutes(this.slotDuration);
 			}
 			timeSlotStartTime = this.startTime;
