@@ -231,7 +231,7 @@ public class Schedule {
 									monString = "0"+monString;
 								}
 								LocalDate slotDate = LocalDate.parse(year+"-"+monString+"-"+dayString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-								timeSlots.add(new TimeSlot(startTime, slotDate, startTime.toString()+" "+slotDate.toString(), id, createSecretCode()));
+								timeSlots.add(new TimeSlot(startTime, slotDate, this.id + " " + startTime.toString()+" "+slotDate.toString(), id, createSecretCode()));
 								//System.out.println((timeSlots.get(timeSlots.size()-1)).getId());
 								meetingMin += dur;
 								if(meetingMin>=endMinutes) {

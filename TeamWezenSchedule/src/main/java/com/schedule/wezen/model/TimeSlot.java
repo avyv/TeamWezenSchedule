@@ -15,7 +15,7 @@ public class TimeSlot {
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
-		this.id = sid +" " + id;
+		this.id = id;
 		this.meetingName = meetingName;
 		this.sid = sid;
 		this.secretCode = secretCode;
@@ -27,7 +27,7 @@ public class TimeSlot {
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen, boolean hasMeeting) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
-		this.id = sid +" " + id;
+		this.id = id;
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
@@ -38,7 +38,7 @@ public class TimeSlot {
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
-		this.id = sid +" " + id;
+		this.id = id;
 		this.sid = sid;
 		this.secretCode = secretCode;
 		this.isOpen = true;
