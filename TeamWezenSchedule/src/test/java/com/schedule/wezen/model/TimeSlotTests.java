@@ -43,6 +43,26 @@ public class TimeSlotTests extends TestCase {
 	}
 	
 	@Test
+	public void testSetDeleteMeeting() throws Exception{
+		dao.addTimeSlot(testSlot);
+		assertTrue(dao.setMeeting(testSlot, "a meeting"));
+		
+		TimeSlot returnedSlot = dao.getTimeSlot(testSlot);
+		assertTrue(returnedSlot.hasMeeting);
+		assertFalse(returnedSlot.isOpen);
+		assertEquals(returnedSlot.meetingName, "a meeting");
+		
+		assertTrue(dao.deleteMeeting(testSlot));
+		
+		returnedSlot = dao.getTimeSlot(testSlot);
+		assertFalse(returnedSlot.hasMeeting);
+		assertTrue(returnedSlot.isOpen);
+		assertEquals(returnedSlot.meetingName, " ");
+		
+		dao.deleteTimeSlot(testSlot);
+	}
+	
+	@Test
 	public void testAddGetAll() throws Exception{
 		dao.addTimeSlot(testSlot);
 		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-17"), "1 11:00:00 2018-12-17", "1", 2345);
