@@ -41,18 +41,6 @@ public class TimeSlotsDAO {
         }
     }
     
-    public boolean sortSlots() throws Exception {
-    	try {
-    		PreparedStatement sort = conn.prepareStatement("SELECT * FROM TimeSlots ORDER BY sid, ind ASC;");
-    		sort.execute();
-    		sort.close();
-    		return true;
-    		
-    	} catch(Exception e) {
-    		throw new Exception("Failed to sort timeslots: " + e.getMessage());
-    	}
-    }
-    
     public boolean setMeeting(String id, String mName) throws Exception {
     	try {
     		TimeSlot timeSlot = null;

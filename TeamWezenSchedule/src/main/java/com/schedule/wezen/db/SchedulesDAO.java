@@ -110,7 +110,6 @@ public class SchedulesDAO {
         	for(TimeSlot ts: schedule.getTimeSlots()) {
         		tsdao.addTimeSlot(ts);
         	}
-        	tsdao.sortSlots();
         	
             
             ps.execute();
