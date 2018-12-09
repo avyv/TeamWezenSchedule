@@ -41,6 +41,36 @@ public class TimeSlotsDAO {
         }
     }
     
+    public boolean openTimeSlot(String id) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET isOpen=? WHERE id=?;");
+    		ps.setBoolean(1, true);
+    		ps.setString(2, id);
+    		
+    		ps.execute();
+    		ps.close();
+    		return true;
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to add meeting to timeslot: " + e.getMessage());
+    	}
+    }
+    
+    public boolean closeTimeSlot(String id) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET isOpen=? WHERE id=?;");
+    		ps.setBoolean(1, false);
+    		ps.setString(2, id);
+    		
+    		ps.execute();
+    		ps.close();
+    		return true;
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to add meeting to timeslot: " + e.getMessage());
+    	}
+    }
+    
     public boolean setMeeting(String id, String mName) throws Exception {
     	try {
     		TimeSlot timeSlot = null;
