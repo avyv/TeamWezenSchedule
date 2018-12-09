@@ -14,13 +14,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class Schedule {
-	
+
 	LocalDate startDate, endDate;
 	LocalTime startTime, endTime;
-	String id; 
+	String id;
 	int slotDuration, secretCode, numSlotsDay;
 	ArrayList<TimeSlot> timeSlots;
-	
+
 	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode) {
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -33,8 +33,8 @@ public class Schedule {
 		this.timeSlots = new ArrayList<TimeSlot>();
 		populateTimeSlots();
 	}
-	
-	
+
+
 	//TODO Don't use this? the arraylist doesn't populate
 	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, ArrayList<TimeSlot> timeSlots) {
 		this.startDate = startDate;
@@ -51,8 +51,8 @@ public class Schedule {
 //			this.addTimeSlot(ts);
 //		}
 	}
-	
-	
+
+
 	public boolean populateTimeSlots()
 	{
 		// test to make sure start date isn't after end date or start time isn't after end time
@@ -60,16 +60,16 @@ public class Schedule {
 		{
 			return false;
 		}
-		
+
 		LocalDate scheduleStartDate = this.startDate;
-		
+
 		LocalDate scheduleEndDate = this.endDate;
-		
-		
+
+
 		int dayOfWeekStart = scheduleStartDate.getDayOfWeek().getValue();
-		
+
 		int dayOfWeekEnd = scheduleEndDate.getDayOfWeek().getValue();
-		
+
 		if(dayOfWeekStart > 1)
 		{
 			scheduleStartDate = scheduleStartDate.minusDays(dayOfWeekStart - 1); // start on Monday
@@ -78,34 +78,34 @@ public class Schedule {
 		{
 			scheduleEndDate = scheduleEndDate.plusDays(7 - dayOfWeekEnd); // end on Sunday
 		}
-		
-		
+
+
 		LocalDate timeSlotDate = scheduleStartDate;
-		
+
 		LocalTime timeSlotStartTime = this.startTime;
-		
+
 		int numDaysInSchedule = (int) (ChronoUnit.DAYS.between(scheduleStartDate, scheduleEndDate) + 1);
-		
+
 		int numWeeksInSchedule = numDaysInSchedule / 7;
-		
+
 		//int numOfTimeSlotsPerDay = calculateNumTimeSlots(this.startTime, this.endTime, this.slotDuration);
-		
+
 		LocalDate startOfWeekDate = scheduleStartDate;
-		
-		
+
+
 		for(int week = 0; week < numWeeksInSchedule; week++)
 		{
 			for(int time = 0; time < this.numSlotsDay; time++)
 			{
 				timeSlotDate = startOfWeekDate;
-				
+
 				for(int day = 0; day < 7; day++)
-				{	
+				{
 					String tsID = this.id + " " + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
-					
+
 					// populate with closed TimeSlots if the schedule does not start on Monday
 					if(timeSlotDate.isBefore(this.startDate) && (!(timeSlotDate.equals(this.startDate))))
-					{	
+					{
 						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false));
 					}
 					// populate with closed TimeSlots if the schedule does not end on Sunday
@@ -118,66 +118,68 @@ public class Schedule {
 					{
 						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false));
 					}
-					
+
 					timeSlotDate = timeSlotDate.plusDays(1);
-					
+
 				}
 				timeSlotStartTime = timeSlotStartTime.plusMinutes(this.slotDuration);
 			}
 			timeSlotStartTime = this.startTime;
 			startOfWeekDate = startOfWeekDate.plusDays(7);
 		}
-		
-		for(TimeSlot ts: this.timeSlots)
-		{
-			System.out.println(ts.id);
-		}
-		
+
+		// for(TimeSlot ts: this.timeSlots)
+		// {
+		// 	System.out.println(ts.id);
+		// }
+
 		return true;
 	}
-	
+
 	public ArrayList<Schedule> divideByWeeks() {
-		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>();
-		
+
 		int numSlotsPerWeek = 7 * this.numSlotsDay;
-		
+
 		int numWeeks = (this.timeSlots.size()) / numSlotsPerWeek;
-		
+
 		int weekCounter = 0;
-		
+
 		LocalDate weekStartDate = this.timeSlots.get(0).slotDate;
-		
+
 		LocalDate weekEndDate = weekStartDate.plusDays(6);
-		
+
+		ArrayList<Schedule> weeklySchedules = new ArrayList<Schedule>(numWeeks);
+
+
 		for(int i = 0; i < numWeeks; i++)
 		{
 			ArrayList<TimeSlot> weeklyTimeSlots = new ArrayList<TimeSlot>();
-			
+
 			for(int j = 0; j < numSlotsPerWeek; j++)
 			{
-				weeklyTimeSlots.add(this.timeSlots.get(weekCounter + j));
+				weeklyTimeSlots.add(this.timeSlots.get(weekCounter));
+				weekCounter ++;
 			}
-			
-			weeklySchedules.add(new Schedule(weekStartDate, weekEndDate, this.startTime, this.endTime, this.slotDuration, this.id, this.secretCode, weeklyTimeSlots));
-			
+
+			weeklySchedules.add(i,new Schedule(weekStartDate, weekEndDate, this.startTime, this.endTime, this.slotDuration, this.id, this.secretCode, weeklyTimeSlots));
+
 			weekStartDate = weekStartDate.plusDays(7);
-			weekEndDate = weekEndDate.plusDays(7);
-			
-			weekCounter += numSlotsPerWeek;
+			weekEndDate = weekStartDate.plusDays(6);
+
 		}
-		
+
 		return weeklySchedules;
 	}
-	
+
 	public int calculateNumTimeSlots(LocalTime st, LocalTime et, int dur) {
 		double numSlots = 0;
 		double shr = st.getHour();
 		double ehr = et.getHour();
-		
+
 		numSlots = ((ehr - shr)*60)/dur;
 		return (int) numSlots;
 	}
-	
+
 	public int calculateDayOfWeek(LocalDate startDate) {
 		LocalDate copyDate = startDate;
 		if(startDate.getMonthValue() == 1 || startDate.getMonthValue() == 2) {
@@ -199,12 +201,12 @@ public class Schedule {
 		if (dayOfWeek == 0) {dayOfWeek = 7;}
 		return dayOfWeek; //1=Monday, 2=Tuesday,...
 	}
-	
+
 	public int doubleToInt(double value) {
 		int intValue = (int) value;
 		return intValue;
 	}
-	
+
 	public int createSecretCode() {
 		Random r = new Random();
 		int code = r.nextInt();
@@ -218,7 +220,7 @@ public class Schedule {
 		}
 		return code;*/
 	}
-	
+
 	public boolean changeDuration(LocalDate sd, LocalDate ed) {
 		if(this.startDate.isBefore(sd) || this.endDate.isAfter(ed)) {
 			return false;
@@ -229,7 +231,7 @@ public class Schedule {
 			return true;
 		}
 	}
-	
+
 	public ArrayList<TimeSlot> searchForTime(int month, int year, int dayWeek, int dayMonth, LocalTime time) {
 		ArrayList<TimeSlot> available = timeSlots;
 		for(TimeSlot ts: available) {
@@ -251,19 +253,19 @@ public class Schedule {
 		}
 		return available;
 	}
-	
+
 	public boolean isCorrectCode(int sc) {
 		return (sc == secretCode);
 	}
-	
+
 	public void emptyTimeSlots() {
 		this.timeSlots = new ArrayList<TimeSlot>();
 	}
-	
+
 	public void addTimeSlot(TimeSlot ts) {
 		this.timeSlots.add(ts);
 	}
-	
+
 	public LocalDate getStartDate() {return startDate;}
 	public LocalDate getEndDate() {return endDate;}
 	public LocalTime getStartTime() {return startTime;}
@@ -273,7 +275,7 @@ public class Schedule {
 	public int getSecretCode() {return secretCode;}
 	public int getNumSlotsDay() {return numSlotsDay;}
 	public ArrayList<TimeSlot> getTimeSlots() {return timeSlots;}
-	
+
 	public void setStartDate(LocalDate sd) {this.startDate = sd;}
 	public void setEndDate(LocalDate ed) {this.endDate = ed;}
 	public void setStartTime(LocalTime st) {this.startTime = st;}
