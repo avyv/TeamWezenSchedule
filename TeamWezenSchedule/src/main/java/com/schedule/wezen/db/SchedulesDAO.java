@@ -55,10 +55,10 @@ public class SchedulesDAO {
 //        	psts.close();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
             ps.setString(1, schedule.getId());
-            int numAffected = ps.executeUpdate();
+            ps.execute();
             ps.close();
             
-            return (numAffected == 1);
+            return true;
 
         } catch (Exception e) {
             throw new Exception("Failed to delete schedule: " + e.getMessage());

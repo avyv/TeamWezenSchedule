@@ -235,9 +235,7 @@ public class TimeSlotsDAO {
         	ps.setString(1, sid);
         	
         	ps.execute();
-        	
             ps.close();
-            
             
         } catch (Exception e) {
             throw new Exception("Failed in deleting timeSlots: " + e.getMessage());
