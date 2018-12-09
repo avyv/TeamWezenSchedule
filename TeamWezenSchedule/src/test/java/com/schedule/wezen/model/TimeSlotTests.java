@@ -52,6 +52,7 @@ public class TimeSlotTests extends TestCase {
 		toTest[0] = dao.getAllTimeSlots().get(0);
 		toTest[1] = dao.getAllTimeSlots().get(1);
 		
+		System.out.println(testSlot.id + " " + toTest[0].id);
 		assertTrue(testSlot.id.equals(toTest[0].id));
 		assertTrue(testSlot.secretCode == toTest[0].secretCode);
 		assertTrue(testSlot.sid.equals(toTest[0].sid));
