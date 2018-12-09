@@ -29,7 +29,7 @@ public class TimeSlotTests extends TestCase {
 		
 		dao.addTimeSlot(testSlot);
 		
-		TimeSlot returnedSlot = dao.getTimeSlot(testSlot);
+		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.id);
 		assertTrue(testSlot.id.equals(returnedSlot.id));
 		assertTrue(testSlot.secretCode == returnedSlot.secretCode);
 		assertTrue(testSlot.sid.equals(returnedSlot.sid));
@@ -49,7 +49,7 @@ public class TimeSlotTests extends TestCase {
 		assertTrue(dao.setMeeting(testSlot.id, "a meeting"));
 		assertFalse(dao.setMeeting(testSlot.id, "another meeting"));
 		
-		TimeSlot returnedSlot = dao.getTimeSlot(testSlot);
+		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.id);
 		assertTrue(returnedSlot.hasMeeting);
 		assertFalse(returnedSlot.isOpen);
 		assertEquals(returnedSlot.meetingName, "a meeting");
@@ -57,7 +57,7 @@ public class TimeSlotTests extends TestCase {
 		assertTrue(dao.deleteMeeting(testSlot.id));
 		assertFalse(dao.deleteMeeting(testSlot.id));
 		
-		returnedSlot = dao.getTimeSlot(testSlot);
+		returnedSlot = dao.getTimeSlot(testSlot.id);
 		assertFalse(returnedSlot.hasMeeting);
 		assertTrue(returnedSlot.isOpen);
 		assertEquals(returnedSlot.meetingName, " ");
@@ -68,7 +68,7 @@ public class TimeSlotTests extends TestCase {
 	@Test
 	public void testAddGetAll() throws Exception{
 		dao.addTimeSlot(testSlot);
-		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-17"), "1 11:00:00 2018-12-17", "1", 2345);
+		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-17"), "1 11:00:00 2018-12-17", "1", 2345, 1);
 		dao.addTimeSlot(alsoTestSlot);
 		
 		TimeSlot[] toTest = new TimeSlot[2];
@@ -146,7 +146,8 @@ public class TimeSlotTests extends TestCase {
 		int secretCode = 1234;
 		boolean isOpen = true;
 		boolean hasMeeting = false;
-		mySlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting);
+		int index = 0;
+		mySlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting, index);
 		return mySlot;
 	}
 }
