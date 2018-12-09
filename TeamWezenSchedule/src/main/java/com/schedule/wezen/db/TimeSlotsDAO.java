@@ -23,7 +23,7 @@ public class TimeSlotsDAO {
         
         try {
         	TimeSlot timeSlot = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=? ORDER BY sid, len(ind), ind ASC;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=? ORDER BY sid, ind ASC;");
             ps.setString(1,  tsId);
             ResultSet resultSet = ps.executeQuery();
             
@@ -43,7 +43,7 @@ public class TimeSlotsDAO {
     
     public boolean sortSlots() throws Exception {
     	try {
-    		PreparedStatement sort = conn.prepareStatement("SELECT * FROM TimeSlots ORDER BY sid, len(ind), ind ASC;");
+    		PreparedStatement sort = conn.prepareStatement("SELECT * FROM TimeSlots ORDER BY sid, ind ASC;");
     		sort.execute();
     		sort.close();
     		return true;
@@ -173,7 +173,7 @@ public class TimeSlotsDAO {
         List<TimeSlot> allTS = new ArrayList<>();
         try {
             Statement statement = conn.createStatement();
-            String query = "SELECT * FROM TimeSlots ORDER BY sid, len(ind), ind ASC";
+            String query = "SELECT * FROM TimeSlots ORDER BY sid, ind ASC";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -193,7 +193,7 @@ public class TimeSlotsDAO {
     	
     	List<TimeSlot> scheduleTS = new ArrayList<>();
         try { 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE sid=? ORDER BY sid, len(ind), ind ASC;"); // selects all timeslots with the entered sid
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE sid=? ORDER BY sid, ind ASC;"); // selects all timeslots with the entered sid
             ps.setString(1,  sid);
             
             ResultSet resultSet = ps.executeQuery();
