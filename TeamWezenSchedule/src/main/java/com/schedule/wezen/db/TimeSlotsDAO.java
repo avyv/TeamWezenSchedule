@@ -43,7 +43,7 @@ public class TimeSlotsDAO {
     
     public boolean sortSlots() throws Exception {
     	try {
-    		PreparedStatement sort = conn.prepareStatement("ORDER TimeSlots BY sid, index");
+    		PreparedStatement sort = conn.prepareStatement("SELECT * FROM TimeSlots ORDER BY sid, index;");
     		sort.execute();
     		sort.close();
     		return true;
