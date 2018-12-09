@@ -289,7 +289,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
 				
 				
-				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay());
+				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
 				Schedule firstWeek = scheduleDividedByWeeks.get(0);
 				startDateOfWeek = firstWeek.getStartDate().toString();
 				
