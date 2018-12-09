@@ -41,6 +41,18 @@ public class TimeSlotsDAO {
         }
     }
     
+    public boolean sortSlots() throws Exception {
+    	try {
+    		PreparedStatement sort = conn.prepareStatement("ORDER TimeSlots BY sid, index");
+    		sort.execute();
+    		sort.close();
+    		return true;
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to sort timeslots: " + e.getMessage());
+    	}
+    }
+    
     public boolean setMeeting(String id, String mName) throws Exception {
     	try {
     		TimeSlot timeSlot = null;
@@ -124,7 +136,7 @@ public class TimeSlotsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting) values(?,?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting, index) values(?,?,?,?,?,?,?,?,?);");
             ps.setString(1, timeSlot.getSid());
             ps.setTime(2,  Time.valueOf(timeSlot.getStartTime()));
             ps.setDate(3, Date.valueOf(timeSlot.getDate()));
@@ -133,6 +145,7 @@ public class TimeSlotsDAO {
             ps.setInt(6, timeSlot.getSecretCode());
             ps.setBoolean(7, timeSlot.getIsOpen());
             ps.setBoolean(8, timeSlot.getHasMeeting());
+            ps.setInt(9, timeSlot.getIndex());
             ps.execute();
             ps.close();
             return true;
@@ -236,6 +249,7 @@ public class TimeSlotsDAO {
     	int secretCode = resultSet.getInt("secretCode");
     	boolean isOpen = resultSet.getBoolean("isOpen");
     	boolean hasMeeting = resultSet.getBoolean("hasMeeting");
-        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()).plusDays(1), id, meetingName, sid, secretCode, isOpen, hasMeeting);
+    	int index = resultSet.getInt("index");
+        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()).plusDays(1), id, meetingName, sid, secretCode, isOpen, hasMeeting, index);
     }
 }

@@ -56,6 +56,7 @@ public class TimeSlot {
 	public boolean getIsOpen() {return isOpen;}
 	public int getSecretCode() {return secretCode;}
 	public boolean getHasMeeting() {return hasMeeting;}
+	public int getIndex() {return index;}
 	
 	public void setIsOpen(boolean isOpen) {this.isOpen = isOpen;}
 	public void setMeeting(String m) {
