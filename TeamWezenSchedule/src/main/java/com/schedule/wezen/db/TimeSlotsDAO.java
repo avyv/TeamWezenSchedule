@@ -41,6 +41,75 @@ public class TimeSlotsDAO {
         }
     }
     
+    public boolean setMeeting(String id, String mName) throws Exception {
+    	try {
+    		TimeSlot timeSlot = null;
+    		PreparedStatement testOpen = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=?");
+    		testOpen.setString(1, id);
+    		ResultSet resultSet = testOpen.executeQuery();
+            
+            while (resultSet.next()) {
+                timeSlot = generateTimeSlot(resultSet);
+            }
+            resultSet.close();
+            testOpen.close();
+    		
+    		
+    		if(timeSlot.getIsOpen()) {
+    			System.out.println(timeSlot.getIsOpen());
+	    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET meetingName=?, isOpen=?, hasMeeting=? WHERE id=?;");
+	    		ps.setString(1, mName);
+	    		ps.setBoolean(2, false);
+	    		ps.setBoolean(3, true);
+	    		ps.setString(4, id);
+	    		
+	    		ps.execute();
+	    		ps.close();
+	    		return true;
+    		}
+    		else {
+    			return false;
+    		}
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to add meeting to timeslot: " + e.getMessage());
+    	}
+    }
+    
+    public boolean deleteMeeting(String id) throws Exception {
+    	try {
+    		TimeSlot timeSlot = null;
+    		PreparedStatement testOpen = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=?");
+    		testOpen.setString(1, id);
+    		ResultSet resultSet = testOpen.executeQuery();
+            
+            while (resultSet.next()) {
+                timeSlot = generateTimeSlot(resultSet);
+            }
+            resultSet.close();
+            testOpen.close();
+    		
+    		
+    		if(timeSlot.getHasMeeting()) {
+    			System.out.println(timeSlot.getIsOpen());
+	    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET meetingName=?, isOpen=?, hasMeeting=? WHERE id=?;");
+	    		ps.setString(1, " ");
+	    		ps.setBoolean(2, true);
+	    		ps.setBoolean(3, false);
+	    		ps.setString(4, id);
+	    		
+	    		ps.execute();
+	    		ps.close();
+	    		return true;
+    		}
+    		else {
+    			return false;
+    		}
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to delete meeting from timeslot: " + e.getMessage());
+    	}
+    }
     
     public boolean addTimeSlot(TimeSlot timeSlot) throws Exception {
         try {
@@ -65,6 +134,7 @@ public class TimeSlotsDAO {
             ps.setBoolean(7, timeSlot.getIsOpen());
             ps.setBoolean(8, timeSlot.getHasMeeting());
             ps.execute();
+            ps.close();
             return true;
 
         } catch (Exception e) {
