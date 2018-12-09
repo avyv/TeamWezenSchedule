@@ -101,7 +101,7 @@ public class Schedule {
 
 				for(int day = 0; day < 7; day++)
 				{
-					String tsID = this.id + " " + cntval;// + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
+					String tsID = this.id + " " + cntval;//Integer.toBinaryString(cntval);// + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
 
 					// populate with closed TimeSlots if the schedule does not start on Monday
 					if(timeSlotDate.isBefore(this.startDate) && (!(timeSlotDate.equals(this.startDate))))
@@ -137,7 +137,7 @@ public class Schedule {
 	}
 
 	public ArrayList<Schedule> divideByWeeks() {
-
+		ArrayList<TimeSlot> rdsisdumb = fuckYouRDS();
 		int numSlotsPerWeek = 7 * this.numSlotsDay;
 
 		int numWeeks = (this.timeSlots.size()) / numSlotsPerWeek;
@@ -157,7 +157,7 @@ public class Schedule {
 
 			for(int j = 0; j < numSlotsPerWeek; j++)
 			{
-				weeklyTimeSlots.add(this.timeSlots.get(weekCounter));
+				weeklyTimeSlots.add(rdsisdumb.get(weekCounter));
 				weekCounter ++;
 			}
 
@@ -170,6 +170,24 @@ public class Schedule {
 
 		return weeklySchedules;
 	}
+
+	public ArrayList<TimeSlot> fuckYouRDS(){
+		ArrayList<TimeSlot> tscopy = this.timeSlots;
+		ArrayList<TimeSlot> fuckRDS = new ArrayList<TimeSlot>();
+		int index = 0;
+		while(fuckRDS.size()<tscopy.size()){
+			for(TimeSlot tsbitch : tscopy){
+				String gohomeRDS = this.id + index;
+				if(tsbitch.id == gohomeRDS){
+					fuckRDS.add(index, tsbitch);
+					break;
+				}
+			}
+			index++;
+		}
+		return fuckRDS;
+	}
+
 
 	public int calculateNumTimeSlots(LocalTime st, LocalTime et, int dur) {
 		double numSlots = 0;
