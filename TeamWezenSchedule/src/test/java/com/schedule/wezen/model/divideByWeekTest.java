@@ -20,7 +20,7 @@ public class divideByWeekTest {
 		LocalDate startDate = model.stringToDate(stringDate1);
 		LocalDate endDate = model.stringToDate(stringDate2);
 		String stringTime1 = "09:00:00";
-		String stringTime2 = "14:00:00";
+		String stringTime2 = "20:00:00";
 		LocalTime startTime = model.stringToTime(stringTime1);
 		LocalTime endTime = model.stringToTime(stringTime2);
 		int duration = 30;

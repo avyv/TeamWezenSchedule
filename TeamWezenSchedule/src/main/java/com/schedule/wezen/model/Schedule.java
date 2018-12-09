@@ -88,14 +88,14 @@ public class Schedule {
 		
 		int numWeeksInSchedule = numDaysInSchedule / 7;
 		
-		int numOfTimeSlotsPerDay = calculateNumTimeSlots(this.startTime, this.endTime, this.slotDuration);
+		//int numOfTimeSlotsPerDay = calculateNumTimeSlots(this.startTime, this.endTime, this.slotDuration);
 		
 		LocalDate startOfWeekDate = scheduleStartDate;
 		
 		
 		for(int week = 0; week < numWeeksInSchedule; week++)
 		{
-			for(int time = 0; time < numOfTimeSlotsPerDay; time++)
+			for(int time = 0; time < this.numSlotsDay; time++)
 			{
 				for(int day = 0; day < 7; day++)
 				{
@@ -123,7 +123,7 @@ public class Schedule {
 				timeSlotDate = startOfWeekDate;
 				timeSlotStartTime = timeSlotStartTime.plusMinutes(this.slotDuration);
 			}
-			
+			timeSlotStartTime = this.startTime;
 			startOfWeekDate = startOfWeekDate.plusDays(7);
 		}
 		
