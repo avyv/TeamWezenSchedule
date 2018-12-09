@@ -53,10 +53,10 @@ public class SchedulesDAO {
 //        	psts.setString(1, schedule.getId());
 //        	psts.execute();
 //        	psts.close();
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
-            ps.setString(1, schedule.getId());
-            ps.execute();
-            ps.close();
+//          PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
+//          ps.setString(1, schedule.getId());
+//          ps.execute();
+//          ps.close();
             
             return true;
 
