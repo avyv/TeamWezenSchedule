@@ -23,9 +23,9 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.google.gson.Gson;
 import com.schedule.wezen.db.SchedulesDAO;
+import com.schedule.wezen.db.TimeSlotsDAO;
 import com.schedule.wezen.demo.http.CreateMeetingRequest;
 import com.schedule.wezen.demo.http.CreateMeetingResponse;
-import com.schedule.wezen.demo.http.CreateScheduleResponse;
 import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 import com.schedule.wezen.model.TimeSlot;
@@ -36,12 +36,14 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 	public static LambdaLogger logger = null;
 	
 	
-	boolean createMeetingLambda() throws Exception {
+	boolean createMeetingLambda(String tsid, String meetingName) throws Exception {
 		if(logger != null) { logger.log("in createMeetingLambda"); }
 		
-		SchedulesDAO dao = new SchedulesDAO();
+		TimeSlotsDAO tsdao = new TimeSlotsDAO();
 		
 		logger.log("DAO created");
+		
+		tsdao.setMeeting(tsid, meetingName);
 		
 		return true;
 		
@@ -128,16 +130,38 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 
 			// This is where stuff starts happening
 			
+			String response = "";
+			
+			logger.log("Before try statement to create meeting");
+			
+			try {
+				
+				logger.log("In try statement, before createMeetingLambda");
+				
+				createMeetingLambda(createMeetingRequest.requestTSId, createMeetingRequest.requestMtngName);
+				
+				response = "Successfully created meeting";
+				
+			} catch (Exception e) {
+				
+				logger.log(e.getStackTrace().toString());
+				
+				logger.log(e.getMessage());
+				
+				response = "Unable to create meeting";
+				
+				createMeetingResponse = new CreateMeetingResponse(response + " (" + e.getMessage(), 403);
+			
+			}
+			
 			
 			logger.log("Before creating SchedulesDAO object");
-			
 			
 			SchedulesDAO dao = new SchedulesDAO();
 			
 			Schedule retrievedSchedule = null;
 			
-			boolean didRetrieveSchedule = false; 
-			
+			boolean didRetrieveSchedule = false;
 			
 			try { 
 				
@@ -148,6 +172,7 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				logger.log("After retrieving schedule: " + retrievedSchedule.getId());
 				
 				didRetrieveSchedule = true;
+				
 				
 			} catch (Exception e) {
 				
@@ -177,11 +202,10 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				logger.log("After initializing variables, before retrieving the correct weekly schedule");
 				
 				Schedule byWeek = null;
-				int week = -1;
+				
+				int week = 0;
 				
 				for(Schedule schedule: scheduleDividedByWeeks) {
-					
-					week++;
 					
 					if((schedule.getStartDate().toString()).equals(createMeetingRequest.requestWeekStart)) {
 						
@@ -189,26 +213,13 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 						
 						byWeek = scheduleDividedByWeeks.get(week);
 					}
-				}
-				
-				logger.log("After 1st for loop, before 2nd");
-				
-				
-				for(TimeSlot timeslot : byWeek.getTimeSlots()) {
 					
-					if(timeslot.getId().equals(createMeetingRequest.requestTSId)) {
-						
-						logger.log("Found the correct timeslot to insert meeting");
-						
-						timeslot.createMeeting(createMeetingRequest.requestMtngName);
-					}
+					week++;
 				}
 				
-				logger.log("After 2nd for loop");
+				logger.log("After for loop");
 				
 				startDateOfWeek = byWeek.getStartDate().toString();
-				
-				String response = "Successfully created meeting";
 				
 				createMeetingResponse = new CreateMeetingResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 				

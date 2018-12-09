@@ -118,41 +118,6 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				
 				logger.log("Assigned values to variables");
 				
-				/**
-				 * This will return the schedule for the first week
-				 */
-				/*if(getScheduleRequest.requestWeekStart.equals("")) {
-					byWeek = scheduleDividedByWeeks.get(0);
-					startDateOfWeek = byWeek.getStartDate().toString();
-				}*/
-				
-				/**
-				 * This will return the schedule for the week beginning at requestWeekStart
-				 */
-				/*else if(!(getScheduleRequest.requestWeekStart.equals(""))) {
-					
-					int index = 0;
-					int week = 0;
-					
-					for(Schedule schedule : scheduleDividedByWeeks)
-					{
-						index++;
-						
-						LocalDate listStartDate = schedule.getStartDate();
-						String arrayListStartDate = listStartDate.toString();
-						String requestStart = getScheduleRequest.requestWeekStart;
-						
-						if(arrayListStartDate.equals(requestStart)) {
-							week = index - 1;
-						}
-					}
-					
-					byWeek = scheduleDividedByWeeks.get(week);
-					startDateOfWeek = byWeek.getStartDate().toString();
-				}*/
-				
-				
-				
 				String response = "Successfully retrieved schedule";
 				
 				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);

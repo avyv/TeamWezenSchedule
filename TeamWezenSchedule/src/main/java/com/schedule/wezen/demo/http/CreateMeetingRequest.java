@@ -14,6 +14,6 @@ public class CreateMeetingRequest {
 	}
 	
 	public String toString() {
-		return "CreateMeeting(" + requestMtngName + " in schedule with ID: " + requestSchedID + " in timeslot with ID: " + requestTSId +")";
+		return "CreateMeeting(" + requestMtngName + ", in schedule with ID: " + requestSchedID + ", in timeslot with ID: " + requestTSId +")";
 	}
 }
