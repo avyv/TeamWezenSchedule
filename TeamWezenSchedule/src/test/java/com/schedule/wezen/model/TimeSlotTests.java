@@ -45,14 +45,13 @@ public class TimeSlotTests extends TestCase {
 	@Test
 	public void testAddGetAll() throws Exception{
 		dao.addTimeSlot(testSlot);
-		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-17"), "11:00:00 2018-12-17", "1", 2345);
+		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-17"), "1 11:00:00 2018-12-17", "1", 2345);
 		dao.addTimeSlot(alsoTestSlot);
 		
 		TimeSlot[] toTest = new TimeSlot[2];
 		toTest[0] = dao.getAllTimeSlots().get(0);
 		toTest[1] = dao.getAllTimeSlots().get(1);
 		
-		System.out.println(testSlot.id + " " + toTest[0].id);
 		assertTrue(testSlot.id.equals(toTest[0].id));
 		assertTrue(testSlot.secretCode == toTest[0].secretCode);
 		assertTrue(testSlot.sid.equals(toTest[0].sid));
@@ -119,7 +118,7 @@ public class TimeSlotTests extends TestCase {
 		TimeSlot mySlot;
 		LocalTime startTime = LocalTime.parse("03:00:00");
 		LocalDate slotDate = LocalDate.parse("2018-12-17");
-		String id = "03:00:00 2018-12-14";
+		String id = "1 03:00:00 2018-12-14";
 		String sid = "1";
 		int secretCode = 1234;
 		boolean isOpen = true;

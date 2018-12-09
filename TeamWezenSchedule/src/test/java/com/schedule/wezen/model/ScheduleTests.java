@@ -21,7 +21,6 @@ public class ScheduleTests extends TestCase{
 	protected void setUp() {
 		dao = new SchedulesDAO();
 		sched = new Schedule(LocalDate.parse("2018-12-15"), LocalDate.parse("2018-12-25"), LocalTime.parse("08:00:00"), LocalTime.parse("10:00:00"), 20, "thisSchedule", 123456);
-		small = new Schedule(LocalDate.parse("2018-12-15"), LocalDate.parse("2018-12-15"), LocalTime.parse("08:00:00"), LocalTime.parse("09:00:00"), 20, "smallSchedule", 54321);
 		dao.deleteAllSchedules();
 	}
 	
