@@ -511,7 +511,7 @@ function processScheduleMtng(xhrResult){
 	let js = JSON.parse(xhrResult);
 
   //add if schedule couldnt be opened, display "could not find schedule"
-  if(js["response"]=="Successfully retrieved schedule"){
+  if(js["response"]=="Successfully created meeting"){
     currSchedule.startDate = js["responseStartDateOfWeek"];
     currSchedule.startTime = js["responseStartTime"];
     currSchedule.id = js["responseID"];
@@ -528,6 +528,7 @@ function processScheduleMtng(xhrResult){
         break;
       }
     }
+    document.getElementById("mtngPrompt").style.display='none';
     document.getElementById("mtngcode").innerHTML = this_slot.secretCode;
     document.getElementById("mtngIDPrompt").style.display='block';
     generateCalendar();
