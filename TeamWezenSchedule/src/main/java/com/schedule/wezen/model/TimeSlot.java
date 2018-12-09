@@ -9,7 +9,8 @@ public class TimeSlot {
 	LocalDate slotDate;
 	//Meeting slotMeeting;
 	String id, sid, meetingName = " ";
-	int secretCode, index;
+	int secretCode;
+	int index;
 	boolean isOpen, hasMeeting;
 	
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting,int index) {

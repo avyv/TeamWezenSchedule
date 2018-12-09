@@ -60,10 +60,10 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, secretCode);
 
-		for(TimeSlot ts: schedule.getTimeSlots())
-		{
-			logger.log(ts.getId());
-		}
+//		for(TimeSlot ts: firstWeek.getTimeSlots())
+//		{
+//			logger.log(ts.getId());
+//		}
 		logger.log("Schedule object created");
 		
 //		if(exist == null) {
