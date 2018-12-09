@@ -46,16 +46,16 @@ public class TimeSlotTests extends TestCase {
 	public void testSetDeleteMeeting() throws Exception{
 		dao.addTimeSlot(testSlot);
 		
-		assertTrue(dao.setMeeting(testSlot, "a meeting"));
-		assertFalse(dao.setMeeting(testSlot, "another meeting"));
+		assertTrue(dao.setMeeting(testSlot.id, "a meeting"));
+		assertFalse(dao.setMeeting(testSlot.id, "another meeting"));
 		
 		TimeSlot returnedSlot = dao.getTimeSlot(testSlot);
 		assertTrue(returnedSlot.hasMeeting);
 		assertFalse(returnedSlot.isOpen);
 		assertEquals(returnedSlot.meetingName, "a meeting");
 		
-		assertTrue(dao.deleteMeeting(testSlot));
-		assertFalse(dao.deleteMeeting(testSlot));
+		assertTrue(dao.deleteMeeting(testSlot.id));
+		assertFalse(dao.deleteMeeting(testSlot.id));
 		
 		returnedSlot = dao.getTimeSlot(testSlot);
 		assertFalse(returnedSlot.hasMeeting);
