@@ -102,17 +102,17 @@ public class Schedule {
 					String tsID = this.id + " " + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
 					
 					// populate with closed TimeSlots if the schedule does not start on Monday
-					if(timeSlotDate.isBefore(this.startDate))
+					if(timeSlotDate.isBefore(this.startDate) && (!(timeSlotDate.equals(this.startDate))))
 					{	
 						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false));
 					}
 					// populate with closed TimeSlots if the schedule does not end on Sunday
-					else if(timeSlotDate.isAfter(this.endDate))
+					else if(timeSlotDate.isAfter(this.endDate) && (!(timeSlotDate.equals(this.endDate))))
 					{
 						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false));
 					}
 					// if the date is within the range of the schedule start and end dates, populate array with open time slots
-					else
+					else if (timeSlotDate.equals(this.startDate) || timeSlotDate.equals(this.endDate) || (timeSlotDate.isAfter(this.startDate) && timeSlotDate.isBefore(this.endDate)))
 					{
 						this.timeSlots.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false));
 					}
