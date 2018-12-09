@@ -46,17 +46,17 @@ public class SchedulesDAO {
         }
     }
     
-    public boolean deleteSchedule(Schedule schedule) throws Exception {
+    public boolean deleteSchedule(String id) throws Exception {
         try {
-//        	tsdao.deleteAllScheduleTimeSlots(schedule.getId());
-//        	PreparedStatement psts = conn.prepareStatement("DELETE FROM TimeSlots WHERE sid = ?;");
-//        	psts.setString(1, schedule.getId());
-//        	psts.execute();
-//        	psts.close();
-//          PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
-//          ps.setString(1, schedule.getId());
-//          ps.execute();
-//          ps.close();
+        	tsdao.deleteAllScheduleTimeSlots(id);
+        	PreparedStatement psts = conn.prepareStatement("DELETE FROM TimeSlots WHERE sid = ?;");
+        	psts.setString(1, id);
+        	psts.execute();
+        	psts.close();
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
+            ps.setString(1, id);
+            ps.execute();
+            ps.close();
             
             return true;
 
