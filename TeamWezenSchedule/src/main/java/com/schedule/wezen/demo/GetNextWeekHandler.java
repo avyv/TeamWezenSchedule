@@ -149,6 +149,9 @@ public class GetNextWeekHandler implements RequestStreamHandler {
 				
 				getNextResponse = new GetNextWeekResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
+				
+				e.printStackTrace();
+				
 				logger.log(e.getMessage());
 				getNextResponse = new GetNextWeekResponse("A schedule with that ID does not exist in our database: " + e.getMessage(), 403);
 			}

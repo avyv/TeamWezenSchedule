@@ -25,16 +25,20 @@ import com.google.gson.Gson;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.demo.http.DeleteScheduleRequest;
 import com.schedule.wezen.demo.http.DeleteScheduleResponse;
-import com.schedule.wezen.model.Model;
-import com.schedule.wezen.model.Schedule;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 
 public class DeleteScheduleHandler implements RequestStreamHandler {
 	
 	public LambdaLogger logger = null;
+	
+	boolean deleteScheduleLambda(String id) throws Exception {
+		
+		SchedulesDAO dao = new SchedulesDAO();
+		
+		logger.log("DAO created");
+		
+		return dao.deleteSchedule(id);
+	}
 	
 	@Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
@@ -76,58 +80,26 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 			DeleteScheduleRequest req = new Gson().fromJson(body, DeleteScheduleRequest.class);
 			logger.log(req.toString());
 			
-			logger.log("Before SchedulesDAO");
-
-			SchedulesDAO dao = new SchedulesDAO();
+			DeleteScheduleResponse resp = null;
 			
-			logger.log("After SchedulesDAO before model");
-			
-			Model m = new Model();
-			
-			logger.log("After model, before Strings");
-			
-			String startd = "2018-03-11";
-			String endd = "2018-03-12";
-			String startt = "11:00:00";
-			String endt = "12:00:00";
-			
-			LocalDate sd = m.stringToDate(startd);
-			LocalDate ed = m.stringToDate(endd);
-			LocalTime st = m.stringToTime(startt);
-			LocalTime et = m.stringToTime(endt);
-			int dur = 0;
-			int secretCode = 0;
-			
-			logger.log("After initializations");
-			
-			
-			// See how awkward it is to call delete with an object, when you only
-			// have one part of its information?
-			Schedule schedule = new Schedule(sd, ed, st, et, dur, req.requestSchedID, secretCode);
-			
-			logger.log("After creating new dummy schedule with real secret code");
-			
-			DeleteScheduleResponse resp;
 			try {
 				
-				logger.log("In try");
+				logger.log("Trying to delete schedule");
 				
-				if (dao.deleteSchedule(schedule)) {
-					
-					logger.log("After DAO delete schedule");
-					
-					resp = new DeleteScheduleResponse("Successfully deleted schedule: " + req.requestSchedID);
-				} else {
-					
-					logger.log("In else");
-					
-					resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.requestSchedID, 422);
-				}
+				deleteScheduleLambda(req.requestSchedID);
+				
+				logger.log("After delete schedule");
+				
+				resp = new DeleteScheduleResponse("Sucessfully deleted schedule", 200);
+				
 			} catch (Exception e) {
 				
-				logger.log("Exception caught");
+				e.printStackTrace();
 				
-				resp = new DeleteScheduleResponse("Unable to delete schedule: " + req.requestSchedID + "(" + e.getMessage() + ")", 403);
+				logger.log("Caught Exception: " + e.getMessage());
+				
+				resp = new DeleteScheduleResponse("Unable to delete schedule: " + e.getMessage(), 403);
+				
 			}
 			
 			// compute proper response

@@ -176,6 +176,8 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				
 			} catch (Exception e) {
 				
+				e.printStackTrace();
+				
 				logger.log("Caught exception: " + e.getMessage());
 				
 				createMeetingResponse = new CreateMeetingResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);

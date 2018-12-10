@@ -169,6 +169,8 @@ public class CancelMeetingHandler implements RequestStreamHandler {
 				
 			} catch (Exception e) {
 				
+				e.printStackTrace();
+				
 				logger.log("Caught exception: " + e.getMessage());
 				
 				cancelMeetingResponse = new CancelMeetingResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);

@@ -171,6 +171,9 @@ public class CloseTimeSlotHandler implements RequestStreamHandler {
 					
 					closeTimeSlotResponse = new CloseTimeSlotResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 				} catch (Exception e) {
+					
+					e.printStackTrace();
+					
 					logger.log(e.getMessage());
 					closeTimeSlotResponse = new CloseTimeSlotResponse("A schedule with that ID does not exist in our database: " + e.getMessage(), 403);
 				}

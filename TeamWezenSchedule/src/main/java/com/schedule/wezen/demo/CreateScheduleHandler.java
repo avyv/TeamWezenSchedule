@@ -233,7 +233,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 			} catch (Exception e) {
 				
-				logger.log((e.getStackTrace().toString()));
+				e.printStackTrace();
 				
 				logger.log(e.getMessage());
 				
@@ -271,10 +271,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 
 				logger.log("Assigned values to variables");
 				
-				for(TimeSlot ts: firstWeek.getTimeSlots())
-				{
-					logger.log(ts.getId());
-				}
+				logger.log(firstWeek.getCreated().toString());
 				
 				resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
 					
