@@ -123,20 +123,41 @@ public class SchedulesDAO {
         }
     }
     
-    //TODO get schedules created in last n hours
+    //get schedules created in last n hours
     public List<Schedule> getCreatedInLastHours(int num) throws Exception{
-    	List<Schedule> inLastNum;
-    	LocalDateTime now = LocalDateTime.now();
+    	List<Schedule> inLastNumHours = new ArrayList<Schedule>();
+    	LocalDateTime nHoursAgo = LocalDateTime.now().minusHours(num);
     	for(Schedule s: getAllSchedules()) {
-    		//TODO
+    		LocalDateTime sCreate = s.getCreated();
+    		
+    		if(sCreate.isAfter(nHoursAgo)) {
+    			inLastNumHours.add(s);
+    		}
     	}
+    	
+    	return inLastNumHours;
     }
     
-    //TODO delete schedules over n days old
+    //delete schedules over n days old
+    public void deleteOverDays(int num) throws Exception{
+    	List<Schedule> beforeNumDays = new ArrayList<Schedule>();
+    	LocalDateTime nDaysAgo = LocalDateTime.now().minusDays(num);
+    	for(Schedule s: getAllSchedules()) {
+    		LocalDateTime sCreate = s.getCreated();
+    		
+    		if(sCreate.isBefore(nDaysAgo)) {
+    			beforeNumDays.add(s);
+    		}
+    	}
+    	
+    	for(Schedule toDel: beforeNumDays) {
+    		deleteSchedule(toDel.getId());
+    	}
+    }
 
     public List<Schedule> getAllSchedules() throws Exception {
         
-        List<Schedule> allSchedules = new ArrayList<>();
+        List<Schedule> allSchedules = new ArrayList<Schedule>();
         try {
             Statement statement = conn.createStatement();
             String query = "SELECT * FROM Schedules";
