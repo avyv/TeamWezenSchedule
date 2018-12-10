@@ -97,7 +97,7 @@ public class SchedulesDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode,created) VALUES (?,?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
             
             ps.setDate(1, Date.valueOf(schedule.getStartDate()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate()));
@@ -172,7 +172,7 @@ public class SchedulesDAO {
         Timestamp created = resultSet.getTimestamp("created");
         
         
-        Schedule toRet = new Schedule (startDate.toLocalDate(), endDate.toLocalDate(), startTime.toLocalTime(), endTime.toLocalTime(), duration, id, secretCode, created.toLocalDateTime());
+        Schedule toRet = new Schedule (startDate.toLocalDate(), endDate.toLocalDate(), startTime.toLocalTime(), endTime.toLocalTime(), duration, id, secretCode);//, created.toLocalDateTime());
         toRet.emptyTimeSlots();
         
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();

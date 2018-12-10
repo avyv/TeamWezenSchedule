@@ -364,7 +364,7 @@ function filter(){
   sendData(data,filter_url,processSchedule);
 }
 function openSlot(ts){
-  alert("opening "+ts.date+" at " + ts.startTime);
+  // alert("opening "+ts.date+" at " + ts.startTime);
   currts = ts;
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
@@ -374,7 +374,7 @@ function openSlot(ts){
   sendData(data,open_url,processSchedule);
 }
 function closeSlot(ts){
-  alert("closing "+ts.date+" at " + ts.startTime);
+  // alert("closing "+ts.date+" at " + ts.startTime);
   currts = ts;
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);

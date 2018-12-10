@@ -23,7 +23,7 @@ public class Schedule {
 	int slotDuration, secretCode, numSlotsDay;
 	ArrayList<TimeSlot> timeSlots;
 
-	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, LocalDateTime created) {
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode) {//, LocalDateTime created) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
@@ -31,7 +31,7 @@ public class Schedule {
 		this.id = id;
 		this.secretCode = secretCode;
 		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
-		this.created = created;
+		this.created = LocalDateTime.now();//created;
 		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
 		this.timeSlots = new ArrayList<TimeSlot>();
 		populateTimeSlots();
