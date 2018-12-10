@@ -97,7 +97,7 @@ public class SchedulesDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode,created) VALUES (?,?,?,?,?,?,?,?);");
             
             ps.setDate(1, Date.valueOf(schedule.getStartDate()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate()));
