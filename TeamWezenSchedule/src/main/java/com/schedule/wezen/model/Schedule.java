@@ -8,6 +8,7 @@ import java.util.Random;
 import org.joda.time.Days;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
@@ -17,11 +18,12 @@ public class Schedule {
 
 	LocalDate startDate, endDate;
 	LocalTime startTime, endTime;
+	LocalDateTime created;
 	String id;
 	int slotDuration, secretCode, numSlotsDay;
 	ArrayList<TimeSlot> timeSlots;
 
-	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode) {
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, LocalDateTime created) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
@@ -29,6 +31,7 @@ public class Schedule {
 		this.id = id;
 		this.secretCode = secretCode;
 		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
+		this.created = created;
 		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
 		this.timeSlots = new ArrayList<TimeSlot>();
 		populateTimeSlots();
@@ -36,13 +39,14 @@ public class Schedule {
 
 
 	//TODO Don't use this? the arraylist doesn't populate
-	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, ArrayList<TimeSlot> timeSlots) {
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, ArrayList<TimeSlot> timeSlots, LocalDateTime created) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
 		this.slotDuration = slotDuration;
 		this.id = id;
 		this.secretCode = secretCode;
+		this.created = created;
 		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
 		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
 		//TODO this doesn't work
@@ -161,7 +165,7 @@ public class Schedule {
 				weekCounter ++;
 			}
 
-			weeklySchedules.add(i,new Schedule(weekStartDate, weekEndDate, this.startTime, this.endTime, this.slotDuration, this.id, this.secretCode, weeklyTimeSlots));
+			weeklySchedules.add(i,new Schedule(weekStartDate, weekEndDate, this.startTime, this.endTime, this.slotDuration, this.id, this.secretCode, weeklyTimeSlots, LocalDateTime.now()));
 
 			weekStartDate = weekStartDate.plusDays(7);
 			weekEndDate = weekStartDate.plusDays(6);

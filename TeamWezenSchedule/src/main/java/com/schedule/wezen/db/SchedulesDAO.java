@@ -3,6 +3,7 @@ package com.schedule.wezen.db;
 import java.sql.*;
 import java.time.LocalTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +98,7 @@ public class SchedulesDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode,created) VALUES (?,?,?,?,?,?,?,?);");
             
             ps.setDate(1, Date.valueOf(schedule.getStartDate()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate()));
@@ -106,6 +107,7 @@ public class SchedulesDAO {
         	ps.setInt(5, schedule.getSlotDuration());
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
+        	ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
         	
         	for(TimeSlot ts: schedule.getTimeSlots()) {
         		tsdao.addTimeSlot(ts);
@@ -121,6 +123,8 @@ public class SchedulesDAO {
             throw new Exception("Failed to insert schedule: "/* + str2*/ + ":" + e.getMessage());
         }
     }
+    
+    //TODO get schedules 
 
     public List<Schedule> getAllSchedules() throws Exception {
         
@@ -164,8 +168,9 @@ public class SchedulesDAO {
         int duration = resultSet.getInt("duration");
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
+        Timestamp created = resultSet.getTimestamp("created");
         
-        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()).plusDays(1), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
+        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()), LocalDate.parse(endDate.toString()).plusDays(1), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode, LocalDateTime.parse(created.toString()));
         toRet.emptyTimeSlots();
         
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();
