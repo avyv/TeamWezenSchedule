@@ -18,6 +18,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
 
 import com.schedule.wezen.db.SchedulesDAO;
+import com.schedule.wezen.demo.http.GetNextWeekResponse;
 import com.schedule.wezen.demo.http.GetScheduleRequest;
 import com.schedule.wezen.demo.http.GetScheduleResponse;
 import com.schedule.wezen.model.Schedule;
@@ -112,15 +113,42 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
 				//Schedule byWeek = null;
-				Schedule byWeek = scheduleDividedByWeeks.get(0);
-				startDateOfWeek = byWeek.getStartDate().toString();
+				//Schedule byWeek = scheduleDividedByWeeks.get(0);
+				//startDateOfWeek = byWeek.getStartDate().toString();
 				
 				
 				logger.log("Assigned values to variables");
 				
+				/**
+				 * This will return the schedule for the week beginning at requestWeekStart
+				 */
+					
+				Schedule byWeek = null;
+				
+				int index = 0;
+				int week = 0;
+				
+				for(Schedule schedule : scheduleDividedByWeeks)
+				{
+					LocalDate listStartDate = schedule.getStartDate();
+					String arrayListStartDate = listStartDate.toString();
+					String requestStart = getScheduleRequest.requestWeekStart;
+					
+					if(arrayListStartDate.equals(requestStart)) {
+						week = index;
+					}
+					
+					index++;
+				}
+				
+				byWeek = scheduleDividedByWeeks.get(week);
+				startDateOfWeek = byWeek.getStartDate().toString();
+			
+				
 				String response = "Successfully retrieved schedule";
 				
 				getScheduleResponse = new GetScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
+				
 			} catch (Exception e) {
 				
 				e.printStackTrace();

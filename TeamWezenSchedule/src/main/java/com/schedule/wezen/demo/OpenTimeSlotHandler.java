@@ -157,7 +157,7 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 						String requestStart = closeTimeSlotRequest.requestWeekStart;
 						
 						if(arrayListStartDate.equals(requestStart)) {
-							week = index + 1;
+							week = index;
 						}
 						
 						index++;
