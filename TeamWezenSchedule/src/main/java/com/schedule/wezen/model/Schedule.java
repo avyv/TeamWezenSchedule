@@ -299,6 +299,7 @@ public class Schedule {
 	public int getSecretCode() {return secretCode;}
 	public int getNumSlotsDay() {return numSlotsDay;}
 	public ArrayList<TimeSlot> getTimeSlots() {return timeSlots;}
+	public LocalDateTime getCreated() {return created;}
 
 	public void setStartDate(LocalDate sd) {this.startDate = sd;}
 	public void setEndDate(LocalDate ed) {this.endDate = ed;}

@@ -124,6 +124,13 @@ public class SchedulesDAO {
     }
     
     //TODO get schedules created in last n hours
+    public List<Schedule> getCreatedInLastHours(int num) throws Exception{
+    	List<Schedule> inLastNum;
+    	LocalDateTime now = LocalDateTime.now();
+    	for(Schedule s: getAllSchedules()) {
+    		//TODO
+    	}
+    }
     
     //TODO delete schedules over n days old
 
