@@ -52,7 +52,7 @@ public class TimeSlotsDAO {
     		return true;
     		
     	} catch(Exception e) {
-    		throw new Exception("Failed to add meeting to timeslot: " + e.getMessage());
+    		throw new Exception("Failed to open timeslot: " + e.getMessage());
     	}
     }
     
@@ -67,7 +67,7 @@ public class TimeSlotsDAO {
     		return true;
     		
     	} catch(Exception e) {
-    		throw new Exception("Failed to add meeting to timeslot: " + e.getMessage());
+    		throw new Exception("Failed to close timeslot: " + e.getMessage());
     	}
     }
     
