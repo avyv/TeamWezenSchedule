@@ -67,12 +67,10 @@ public class SchedulesDAO {
 
     public boolean updateSchedule(Schedule schedule) throws Exception {
         try {
-        	String query = "UPDATE Schedules SET startDate=?, endDate=?, startTime=?, endTime=? WHERE id=?;";
+        	String query = "UPDATE Schedules SET startDate=?, endDate=? WHERE id=?;";
         	PreparedStatement ps = conn.prepareStatement(query);
         	ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
-        	ps.setTime(3, Time.valueOf(schedule.getStartTime().toString()));
-        	ps.setTime(4, Time.valueOf(schedule.getEndTime().toString()));
         	
             int numAffected = ps.executeUpdate();
             ps.close();
