@@ -306,4 +306,5 @@ public class Schedule {
 	public void setStartTime(LocalTime st) {this.startTime = st;}
 	public void setEndTime(LocalTime et) {this.endTime = et;}
 	public void setNumSlotsDay(int num) {this.numSlotsDay = num;}
+	public void setCreated(LocalDateTime created) {this.created = created;}
 }

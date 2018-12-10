@@ -201,6 +201,7 @@ public class SchedulesDAO {
         
         
         Schedule toRet = new Schedule (startDate.toLocalDate(), endDate.toLocalDate(), startTime.toLocalTime(), endTime.toLocalTime(), duration, id, secretCode);//, created.toLocalDateTime());
+        toRet.setCreated(created.toLocalDateTime());
         toRet.emptyTimeSlots();
         
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();
