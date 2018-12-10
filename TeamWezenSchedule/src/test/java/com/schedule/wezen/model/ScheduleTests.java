@@ -21,7 +21,7 @@ public class ScheduleTests extends TestCase{
 	@Override
 	protected void setUp() {
 		dao = new SchedulesDAO();
-		sched = new Schedule(LocalDate.parse("2018-12-15"), LocalDate.parse("2018-12-25"), LocalTime.parse("08:00:00"), LocalTime.parse("10:00:00"), 20, "thisSchedule", 123456, LocalDateTime.now());
+		sched = new Schedule(LocalDate.parse("2018-12-15"), LocalDate.parse("2018-12-25"), LocalTime.parse("08:00:00"), LocalTime.parse("10:00:00"), 20, "thisSchedule", 123456);
 		dao.deleteAllSchedules();
 	}
 	
@@ -60,7 +60,7 @@ public class ScheduleTests extends TestCase{
 	@Test
 	public void testCalculateNumTimeSlots() {
 		
-		Schedule s = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123, LocalDateTime.now());
+		Schedule s = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
 		
 		assertTrue(s.calculateNumTimeSlots(s.startTime, s.endTime, s.slotDuration) == 20);
 	}
