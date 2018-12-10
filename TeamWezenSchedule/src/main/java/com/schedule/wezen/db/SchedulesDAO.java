@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.schedule.wezen.demo.CreateScheduleHandler;
 import com.schedule.wezen.model.*;
 
 public class SchedulesDAO {
@@ -124,7 +123,9 @@ public class SchedulesDAO {
         }
     }
     
-    //TODO get schedules 
+    //TODO get schedules created in last n hours
+    
+    //TODO delete schedules over n days old
 
     public List<Schedule> getAllSchedules() throws Exception {
         

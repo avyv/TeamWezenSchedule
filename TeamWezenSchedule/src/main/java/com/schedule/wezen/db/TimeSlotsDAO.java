@@ -120,7 +120,6 @@ public class TimeSlotsDAO {
     		
     		
     		if(timeSlot.getHasMeeting()) {
-    			System.out.println(timeSlot.getIsOpen());
 	    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET meetingName=?, isOpen=?, hasMeeting=? WHERE id=?;");
 	    		ps.setString(1, " ");
 	    		ps.setBoolean(2, true);
