@@ -264,6 +264,6 @@ public class TimeSlotsDAO {
     	boolean isOpen = resultSet.getBoolean("isOpen");
     	boolean hasMeeting = resultSet.getBoolean("hasMeeting");
     	int index = resultSet.getInt("ind");
-        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()), id, meetingName, sid, secretCode, isOpen, hasMeeting, index);
+        return new TimeSlot(startTime.toLocalTime(), slotDate.toLocalDate(), id, meetingName, sid, secretCode, isOpen, hasMeeting, index);
     }
 }
