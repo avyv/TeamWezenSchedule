@@ -128,7 +128,7 @@ function generateCalendar(){
       let data = {};
       data["requestSchedID"] = String(currSchedule.id);
       data["requestWeekStart"] = String(currSchedule.startDate);
-      let refresh_url = base_url + "/refresh";
+      let refresh_url = base_url + "/getschedule";
       sendData(data,refresh_url,processSchedule);
   }
 
