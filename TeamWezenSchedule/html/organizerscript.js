@@ -38,6 +38,31 @@ var currts = dummySchedule.timeSlots[0];
 var currSchedule = dummySchedule;
 var orgCredentials = "";
 
+var fday;
+var fmonth;
+var fdate;
+var fyear;
+var ftime;
+
+window.onload = updateFilt;
+
+
+function updateFilt(){
+  fday = document.getElementById("dayofweek").value;
+  fmonth = document.getElementById("selectmonth").value;
+  fyear = document.getElementById("selectyear").value;
+  fdate = document.getElementById("selectdayofmonth").value;
+  ftime = document.getElementById("filterTime").value;
+}
+
+function resetFilt(){
+    document.getElementById("dayofweek").value = 0;
+    document.getElementById("selectmonth").value = 0;
+    document.getElementById("selectyear").value = 0;
+    document.getElementById("selectdayofmonth").value = "";
+    document.getElementById("filterTime").value = 0;
+    updateFilt();
+}
 /**********  Create Calendar Display **********/
 function generateCalendar(){
     document.getElementById("daysview").innerHTML = "";
@@ -119,17 +144,10 @@ function generateCalendar(){
             freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
             thisSlot.appendChild(freebtn);
           }else if(orgCredentials == currSchedule.orgCode){
-            // let mydate = myslot.startDate;
-            // let scheddate = currSchedule.fullStartDate;
-            // var pdate = scheddate.split("-");
-
-            // var checkdate = (mydate.year<parseInt(pdate[0],10))||(mydate.month<parseInt(pdate[1],10))||(mydate.day<parseInt(pdate[2],10));
-            // if(!checkdate){
               let openbtn = document.createElement("BUTTON");
               openbtn.innerText = "Set Free";
               openbtn.addEventListener('click', function(){openSlot(myslot)});
               thisSlot.appendChild(openbtn);
-            // }
           }
         }else{
           let mtng = document.createElement("P");
@@ -178,6 +196,7 @@ function generateCalendar(){
   function deleteSchedule(){
     let cont = confirm("Are you sure you want to delete this schedule?");
     if(cont){
+      resetFilt();
       let sid = currSchedule.id;
       let data = {};
       data["requestSchedID"] = String(sid);
@@ -257,6 +276,11 @@ function refresh(){
     let data = {};
     data["requestSchedID"] = String(currSchedule.id);
     data["requestWeekStart"] = String(currSchedule.startDate);
+    data["requestWeekday"] = String(fday);
+    data["requestMonth"] = String(fmonth);
+    data["requestYear"] = String(fyear);
+    data["requestDate"] = String(fdate);
+    data["requestTime"] = String(ftime);
     let refresh_url = base_url + "/getschedule";
     sendData(data,refresh_url,processSchedule);
 }
@@ -280,6 +304,11 @@ function createMtng(){
       let data = {};
       data["requestSchedID"] = String(currSchedule.id);
       data["requestWeekStart"] = String(currSchedule.startDate);
+      data["requestWeekday"] = String(fday);
+      data["requestMonth"] = String(fmonth);
+      data["requestYear"] = String(fyear);
+      data["requestDate"] = String(fdate);
+      data["requestTime"] = String(ftime);
       data["requestTSId"] = String(currts.id);
       data["requestMtngName"] = String(name);
       let createmtng_url = base_url + "/createmeeting";
@@ -308,6 +337,11 @@ function checkMeetingAuthorization(unauthorized){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   data["requestTSId"] = String(currts.id);
   let deletemtng_url = base_url + "/cancelmeeting";
   sendData(data,deletemtng_url,processSchedule);
@@ -323,9 +357,15 @@ function openSchedule(){
   if((enteredID == " ") || (enteredID == "")){
     alert("You Must enter a valid id");
   }else{
+    resetFilt();
     let data = {};
     data["requestSchedID"] = String(enteredID);
     data["requestWeekStart"] = "";
+    data["requestWeekday"] = String(fday);
+    data["requestMonth"] = String(fmonth);
+    data["requestYear"] = String(fyear);
+    data["requestDate"] = String(fdate);
+    data["requestTime"] = String(ftime);
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
     document.getElementById("schedprompt").style.display ='none';
@@ -341,9 +381,15 @@ function openEditSchedule(){
   if((enteredID == " ") || (enteredID == "") || (orgCredentials == "")){
     alert("Please Fill Out All Inputs");
   }else{
+    resetFilt();
     let data = {};
-    data["requestSchedID"] = String(enteredID);
-    data["requestWeekStart"] = "";
+    data["requestSchedID"] = String(currSchedule.id);
+    data["requestWeekStart"] = "";// String(currSchedule.startDate);
+    data["requestWeekday"] = String(fday);
+    data["requestMonth"] = String(fmonth);
+    data["requestYear"] = String(fyear);
+    data["requestDate"] = String(fdate);
+    data["requestTime"] = String(ftime);
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processEditSchedule);
   }
@@ -357,20 +403,24 @@ function filter(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
-  data["requestWeekday"] = String(day);
-  data["requestMonth"] = String(month);
-  data["requestYear"] = String(year);
-  data["requestDate"] = String(date);
-  data["requestTime"] = String(time);
-  let filter_url = base_url + "/filterschedule";
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
+  let filter_url = base_url + "/getschedule";
   sendData(data,filter_url,processSchedule);
 }
 function openSlot(ts){
-  // alert("opening "+ts.date+" at " + ts.startTime);
   currts = ts;
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   data["requestTSId"] = String(currts.id);
   let open_url = base_url + "/opensingleslot";
   sendData(data,open_url,processSchedule);
@@ -381,6 +431,11 @@ function closeSlot(ts){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   data["requestTSId"] = String(currts.id);
   let close_url = base_url + "/closesingleslot";
   sendData(data,close_url,processSchedule);
@@ -399,7 +454,7 @@ function bulkEdit(){
   data["requestToggle"] = String(toggle);
   data["requestWeekday"] = String(weekday);
   data["requestMonth"] = String(month);
-  data["requestYear"] = String(year);
+  data["requestYear"] = String(year);////////////////////////////////////////////////////////////////////////////////edit stuff
   data["requestDate"] = String(date);
   data["requestStartTime"] = String(ts);
   let bulk_url = base_url + "/bulkedit";
@@ -410,6 +465,11 @@ function getNextWeek(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   let next_url = base_url + "/getnextweek";
   sendData(data,next_url,processSchedule);
 }
@@ -418,6 +478,11 @@ function getPreviousWeek(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   let previous_url = base_url + "/getpreviousweek";
   sendData(data,previous_url,processSchedule);
 }
@@ -442,6 +507,11 @@ function updateScheduleParams(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   data["requestNewStart"] = String(nsd);
   data["requestNewEnd"] = String(ned);
   let extend_url = base_url + "/extenddates";
