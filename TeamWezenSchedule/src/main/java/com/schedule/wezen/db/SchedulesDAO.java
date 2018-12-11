@@ -3,10 +3,10 @@ package com.schedule.wezen.db;
 import java.sql.*;
 import java.time.LocalTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.schedule.wezen.demo.CreateScheduleHandler;
 import com.schedule.wezen.model.*;
 
 public class SchedulesDAO {
@@ -46,19 +46,19 @@ public class SchedulesDAO {
         }
     }
     
-    public boolean deleteSchedule(Schedule schedule) throws Exception {
+    public boolean deleteSchedule(String id) throws Exception {
         try {
-        	tsdao.deleteAllScheduleTimeSlots(schedule.getId());
-//        	PreparedStatement psts = conn.prepareStatement("DELETE FROM TimeSlots WHERE sid = ?;");
-//        	psts.setString(1, schedule.getId());
-//        	psts.execute();
-//        	psts.close();
+        	tsdao.deleteAllScheduleTimeSlots(id);
+        	PreparedStatement psts = conn.prepareStatement("DELETE FROM TimeSlots WHERE sid = ?;");
+        	psts.setString(1, id);
+        	psts.execute();
+        	psts.close();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
-            ps.setString(1, schedule.getId());
-            int numAffected = ps.executeUpdate();
+            ps.setString(1, id);
+            ps.execute();
             ps.close();
             
-            return (numAffected == 1);
+            return true;
 
         } catch (Exception e) {
             throw new Exception("Failed to delete schedule: " + e.getMessage());
@@ -67,12 +67,10 @@ public class SchedulesDAO {
 
     public boolean updateSchedule(Schedule schedule) throws Exception {
         try {
-        	String query = "UPDATE Schedules SET startDate=?, endDate=?, startTime=?, endTime=? WHERE id=?;";
+        	String query = "UPDATE Schedules SET startDate=?, endDate=? WHERE id=?;";
         	PreparedStatement ps = conn.prepareStatement(query);
         	ps.setDate(1, Date.valueOf(schedule.getStartDate().toString()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate().toString()));
-        	ps.setTime(3, Time.valueOf(schedule.getStartTime().toString()));
-        	ps.setTime(4, Time.valueOf(schedule.getEndTime().toString()));
         	
             int numAffected = ps.executeUpdate();
             ps.close();
@@ -97,7 +95,7 @@ public class SchedulesDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode) VALUES (?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO Schedules (startDate,endDate,startTime,endTime,duration,id,secretCode,created) VALUES (?,?,?,?,?,?,?,?);");
             
             ps.setDate(1, Date.valueOf(schedule.getStartDate()));
         	ps.setDate(2, Date.valueOf(schedule.getEndDate()));
@@ -106,32 +104,12 @@ public class SchedulesDAO {
         	ps.setInt(5, schedule.getSlotDuration());
         	ps.setString(6, schedule.getId());
         	ps.setInt(7, schedule.getSecretCode());
+        	ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
         	
         	for(TimeSlot ts: schedule.getTimeSlots()) {
         		tsdao.addTimeSlot(ts);
-        		//TODO does this work
-//        		PreparedStatement psts = conn.prepareStatement("SELECT * FROM TimeSlots WHERE startTime=? AND slotDate=?;");
-//                ps.setTime(1,  Time.valueOf(ts.getStartTime()));
-//                ps.setDate(2, Date.valueOf(ts.getDate()));
-//                ResultSet resultSetTS = ps.executeQuery();
-//                
-//                // already present?
-//                if (resultSetTS.next()) {
-//                    return false;
-//                }
-//
-//                psts = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting) values(?,?,?,?,?,?,?,?);");
-//                psts.setString(1, ts.getSid());
-//                psts.setTime(2,  Time.valueOf(ts.getStartTime()));
-//                psts.setDate(3, Date.valueOf(ts.getDate()));
-//                psts.setString(4, ts.getId());
-//                psts.setString(5,  ts.getMeeting());
-//                psts.setInt(6, ts.getSecretCode());
-//                psts.setBoolean(7, ts.getIsOpen());
-//                psts.setBoolean(8, ts.getHasMeeting());
-//                psts.execute();
-//                psts.close();
         	}
+        	
             
             ps.execute();
             return true;
@@ -142,10 +120,42 @@ public class SchedulesDAO {
             throw new Exception("Failed to insert schedule: "/* + str2*/ + ":" + e.getMessage());
         }
     }
+    
+    //get schedules created in last n hours
+    public List<Schedule> getCreatedInLastHours(int num) throws Exception{
+    	List<Schedule> inLastNumHours = new ArrayList<Schedule>();
+    	LocalDateTime nHoursAgo = LocalDateTime.now().minusHours(num);
+    	for(Schedule s: getAllSchedules()) {
+    		LocalDateTime sCreate = s.getCreated();
+    		
+    		if(sCreate.isAfter(nHoursAgo)) {
+    			inLastNumHours.add(s);
+    		}
+    	}
+    	
+    	return inLastNumHours;
+    }
+    
+    //delete schedules over n days old
+    public void deleteOverDays(int num) throws Exception{
+    	List<Schedule> beforeNumDays = new ArrayList<Schedule>();
+    	LocalDateTime nDaysAgo = LocalDateTime.now().minusDays(num);
+    	for(Schedule s: getAllSchedules()) {
+    		LocalDateTime sCreate = s.getCreated();
+    		
+    		if(sCreate.isBefore(nDaysAgo)) {
+    			beforeNumDays.add(s);
+    		}
+    	}
+    	
+    	for(Schedule toDel: beforeNumDays) {
+    		deleteSchedule(toDel.getId());
+    	}
+    }
 
     public List<Schedule> getAllSchedules() throws Exception {
         
-        List<Schedule> allSchedules = new ArrayList<>();
+        List<Schedule> allSchedules = new ArrayList<Schedule>();
         try {
             Statement statement = conn.createStatement();
             String query = "SELECT * FROM Schedules";
@@ -185,8 +195,11 @@ public class SchedulesDAO {
         int duration = resultSet.getInt("duration");
         String id = resultSet.getString("id");
         int secretCode = resultSet.getInt("secretCode");
+        Timestamp created = resultSet.getTimestamp("created");
         
-        Schedule toRet = new Schedule (LocalDate.parse(startDate.toString()).plusDays(1), LocalDate.parse(endDate.toString()).plusDays(1), LocalTime.parse(startTime.toString()), LocalTime.parse(endTime.toString()), duration, id, secretCode);
+        
+        Schedule toRet = new Schedule (startDate.toLocalDate(), endDate.toLocalDate(), startTime.toLocalTime(), endTime.toLocalTime(), duration, id, secretCode);//, created.toLocalDateTime());
+        toRet.setCreated(created.toLocalDateTime());
         toRet.emptyTimeSlots();
         
         TimeSlotsDAO getTimeSlots = new TimeSlotsDAO();

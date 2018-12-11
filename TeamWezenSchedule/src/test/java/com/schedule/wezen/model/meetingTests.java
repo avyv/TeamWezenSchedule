@@ -18,7 +18,8 @@ public class meetingTests {
 		int secretCode = 1234;
 		boolean isOpen = true;
 		boolean hasMeeting = false;
-		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting);
+		int index = 0;
+		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting, index);
 		
 		assertEquals(startTime, testSlot.getStartTime());
 		assertEquals(slotDate, testSlot.getDate());
@@ -39,7 +40,8 @@ public class meetingTests {
 		int secretCode = 1234;
 		boolean isOpen = true;
 		boolean hasMeeting = false;
-		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode);
+		int index = 0;
+		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, index);
 		
 		assertEquals(startTime, testSlot.getStartTime());
 		assertEquals(slotDate, testSlot.getDate());
@@ -61,7 +63,8 @@ public class meetingTests {
 		boolean isOpen = true;
 		boolean hasMeeting = false;
 		String meetingName = "Meeting";
-		testSlot = new TimeSlot(startTime, slotDate, id, meetingName, sid, secretCode, isOpen, hasMeeting);
+		int index = 0;
+		testSlot = new TimeSlot(startTime, slotDate, id, meetingName, sid, secretCode, isOpen, hasMeeting, index);
 
 		
 		assertEquals(startTime, testSlot.getStartTime());
@@ -83,7 +86,8 @@ public class meetingTests {
 		int secretCode = 1234;
 		boolean isOpen = true;
 		boolean hasMeeting = false;
-		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting);
+		int index = 0;
+		testSlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting, index);
 		//test setting open or closed
 		testSlot.setIsOpen(false);
 		assertFalse(testSlot.getIsOpen());

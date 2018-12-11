@@ -10,9 +10,10 @@ public class TimeSlot {
 	//Meeting slotMeeting;
 	String id, sid, meetingName = " ";
 	int secretCode;
+	int index;
 	boolean isOpen, hasMeeting;
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting,int index) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
@@ -21,10 +22,11 @@ public class TimeSlot {
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
 		this.hasMeeting = hasMeeting;
+		this.index = index;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen, boolean hasMeeting) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, boolean isOpen, boolean hasMeeting, int index) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
@@ -32,10 +34,11 @@ public class TimeSlot {
 		this.secretCode = secretCode;
 		this.isOpen = isOpen;
 		this.hasMeeting = hasMeeting;
+		this.index= index;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String sid, int secretCode, int index) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
@@ -43,6 +46,7 @@ public class TimeSlot {
 		this.secretCode = secretCode;
 		this.isOpen = true;
 		this.hasMeeting = false;
+		this.index = index;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
@@ -55,6 +59,7 @@ public class TimeSlot {
 	public boolean getIsOpen() {return isOpen;}
 	public int getSecretCode() {return secretCode;}
 	public boolean getHasMeeting() {return hasMeeting;}
+	public int getIndex() {return index;}
 	
 	public void setIsOpen(boolean isOpen) {this.isOpen = isOpen;}
 	public void setMeeting(String m) {

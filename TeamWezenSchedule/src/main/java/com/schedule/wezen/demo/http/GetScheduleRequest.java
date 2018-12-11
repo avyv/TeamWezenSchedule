@@ -8,4 +8,8 @@ public class GetScheduleRequest {
 		this.requestSchedID = requestSchedID;
 		this.requestWeekStart = requestStartDateOfWeek;
 	}
+	
+	public String toString() {
+		return "GetScheduleRequest( schedule: " + requestSchedID + " start of week: " + requestWeekStart + " )";
+	}
 }

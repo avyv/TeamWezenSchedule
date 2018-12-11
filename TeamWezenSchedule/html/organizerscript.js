@@ -176,7 +176,6 @@ function generateCalendar(){
   function deleteSchedule(){
     let cont = confirm("Are you sure you want to delete this schedule?");
     if(cont){
-      document.getElementById("calendarwindow").style.visibility = 'hidden';
       let sid = currSchedule.id;
       let data = {};
       data["requestSchedID"] = String(sid);
@@ -252,6 +251,13 @@ function generateCalendar(){
     sendData(data,createSchedule_url,createResponse);
   }
 
+function refresh(){
+    let data = {};
+    data["requestSchedID"] = String(currSchedule.id);
+    data["requestWeekStart"] = String(currSchedule.startDate);
+    let refresh_url = base_url + "/getschedule";
+    sendData(data,refresh_url,processSchedule);
+}
 /********* Manage Meetings **********/
 function promptMeetingName(ts){
   currts = ts;
@@ -290,14 +296,12 @@ function checkMeetingAuthorization(unauthorized){
   document.getElementById("editMtngPrompt").style.display = 'none';
   if(unauthorized){
     let enteredCode = document.getElementById("secretCode").value;
-    if(enteredCode == currts.secretCode){
-      alert("Successfully Logged in");
-    }else{
+    if(enteredCode != currts.secretCode){
       alert("Invalid Code");
       return;
     }
   }
-  alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
+  // alert("Deleting Meeting on " + currts.date + " at " + currts.startTime);
 
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
@@ -360,7 +364,7 @@ function filter(){
   sendData(data,filter_url,processSchedule);
 }
 function openSlot(ts){
-  alert("opening "+ts.date+" at " + ts.startTime);
+  // alert("opening "+ts.date+" at " + ts.startTime);
   currts = ts;
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
@@ -370,7 +374,7 @@ function openSlot(ts){
   sendData(data,open_url,processSchedule);
 }
 function closeSlot(ts){
-  alert("closing "+ts.date+" at " + ts.startTime);
+  // alert("closing "+ts.date+" at " + ts.startTime);
   currts = ts;
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
@@ -565,4 +569,6 @@ function deleteScheduleCallback(xhrResult){
   console.log("result:" + xhrResult);
   let js = JSON.parse(xhrResult);
   alert(js["deleteScheduleResponse"]);
+  document.getElementById("calendarwindow").style.visibility = 'hidden';
+
 }

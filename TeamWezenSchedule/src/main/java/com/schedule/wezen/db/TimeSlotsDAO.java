@@ -19,12 +19,12 @@ public class TimeSlotsDAO {
     	}
     }
 
-    public TimeSlot getTimeSlot(TimeSlot ts) throws Exception {
+    public TimeSlot getTimeSlot(String tsId) throws Exception {
         
         try {
         	TimeSlot timeSlot = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=?;");
-            ps.setString(1,  ts.getId());
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE id=? ORDER BY sid, ind ASC;");
+            ps.setString(1,  tsId);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
@@ -39,6 +39,36 @@ public class TimeSlotsDAO {
         	e.printStackTrace();
             throw new Exception("Failed in getting time slot: " + e.getMessage());
         }
+    }
+    
+    public boolean openTimeSlot(String id) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET isOpen=? WHERE id=?;");
+    		ps.setBoolean(1, true);
+    		ps.setString(2, id);
+    		
+    		ps.execute();
+    		ps.close();
+    		return true;
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to open timeslot: " + e.getMessage());
+    	}
+    }
+    
+    public boolean closeTimeSlot(String id) throws Exception {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET isOpen=? WHERE id=?;");
+    		ps.setBoolean(1, false);
+    		ps.setString(2, id);
+    		
+    		ps.execute();
+    		ps.close();
+    		return true;
+    		
+    	} catch(Exception e) {
+    		throw new Exception("Failed to close timeslot: " + e.getMessage());
+    	}
     }
     
     public boolean setMeeting(String id, String mName) throws Exception {
@@ -56,7 +86,6 @@ public class TimeSlotsDAO {
     		
     		
     		if(timeSlot.getIsOpen()) {
-    			System.out.println(timeSlot.getIsOpen());
 	    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET meetingName=?, isOpen=?, hasMeeting=? WHERE id=?;");
 	    		ps.setString(1, mName);
 	    		ps.setBoolean(2, false);
@@ -91,7 +120,6 @@ public class TimeSlotsDAO {
     		
     		
     		if(timeSlot.getHasMeeting()) {
-    			System.out.println(timeSlot.getIsOpen());
 	    		PreparedStatement ps = conn.prepareStatement("UPDATE TimeSlots SET meetingName=?, isOpen=?, hasMeeting=? WHERE id=?;");
 	    		ps.setString(1, " ");
 	    		ps.setBoolean(2, true);
@@ -124,7 +152,7 @@ public class TimeSlotsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting) values(?,?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting, ind) values(?,?,?,?,?,?,?,?,?);");
             ps.setString(1, timeSlot.getSid());
             ps.setTime(2,  Time.valueOf(timeSlot.getStartTime()));
             ps.setDate(3, Date.valueOf(timeSlot.getDate()));
@@ -133,6 +161,7 @@ public class TimeSlotsDAO {
             ps.setInt(6, timeSlot.getSecretCode());
             ps.setBoolean(7, timeSlot.getIsOpen());
             ps.setBoolean(8, timeSlot.getHasMeeting());
+            ps.setInt(9, timeSlot.getIndex());
             ps.execute();
             ps.close();
             return true;
@@ -161,7 +190,7 @@ public class TimeSlotsDAO {
         List<TimeSlot> allTS = new ArrayList<>();
         try {
             Statement statement = conn.createStatement();
-            String query = "SELECT * FROM TimeSlots";
+            String query = "SELECT * FROM TimeSlots ORDER BY sid, ind ASC";
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -181,7 +210,7 @@ public class TimeSlotsDAO {
     	
     	List<TimeSlot> scheduleTS = new ArrayList<>();
         try { 
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE sid=?;"); // selects all timeslots with the entered sid
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TimeSlots WHERE sid=? ORDER BY sid, ind ASC;"); // selects all timeslots with the entered sid
             ps.setString(1,  sid);
             
             ResultSet resultSet = ps.executeQuery();
@@ -205,9 +234,7 @@ public class TimeSlotsDAO {
         	ps.setString(1, sid);
         	
         	ps.execute();
-        	
             ps.close();
-            
             
         } catch (Exception e) {
             throw new Exception("Failed in deleting timeSlots: " + e.getMessage());
@@ -236,6 +263,7 @@ public class TimeSlotsDAO {
     	int secretCode = resultSet.getInt("secretCode");
     	boolean isOpen = resultSet.getBoolean("isOpen");
     	boolean hasMeeting = resultSet.getBoolean("hasMeeting");
-        return new TimeSlot(LocalTime.parse(startTime.toString()), LocalDate.parse(slotDate.toString()).plusDays(1), id, meetingName, sid, secretCode, isOpen, hasMeeting);
+    	int index = resultSet.getInt("ind");
+        return new TimeSlot(startTime.toLocalTime(), slotDate.toLocalDate(), id, meetingName, sid, secretCode, isOpen, hasMeeting, index);
     }
 }

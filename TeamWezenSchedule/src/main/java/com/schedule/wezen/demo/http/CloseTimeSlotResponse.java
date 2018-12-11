@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.schedule.wezen.model.TimeSlot;
 
-public class GetPreviousWeekResponse {
+public class CloseTimeSlotResponse {
 	public final String responseStartDateOfWeek;
 	public final String responseStartTime;
 	public final String responseID;
@@ -17,7 +17,7 @@ public class GetPreviousWeekResponse {
 	public final String response;
 	public final int httpCode;
 	
-	public GetPreviousWeekResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String response, int code) {
+	public CloseTimeSlotResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String response, int code) {
 		this.responseStartDateOfWeek = sdow;
 		this.responseStartTime = st;
 		this.responseID = id;
@@ -31,7 +31,7 @@ public class GetPreviousWeekResponse {
 		this.httpCode = code;
 	}
 	
-	public GetPreviousWeekResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String response) {
+	public CloseTimeSlotResponse (String sdow, String st, String id, int sd, int sc, int nsd, String ssd, String sed, ArrayList<TimeSlot> wts, String response) {
 		this.responseStartDateOfWeek = sdow;
 		this.responseStartTime = st;
 		this.responseID = id;
@@ -45,7 +45,7 @@ public class GetPreviousWeekResponse {
 		this.httpCode = 200;
 	}
 	
-	public GetPreviousWeekResponse (String response, int code) {
+	public CloseTimeSlotResponse (String response, int code) {
 		this.responseStartDateOfWeek = "";
 		this.responseStartTime = "";
 		this.responseID = "";
@@ -60,7 +60,7 @@ public class GetPreviousWeekResponse {
 	}
 	
 	public String toString() {
-		return "GetPreviousWeekResponse(" + response + ")";
+		return "CloseTimeSlotResponse(" + response + ")";
 	}
 	
 }

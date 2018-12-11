@@ -29,14 +29,14 @@ public class TimeSlotTests extends TestCase {
 		
 		dao.addTimeSlot(testSlot);
 		
-		TimeSlot returnedSlot = dao.getTimeSlot(testSlot);
+		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.id);
 		assertTrue(testSlot.id.equals(returnedSlot.id));
 		assertTrue(testSlot.secretCode == returnedSlot.secretCode);
 		assertTrue(testSlot.sid.equals(returnedSlot.sid));
 		assertTrue(testSlot.hasMeeting == returnedSlot.hasMeeting);
 		assertTrue(testSlot.isOpen == returnedSlot.isOpen);
 		assertTrue(testSlot.meetingName.equals(returnedSlot.meetingName));
-		assertTrue(testSlot.slotDate.isEqual(returnedSlot.slotDate));
+		assertTrue(testSlot.slotDate.isEqual(returnedSlot.slotDate.plusDays(1)));
 		assertTrue(testSlot.startTime == returnedSlot.startTime);
 		
 		dao.deleteTimeSlot(testSlot);
@@ -49,7 +49,7 @@ public class TimeSlotTests extends TestCase {
 		assertTrue(dao.setMeeting(testSlot.id, "a meeting"));
 		assertFalse(dao.setMeeting(testSlot.id, "another meeting"));
 		
-		TimeSlot returnedSlot = dao.getTimeSlot(testSlot);
+		TimeSlot returnedSlot = dao.getTimeSlot(testSlot.id);
 		assertTrue(returnedSlot.hasMeeting);
 		assertFalse(returnedSlot.isOpen);
 		assertEquals(returnedSlot.meetingName, "a meeting");
@@ -57,7 +57,7 @@ public class TimeSlotTests extends TestCase {
 		assertTrue(dao.deleteMeeting(testSlot.id));
 		assertFalse(dao.deleteMeeting(testSlot.id));
 		
-		returnedSlot = dao.getTimeSlot(testSlot);
+		returnedSlot = dao.getTimeSlot(testSlot.id);
 		assertFalse(returnedSlot.hasMeeting);
 		assertTrue(returnedSlot.isOpen);
 		assertEquals(returnedSlot.meetingName, " ");
@@ -68,7 +68,7 @@ public class TimeSlotTests extends TestCase {
 	@Test
 	public void testAddGetAll() throws Exception{
 		dao.addTimeSlot(testSlot);
-		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-17"), "1 11:00:00 2018-12-17", "1", 2345);
+		TimeSlot alsoTestSlot = new TimeSlot(LocalTime.parse("11:00:00"), LocalDate.parse("2018-12-17"), "1 11:00:00 2018-12-17", "1", 2345, 1);
 		dao.addTimeSlot(alsoTestSlot);
 		
 		TimeSlot[] toTest = new TimeSlot[2];
@@ -81,7 +81,7 @@ public class TimeSlotTests extends TestCase {
 		assertTrue(testSlot.hasMeeting == toTest[0].hasMeeting);
 		assertTrue(testSlot.isOpen == toTest[0].isOpen);
 		assertTrue(testSlot.meetingName.equals(toTest[0].meetingName));
-		assertTrue(testSlot.slotDate.isEqual(toTest[0].slotDate));
+		assertTrue(testSlot.slotDate.isEqual(toTest[0].slotDate.plusDays(1)));
 		assertTrue(testSlot.startTime == toTest[0].startTime);
 		
 		assertTrue(alsoTestSlot.id.equals(toTest[1].id));
@@ -90,7 +90,7 @@ public class TimeSlotTests extends TestCase {
 		assertTrue(alsoTestSlot.hasMeeting == toTest[1].hasMeeting);
 		assertTrue(alsoTestSlot.isOpen == toTest[1].isOpen);
 		assertTrue(alsoTestSlot.meetingName.equals(toTest[1].meetingName));
-		assertTrue(alsoTestSlot.slotDate.isEqual(toTest[1].slotDate));
+		assertTrue(alsoTestSlot.slotDate.isEqual(toTest[1].slotDate.plusDays(1)));
 		assertTrue(alsoTestSlot.startTime == toTest[1].startTime);
 		
 		dao.getAllScheduleTimeSlots("1");
@@ -146,7 +146,8 @@ public class TimeSlotTests extends TestCase {
 		int secretCode = 1234;
 		boolean isOpen = true;
 		boolean hasMeeting = false;
-		mySlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting);
+		int index = 0;
+		mySlot = new TimeSlot(startTime, slotDate, id, sid, secretCode, isOpen, hasMeeting, index);
 		return mySlot;
 	}
 }

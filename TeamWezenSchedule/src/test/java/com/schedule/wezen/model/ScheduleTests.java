@@ -1,6 +1,7 @@
 package com.schedule.wezen.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static org.junit.Assert.*;
@@ -47,11 +48,11 @@ public class ScheduleTests extends TestCase{
 		assertEquals(newSched.secretCode, sched.secretCode);
 		assertEquals(newSched.slotDuration, sched.slotDuration);
 		assertEquals(newSched.startTime, sched.startTime);
-		assertEquals(newSched.startDate, sched.startDate);
+		assertEquals(newSched.startDate.plusDays(1), sched.startDate);
 		assertEquals(newSched.endTime, sched.endTime);
-		assertEquals(newSched.endDate, sched.endDate);
+		assertEquals(newSched.endDate.plusDays(1), sched.endDate);
 		
-		dao.deleteSchedule(sched);
+		dao.deleteSchedule(sched.id);
 	}
 	
 	//Schedules

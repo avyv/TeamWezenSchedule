@@ -124,7 +124,13 @@ function generateCalendar(){
     //if not already visible, make visible
     document.getElementById("calendarwindow").style.visibility = 'visible';
   }
-
+  function refresh(){
+      let data = {};
+      data["requestSchedID"] = String(currSchedule.id);
+      data["requestWeekStart"] = String(currSchedule.startDate);
+      let refresh_url = base_url + "/getschedule";
+      sendData(data,refresh_url,processSchedule);
+  }
 
 /********* Create A Meeting **********/
 function promptMeetingName(ts){
@@ -161,14 +167,12 @@ function cancelMtng(ts){
 
 function checkMeetingAuthorization(){
   let enteredCode = document.getElementById("secretCode").value;
-  if(enteredCode == currts.secretCode){
-    document.getElementById("editMtngPrompt").style.display = 'none';
-    alert("Successfully Logged in");
-  }else{
+  if(enteredCode != currts.secretCode){
     alert("Invalid Code");
     return;
   }
-  alert("Deleting Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":" + currts.startTime.minute + ": <b>");
+  // alert("Deleting Meeting on " + currts.slotDate.month + "/ " + currts.slotDate.day + " at " + currts.startTime.hour + ":" + currts.startTime.minute + ": <b>");
+  document.getElementById("editMtngPrompt").style.display = 'none';
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);

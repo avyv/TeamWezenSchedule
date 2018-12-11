@@ -27,6 +27,7 @@ import com.schedule.wezen.demo.http.CreateScheduleRequest;
 import com.schedule.wezen.demo.http.CreateScheduleResponse;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.model.Schedule;
+import com.schedule.wezen.model.TimeSlot;
 import com.schedule.wezen.model.Model;
 
 import java.time.LocalTime;
@@ -58,7 +59,11 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 		//logger.log("past exists");
 		
 		Schedule schedule = new Schedule(startDate, endDate, startTime, endTime, slotDuration, id, secretCode);
-		
+
+//		for(TimeSlot ts: firstWeek.getTimeSlots())
+//		{
+//			logger.log(ts.getId());
+//		}
 		logger.log("Schedule object created");
 		
 //		if(exist == null) {
@@ -228,7 +233,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 			} catch (Exception e) {
 				
-				logger.log((e.getStackTrace().toString()));
+				e.printStackTrace();
 				
 				logger.log(e.getMessage());
 				
@@ -260,8 +265,13 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
 				Schedule firstWeek = scheduleDividedByWeeks.get(0);
 				startDateOfWeek = firstWeek.getStartDate().toString();
-				
+				logger.log(firstWeek.getEndDate().toString());
+				String s = "size: " + firstWeek.getTimeSlots().size();
+				logger.log(s);
+
 				logger.log("Assigned values to variables");
+				
+				logger.log(firstWeek.getCreated().toString());
 				
 				resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
 					
