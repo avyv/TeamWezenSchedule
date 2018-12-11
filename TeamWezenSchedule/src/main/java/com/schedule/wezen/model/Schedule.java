@@ -394,6 +394,30 @@ public class Schedule {
 //		available.removeAll(toRemove);
 //		return available;
 	}
+	
+	public boolean editTimeSlots(String action, LocalDate date, LocalTime time) {
+		boolean toggle;
+		if(action.equals("close")) {toggle = false;}		//Close time slots
+		else if(action.equals("open")){toggle = true;}		//Open time slots
+		else {return false;} 								//Undefined action
+		//Date given not in the schedule
+		if(date != null) {
+			if(date.isBefore(this.startDate) || date.isAfter(this.endDate)) {return false;}
+		}
+		//Time given not in the schedule
+		if(time != null) {
+			if(time.isBefore(this.startTime) || time.isAfter(this.endTime)) {return false;}
+		}
+		for(TimeSlot ts: timeSlots) {
+			if(date != null) {
+				if(ts.getDate() == date) {ts.isOpen = toggle;}
+			} 
+			else if(time != null) {
+				if(ts.getStartTime() == time) {ts.isOpen = toggle;}
+			}
+		}
+		return true;
+	}
 
 	public boolean isCorrectCode(int sc) {
 		return (sc == secretCode);
