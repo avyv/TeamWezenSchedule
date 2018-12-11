@@ -49,10 +49,6 @@ public class SchedulesDAO {
     public boolean deleteSchedule(String id) throws Exception {
         try {
         	tsdao.deleteAllScheduleTimeSlots(id);
-        	PreparedStatement psts = conn.prepareStatement("DELETE FROM TimeSlots WHERE sid = ?;");
-        	psts.setString(1, id);
-        	psts.execute();
-        	psts.close();
             PreparedStatement ps = conn.prepareStatement("DELETE FROM Schedules WHERE id = ?;");
             ps.setString(1, id);
             ps.execute();
