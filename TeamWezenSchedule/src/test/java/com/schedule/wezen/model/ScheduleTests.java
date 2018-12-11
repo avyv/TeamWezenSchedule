@@ -152,7 +152,7 @@ public class ScheduleTests extends TestCase{
 			assertEquals(ts.slotDate.getDayOfWeek().getValue(), 2);
 		}
 		
-		big.searchForTime(0, 0, 0, 4, LocalTime.parse("00:00:01"));
+		big.searchForTime(0, 0, 0, 15, LocalTime.parse("00:00:01"));
 		ArrayList<TimeSlot> sort5 = displayed(big);
 		
 		assertEquals(sort5.size(), 2*(60/15)*13);
