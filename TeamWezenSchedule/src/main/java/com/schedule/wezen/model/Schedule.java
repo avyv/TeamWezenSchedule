@@ -359,7 +359,7 @@ public class Schedule {
 		}
 	}
 
-	public ArrayList<TimeSlot> searchForTime(int month, int year, int dayWeek, int dayMonth, LocalTime time) {
+	public /*ArrayList<TimeSlot>*/ void searchForTime(int month, int year, int dayWeek, int dayMonth, LocalTime time) {
 //		ArrayList<TimeSlot> available = new ArrayList<TimeSlot>();
 		
 //		for(TimeSlot ts: timeSlots) {
@@ -370,7 +370,7 @@ public class Schedule {
 		for(TimeSlot ts: timeSlots) { //available) {
 			if(month != 0 && ts.getDate().getMonthValue() != month) {
 //				toRemove.add(ts);
-				ts.isDispayed = false;
+				ts.isDisplayed = false;
 			}
 			else if(year != 0 && ts.getDate().getYear() != year) {
 //				toRemove.add(ts);
