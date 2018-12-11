@@ -67,6 +67,21 @@ public class ScheduleTests extends TestCase{
 		assertTrue(s.calculateNumTimeSlots(s.startTime, s.endTime, s.slotDuration) == 20);
 	}
 	
+	
+	@Test
+	public void testChangeDuration() {
+		
+		Schedule s = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
+		
+		assertTrue(s.getTimeSlots().size() == 140);
+		
+		s.changeDuration(LocalDate.parse("2018-12-11"), LocalDate.parse("2018-12-25"));
+		
+		assertEquals(s.getTimeSlots().size(), 420);
+		assertEquals(s.getStartDate(), LocalDate.parse("2018-12-11"));
+		assertEquals(s.getEndDate(), LocalDate.parse("2018-12-25"));
+	}
+	
 	@Test
 	public void testSearchForTime() {
 		
@@ -124,5 +139,5 @@ public class ScheduleTests extends TestCase{
 		
 		assertEquals(sort8.size(), 0);
 	}
-	
+
 }

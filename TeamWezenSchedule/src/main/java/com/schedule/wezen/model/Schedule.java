@@ -139,6 +139,87 @@ public class Schedule {
 
 		return true;
 	}
+	
+	public ArrayList<TimeSlot> populateTimeSlots2(ArrayList<TimeSlot> ts, LocalDate startDate, LocalDate endDate)
+	{
+		// test to make sure start date isn't after end date or start time isn't after end time
+		if(endDate.isBefore(startDate) || this.endTime.isBefore(this.startTime))
+		{
+			return null;
+		}
+
+		LocalDate scheduleStartDate = startDate;
+
+		LocalDate scheduleEndDate = endDate;
+
+		int dayOfWeekStart = scheduleStartDate.getDayOfWeek().getValue();
+
+		int dayOfWeekEnd = scheduleEndDate.getDayOfWeek().getValue();
+		
+		if(dayOfWeekStart > 1)
+		{
+			scheduleStartDate = scheduleStartDate.minusDays(dayOfWeekStart - 1); // start on Monday
+		}
+		if(dayOfWeekEnd < 7)
+		{
+			scheduleEndDate = scheduleEndDate.plusDays(7 - dayOfWeekEnd); // end on Sunday
+		}
+
+		LocalDate timeSlotDate = scheduleStartDate;
+
+		LocalTime timeSlotStartTime = this.startTime;
+
+		int numDaysInSchedule = (int) (ChronoUnit.DAYS.between(scheduleStartDate, scheduleEndDate) + 1);
+
+		int numWeeksInSchedule = numDaysInSchedule / 7;
+
+		//int numOfTimeSlotsPerDay = calculateNumTimeSlots(this.startTime, this.endTime, this.slotDuration);
+
+		LocalDate startOfWeekDate = scheduleStartDate;
+
+		int cntval = 0;
+		for(int week = 0; week < numWeeksInSchedule; week++)
+		{
+			for(int time = 0; time < this.numSlotsDay; time++)
+			{
+				timeSlotDate = startOfWeekDate;
+
+				for(int day = 0; day < 7; day++)
+				{
+					String tsID = this.id + " " + cntval;//Integer.toBinaryString(cntval);// + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
+
+					// populate with closed TimeSlots if the schedule does not start on Monday
+					if(timeSlotDate.isBefore(startDate) && (!(timeSlotDate.equals(startDate))))
+					{
+						ts.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
+					}
+					// populate with closed TimeSlots if the schedule does not end on Sunday
+					else if(timeSlotDate.isAfter(endDate) && (!(timeSlotDate.equals(endDate))))
+					{
+						ts.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
+					}
+					// if the date is within the range of the schedule start and end dates, populate array with open time slots
+					else if (timeSlotDate.equals(startDate) || timeSlotDate.equals(endDate) || (timeSlotDate.isAfter(startDate) && timeSlotDate.isBefore(endDate)))
+					{
+						ts.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false,cntval));
+					}
+
+					timeSlotDate = timeSlotDate.plusDays(1);
+					cntval++;
+				}
+				timeSlotStartTime = timeSlotStartTime.plusMinutes(this.slotDuration);
+			}
+			timeSlotStartTime = this.startTime;
+			startOfWeekDate = startOfWeekDate.plusDays(7);
+		}
+
+		// for(TimeSlot ts: this.timeSlots)
+		// {
+		// 	System.out.println(ts.id);
+		// }
+
+		return ts;
+	}
 
 	public ArrayList<Schedule> divideByWeeks() {
 //		ArrayList<TimeSlot> rdsisdumb = fuckYouRDS();
@@ -246,12 +327,34 @@ public class Schedule {
 	}
 
 	public boolean changeDuration(LocalDate sd, LocalDate ed) {
+		
 		if(this.startDate.isBefore(sd) || this.endDate.isAfter(ed)) {
 			return false;
 		}
+		
 		else {
+			
+			if(!(sd.equals(this.startDate))){
+				if((ChronoUnit.DAYS.between(sd, this.startDate)) >= 7 || calculateDayOfWeek(this.startDate) < calculateDayOfWeek(sd)) {
+					ArrayList<TimeSlot> ts1 = new ArrayList<TimeSlot>();
+					LocalDate dummyEd = sd;
+					ts1 = populateTimeSlots2(ts1, sd, dummyEd);
+					for(TimeSlot ts : ts1) {this.timeSlots.add(0, ts);}
+				}
+			}
+			
+			if(!(ed.equals(this.endDate))){
+				if((ChronoUnit.DAYS.between(ed, this.endDate)) >= 7 || calculateDayOfWeek(this.endDate) > calculateDayOfWeek(ed)) {
+					ArrayList<TimeSlot> ts2 = new ArrayList<TimeSlot>();
+					LocalDate dummySd = ed;
+					ts2 = populateTimeSlots2(ts2, dummySd, ed);
+					for(TimeSlot ts : ts2) {this.timeSlots.add(ts);}
+				}
+			}
+			
 			this.startDate = sd;
 			this.endDate = ed;
+			
 			return true;
 		}
 	}
