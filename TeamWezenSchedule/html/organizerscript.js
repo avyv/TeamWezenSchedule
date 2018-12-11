@@ -130,37 +130,41 @@ function generateCalendar(){
             var html = weekdays[d] + "<br>" + myslot.slotDate.month + "/" + myslot.slotDate.day;
             head.innerHTML = html;
         }
-
-        if((myslot.isOpen)&&(orgCredentials == currSchedule.orgCode)){
-          let closebtn = document.createElement("BUTTON");
-          closebtn.innerText = "Set Closed";
-          closebtn.addEventListener('click', function(){closeSlot(myslot)});
-          thisSlot.appendChild(closebtn);
-        }
-        if(myslot.meetingName == " "){
-          if(myslot.isOpen){
-            let freebtn = document.createElement("BUTTON");
-            freebtn.innerText = "Schedule Mtng";
-            freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
-            thisSlot.appendChild(freebtn);
-          }else if(orgCredentials == currSchedule.orgCode){
-              let openbtn = document.createElement("BUTTON");
-              openbtn.innerText = "Set Free";
-              openbtn.addEventListener('click', function(){openSlot(myslot)});
-              thisSlot.appendChild(openbtn);
+        if(myslot.isDisplayed){
+          if((myslot.isOpen)&&(orgCredentials == currSchedule.orgCode)){
+            let closebtn = document.createElement("BUTTON");
+            closebtn.innerText = "Set Closed";
+            closebtn.addEventListener('click', function(){closeSlot(myslot)});
+            thisSlot.appendChild(closebtn);
+          }
+          if(myslot.meetingName == " "){
+            if(myslot.isOpen){
+              let freebtn = document.createElement("BUTTON");
+              freebtn.innerText = "Schedule Mtng";
+              freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
+              thisSlot.appendChild(freebtn);
+            }else if(orgCredentials == currSchedule.orgCode){
+                let openbtn = document.createElement("BUTTON");
+                openbtn.innerText = "Set Free";
+                openbtn.addEventListener('click', function(){openSlot(myslot)});
+                thisSlot.appendChild(openbtn);
+            }
+          }else{
+            let mtng = document.createElement("P");
+            mtng.innerText = myslot.meetingName;
+            let cancelbtn = document.createElement("BUTTON");
+            cancelbtn.innerText = "Cancel Mtng";
+            cancelbtn.addEventListener('click',function(){cancelMtng(myslot)});
+            thisSlot.appendChild(mtng);
+            thisSlot.appendChild(cancelbtn);
           }
         }else{
-          let mtng = document.createElement("P");
-          mtng.innerText = myslot.meetingName;
-          let cancelbtn = document.createElement("BUTTON");
-          cancelbtn.innerText = "Cancel Mtng";
-          cancelbtn.addEventListener('click',function(){cancelMtng(myslot)});
-          thisSlot.appendChild(mtng);
-          thisSlot.appendChild(cancelbtn);
+          thisSlot.innerText = " ";          
         }
         tsiterator++;
       }
-    }
+        }
+
     if(orgCredentials == currSchedule.orgCode){
       document.getElementById("editschedbtn").style.display = 'inline';
       document.getElementById("deleteschedbtn").style.display = 'inline';
