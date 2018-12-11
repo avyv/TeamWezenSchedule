@@ -335,16 +335,18 @@ public class Schedule {
 			if(!(sd.equals(this.startDate))){
 				if((ChronoUnit.DAYS.between(sd, this.startDate)) >= 7 || calculateDayOfWeek(this.startDate) < calculateDayOfWeek(sd)) {
 					ArrayList<TimeSlot> ts1 = new ArrayList<TimeSlot>();
-					LocalDate dummyEd = sd;
+					int dayOfWeekStart = this.startDate.getDayOfWeek().getValue();
+					LocalDate dummyEd = this.startDate.minusDays(dayOfWeekStart);
 					ts1 = populateTimeSlots2(ts1, sd, dummyEd);
 					for(TimeSlot ts : ts1) {this.timeSlots.add(0, ts);}
 				}
 			}
 			
 			if(!(ed.equals(this.endDate))){
-				if((ChronoUnit.DAYS.between(ed, this.endDate)) >= 7 || calculateDayOfWeek(this.endDate) > calculateDayOfWeek(ed)) {
+				if((ChronoUnit.DAYS.between(this.endDate, ed)) >= 7 || calculateDayOfWeek(this.endDate) > calculateDayOfWeek(ed)) {
 					ArrayList<TimeSlot> ts2 = new ArrayList<TimeSlot>();
-					LocalDate dummySd = ed;
+					int dayOfWeekEnd = this.endDate.getDayOfWeek().getValue();
+					LocalDate dummySd = this.endDate.plusDays(8 - dayOfWeekEnd);
 					ts2 = populateTimeSlots2(ts2, dummySd, ed);
 					for(TimeSlot ts : ts2) {this.timeSlots.add(ts);}
 				}
