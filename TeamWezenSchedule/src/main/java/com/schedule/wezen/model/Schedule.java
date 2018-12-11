@@ -257,24 +257,31 @@ public class Schedule {
 	}
 
 	public ArrayList<TimeSlot> searchForTime(int month, int year, int dayWeek, int dayMonth, LocalTime time) {
-		ArrayList<TimeSlot> available = timeSlots;
+		ArrayList<TimeSlot> available = new ArrayList<TimeSlot>();
+		
+		for(TimeSlot ts: timeSlots) {
+			available.add(ts);
+		}
+		
+		ArrayList<TimeSlot> toRemove = new ArrayList<TimeSlot>();
 		for(TimeSlot ts: available) {
 			if(month != 0 && ts.getDate().getMonthValue() != month) {
-				available.remove(ts);
+				toRemove.add(ts);
 			}
 			else if(year != 0 && ts.getDate().getYear() != year) {
-				available.remove(ts);
+				toRemove.add(ts);
 			}
 			else if(dayWeek != 0 && ts.getDate().getDayOfWeek().getValue() != dayWeek) {
-				available.remove(ts);
+				toRemove.add(ts);
 			}
 			else if(dayMonth != 0 && ts.getDate().getDayOfMonth() != dayMonth) {
-				available.remove(ts);
+				toRemove.add(ts);
 			}
 			else if(time.getSecond() != 1 && (ts.getStartTime().getHour() != time.getHour() || ts.getStartTime().getMinute() != time.getMinute())) {
-				available.remove(ts);
+				toRemove.add(ts);
 			}
 		}
+		available.removeAll(toRemove);
 		return available;
 	}
 
