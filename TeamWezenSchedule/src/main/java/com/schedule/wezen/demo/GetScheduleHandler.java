@@ -21,9 +21,11 @@ import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.demo.http.GetNextWeekResponse;
 import com.schedule.wezen.demo.http.GetScheduleRequest;
 import com.schedule.wezen.demo.http.GetScheduleResponse;
+import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * Found gson JAR file from
@@ -111,10 +113,22 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
 				
 				
-				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
-				//Schedule byWeek = null;
-				//Schedule byWeek = scheduleDividedByWeeks.get(0);
-				//startDateOfWeek = byWeek.getStartDate().toString();
+				logger.log("Filtering Schedule");
+				
+				Model m = new Model();
+				
+				int month = Integer.parseInt(getScheduleRequest.requestMonth);
+				int year = Integer.parseInt(getScheduleRequest.requestYear);
+				int dayWeek = Integer.parseInt(getScheduleRequest.requestWeekDay);
+				int dayMonth = Integer.parseInt(getScheduleRequest.requestDate);
+				LocalTime time = m.stringToTime(getScheduleRequest.requestTime);
+				
+				retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+				
+				logger.log("Finished Filtering");
+				
+				
+				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
 				
 				
 				logger.log("Assigned values to variables");

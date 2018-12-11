@@ -20,9 +20,11 @@ import com.google.gson.Gson;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.demo.http.GetNextWeekRequest;
 import com.schedule.wezen.demo.http.GetNextWeekResponse;
+import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * Found gson JAR file from
@@ -109,6 +111,20 @@ public class GetNextWeekHandler implements RequestStreamHandler {
 				int numSlotsDay = retrievedSchedule.getNumSlotsDay();
 				String scheduleStartDate = retrievedSchedule.getStartDate().toString();
 				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+				
+				logger.log("Filtering Schedule");
+				
+				Model m = new Model();
+				
+				int month = Integer.parseInt(getNextRequest.requestMonth);
+				int year = Integer.parseInt(getNextRequest.requestYear);
+				int dayWeek = Integer.parseInt(getNextRequest.requestWeekDay);
+				int dayMonth = Integer.parseInt(getNextRequest.requestDate);
+				LocalTime time = m.stringToTime(getNextRequest.requestTime);
+				
+				retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+				
+				logger.log("Finished Filtering");
 				
 				
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);

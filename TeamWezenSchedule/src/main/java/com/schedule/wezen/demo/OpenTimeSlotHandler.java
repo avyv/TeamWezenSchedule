@@ -21,9 +21,11 @@ import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.db.TimeSlotsDAO;
 import com.schedule.wezen.demo.http.OpenTimeSlotRequest;
 import com.schedule.wezen.demo.http.OpenTimeSlotResponse;
+import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * Found gson JAR file from
@@ -87,9 +89,9 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 		}
 		
 		if(!processed) {
-			OpenTimeSlotRequest closeTimeSlotRequest = new Gson().fromJson(body, OpenTimeSlotRequest.class);
+			OpenTimeSlotRequest openTimeSlotRequest = new Gson().fromJson(body, OpenTimeSlotRequest.class);
 			
-			logger.log(closeTimeSlotRequest.toString());
+			logger.log(openTimeSlotRequest.toString());
 			
 			logger.log("Before opening time slot");
 			
@@ -101,7 +103,7 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 				
 				logger.log("Trying to open time slot");
 				
-				openedTimeSlot = openTimeSlotLambda(closeTimeSlotRequest.requestTSId);
+				openedTimeSlot = openTimeSlotLambda(openTimeSlotRequest.requestTSId);
 				
 			} catch (Exception e) {
 				
@@ -123,7 +125,7 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 					
 					SchedulesDAO dao = new SchedulesDAO();
 					
-					Schedule retrievedSchedule = dao.getSchedule(closeTimeSlotRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
+					Schedule retrievedSchedule = dao.getSchedule(openTimeSlotRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 					
 					logger.log("Retrieved Schedule: " + retrievedSchedule.getId());
 					
@@ -135,6 +137,20 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 					int numSlotsDay = retrievedSchedule.getNumSlotsDay();
 					String scheduleStartDate = retrievedSchedule.getStartDate().toString();
 					String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+					
+					logger.log("Filtering Schedule");
+					
+					Model m = new Model();
+					
+					int month = Integer.parseInt(openTimeSlotRequest.requestMonth);
+					int year = Integer.parseInt(openTimeSlotRequest.requestYear);
+					int dayWeek = Integer.parseInt(openTimeSlotRequest.requestWeekDay);
+					int dayMonth = Integer.parseInt(openTimeSlotRequest.requestDate);
+					LocalTime time = m.stringToTime(openTimeSlotRequest.requestTime);
+					
+					retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+					
+					logger.log("Finished Filtering");
 					
 					
 					ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
@@ -154,7 +170,7 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 					{
 						LocalDate listStartDate = schedule.getStartDate();
 						String arrayListStartDate = listStartDate.toString();
-						String requestStart = closeTimeSlotRequest.requestWeekStart;
+						String requestStart = openTimeSlotRequest.requestWeekStart;
 						
 						if(arrayListStartDate.equals(requestStart)) {
 							week = index;

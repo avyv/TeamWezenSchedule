@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -197,6 +198,21 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				int numSlotsDay = retrievedSchedule.getNumSlotsDay();
 				String scheduleStartDate = retrievedSchedule.getStartDate().toString();
 				String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+				
+				
+				logger.log("Filtering Schedule");
+				
+				Model m = new Model();
+				
+				int month = Integer.parseInt(createMeetingRequest.requestMonth);
+				int year = Integer.parseInt(createMeetingRequest.requestYear);
+				int dayWeek = Integer.parseInt(createMeetingRequest.requestWeekDay);
+				int dayMonth = Integer.parseInt(createMeetingRequest.requestDate);
+				LocalTime time = m.stringToTime(createMeetingRequest.requestTime);
+				
+				retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+				
+				logger.log("Finished Filtering");
 				
 				
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
