@@ -382,6 +382,7 @@ public class Schedule {
 			}
 			else if(dayMonth != 0 && ts.getDate().getDayOfMonth() != dayMonth) {
 //				toRemove.add(ts);
+				System.out.println(ts.slotDate.getMonthValue());
 				ts.isDisplayed = false;
 			}
 			else if(time.getSecond() != 1 && (ts.getStartTime().getHour() != time.getHour() || ts.getStartTime().getMinute() != time.getMinute())) {
