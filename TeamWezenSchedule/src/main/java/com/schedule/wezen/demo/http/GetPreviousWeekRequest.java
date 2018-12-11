@@ -4,7 +4,7 @@ public class GetPreviousWeekRequest {
 	public final String requestSchedID;
 	public final String requestWeekStart;
 	
-	public final String requestWeekDay;
+	public final String requestWeekday;
 	public final String requestMonth;
 	public final String requestYear;
 	public final String requestDate;
@@ -14,7 +14,7 @@ public class GetPreviousWeekRequest {
 		this.requestSchedID = id;
 		this.requestWeekStart = ws;
 		
-		this.requestWeekDay = wd;
+		this.requestWeekday = wd;
 		this.requestMonth = m;
 		this.requestYear = y;
 		this.requestDate = d;

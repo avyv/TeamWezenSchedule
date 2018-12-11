@@ -5,7 +5,7 @@ public class OpenTimeSlotRequest {
 	public final String requestWeekStart;
 	public final String requestTSId;
 	
-	public final String requestWeekDay;
+	public final String requestWeekday;
 	public final String requestMonth;
 	public final String requestYear;
 	public final String requestDate;
@@ -16,7 +16,7 @@ public class OpenTimeSlotRequest {
 		this.requestWeekStart = ws;
 		this.requestTSId = tsid;
 		
-		this.requestWeekDay = wd;
+		this.requestWeekday = wd;
 		this.requestMonth = m;
 		this.requestYear = y;
 		this.requestDate = d;

@@ -206,7 +206,7 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				
 				int month = Integer.parseInt(createMeetingRequest.requestMonth);
 				int year = Integer.parseInt(createMeetingRequest.requestYear);
-				int dayWeek = Integer.parseInt(createMeetingRequest.requestWeekDay);
+				int dayWeek = Integer.parseInt(createMeetingRequest.requestWeekday);
 				int dayMonth = Integer.parseInt(createMeetingRequest.requestDate);
 				LocalTime time = m.stringToTime(createMeetingRequest.requestTime);
 				

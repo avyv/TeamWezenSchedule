@@ -118,7 +118,7 @@ public class GetNextWeekHandler implements RequestStreamHandler {
 				
 				int month = Integer.parseInt(getNextRequest.requestMonth);
 				int year = Integer.parseInt(getNextRequest.requestYear);
-				int dayWeek = Integer.parseInt(getNextRequest.requestWeekDay);
+				int dayWeek = Integer.parseInt(getNextRequest.requestWeekday);
 				int dayMonth = Integer.parseInt(getNextRequest.requestDate);
 				LocalTime time = m.stringToTime(getNextRequest.requestTime);
 				

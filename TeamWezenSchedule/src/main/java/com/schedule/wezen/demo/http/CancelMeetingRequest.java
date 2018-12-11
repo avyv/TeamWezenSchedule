@@ -6,7 +6,7 @@ public class CancelMeetingRequest {
 	public final String requestMtngName;
 	public final String requestTSId;
 	
-	public final String requestWeekDay;
+	public final String requestWeekday;
 	public final String requestMonth;
 	public final String requestYear;
 	public final String requestDate;
@@ -19,7 +19,7 @@ public class CancelMeetingRequest {
 		this.requestMtngName = mn;
 		this.requestTSId = tsid;
 		
-		this.requestWeekDay = wd;
+		this.requestWeekday = wd;
 		this.requestMonth = m;
 		this.requestYear = y;
 		this.requestDate = d;

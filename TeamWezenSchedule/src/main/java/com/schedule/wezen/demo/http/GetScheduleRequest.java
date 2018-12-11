@@ -4,7 +4,7 @@ public class GetScheduleRequest {
 	public final String requestSchedID;
 	public final String requestWeekStart;
 	
-	public final String requestWeekDay;
+	public final String requestWeekday;
 	public final String requestMonth;
 	public final String requestYear;
 	public final String requestDate;
@@ -14,7 +14,7 @@ public class GetScheduleRequest {
 		this.requestSchedID = requestSchedID;
 		this.requestWeekStart = requestStartDateOfWeek;
 		
-		this.requestWeekDay = wd;
+		this.requestWeekday = wd;
 		this.requestMonth = m;
 		this.requestYear = y;
 		this.requestDate = d;

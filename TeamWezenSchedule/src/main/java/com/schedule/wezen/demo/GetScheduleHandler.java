@@ -119,7 +119,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				
 				int month = Integer.parseInt(getScheduleRequest.requestMonth);
 				int year = Integer.parseInt(getScheduleRequest.requestYear);
-				int dayWeek = Integer.parseInt(getScheduleRequest.requestWeekDay);
+				int dayWeek = Integer.parseInt(getScheduleRequest.requestWeekday);
 				int dayMonth = Integer.parseInt(getScheduleRequest.requestDate);
 				LocalTime time = m.stringToTime(getScheduleRequest.requestTime);
 				

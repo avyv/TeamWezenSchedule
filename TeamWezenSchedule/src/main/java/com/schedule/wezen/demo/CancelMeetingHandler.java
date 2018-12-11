@@ -198,7 +198,7 @@ public class CancelMeetingHandler implements RequestStreamHandler {
 				
 				int month = Integer.parseInt(cancelMeetingRequest.requestMonth);
 				int year = Integer.parseInt(cancelMeetingRequest.requestYear);
-				int dayWeek = Integer.parseInt(cancelMeetingRequest.requestWeekDay);
+				int dayWeek = Integer.parseInt(cancelMeetingRequest.requestWeekday);
 				int dayMonth = Integer.parseInt(cancelMeetingRequest.requestDate);
 				LocalTime time = m.stringToTime(cancelMeetingRequest.requestTime);
 				

@@ -145,7 +145,7 @@ public class CloseTimeSlotHandler implements RequestStreamHandler {
 					
 					int month = Integer.parseInt(closeTimeSlotRequest.requestMonth);
 					int year = Integer.parseInt(closeTimeSlotRequest.requestYear);
-					int dayWeek = Integer.parseInt(closeTimeSlotRequest.requestWeekDay);
+					int dayWeek = Integer.parseInt(closeTimeSlotRequest.requestWeekday);
 					int dayMonth = Integer.parseInt(closeTimeSlotRequest.requestDate);
 					LocalTime time = m.stringToTime(closeTimeSlotRequest.requestTime);
 					

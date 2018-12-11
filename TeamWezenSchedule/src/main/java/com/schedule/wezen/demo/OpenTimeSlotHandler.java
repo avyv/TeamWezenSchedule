@@ -144,7 +144,7 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 					
 					int month = Integer.parseInt(openTimeSlotRequest.requestMonth);
 					int year = Integer.parseInt(openTimeSlotRequest.requestYear);
-					int dayWeek = Integer.parseInt(openTimeSlotRequest.requestWeekDay);
+					int dayWeek = Integer.parseInt(openTimeSlotRequest.requestWeekday);
 					int dayMonth = Integer.parseInt(openTimeSlotRequest.requestDate);
 					LocalTime time = m.stringToTime(openTimeSlotRequest.requestTime);
 					
