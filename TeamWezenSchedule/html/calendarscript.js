@@ -130,7 +130,7 @@ function generateCalendar(){
       data["requestWeekStart"] = String(currSchedule.startDate);
       let refresh_url = base_url + "/getschedule";
       sendData(data,refresh_url,processSchedule);
-  }
+  } 
 
 /********* Create A Meeting **********/
 function promptMeetingName(ts){
