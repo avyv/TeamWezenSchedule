@@ -11,7 +11,7 @@ public class TimeSlot {
 	String id, sid, meetingName = " ";
 	int secretCode;
 	int index;
-	boolean isOpen, hasMeeting;
+	boolean isOpen, hasMeeting, isDisplayed;
 	
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting,int index) {
 		this.startTime = startTime;
@@ -23,6 +23,7 @@ public class TimeSlot {
 		this.isOpen = isOpen;
 		this.hasMeeting = hasMeeting;
 		this.index = index;
+		this.isDisplayed = true;
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
@@ -35,6 +36,8 @@ public class TimeSlot {
 		this.isOpen = isOpen;
 		this.hasMeeting = hasMeeting;
 		this.index= index;
+		this.isDisplayed = true;
+
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
@@ -47,6 +50,8 @@ public class TimeSlot {
 		this.isOpen = true;
 		this.hasMeeting = false;
 		this.index = index;
+		this.isDisplayed = true;
+
 		//this.endTime = calculateEndTime(startTime, duration); (Unnecessary)
 	}
 	
@@ -60,6 +65,7 @@ public class TimeSlot {
 	public int getSecretCode() {return secretCode;}
 	public boolean getHasMeeting() {return hasMeeting;}
 	public int getIndex() {return index;}
+	public boolean getIsDisplayed() {return isDisplayed;}
 	
 	public void setIsOpen(boolean isOpen) {this.isOpen = isOpen;}
 	public void setMeeting(String m) {

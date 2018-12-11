@@ -45,6 +45,8 @@ function generateCalendar(){
     let setBounds = document.getElementById("selectdayofmonth");
     setBounds.min = currSchedule.fullStartDate;
     setBounds.max = currSchedule.fullEndDate;
+    document.getElementById("newStartDate").max = currSchedule.fullStartDate;
+    document.getElementById("newEndDate").min = currSchedule.fullEndDate;
     //header for calendar
     var weekdays = ["Time","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
     let date = currSchedule.startDate;

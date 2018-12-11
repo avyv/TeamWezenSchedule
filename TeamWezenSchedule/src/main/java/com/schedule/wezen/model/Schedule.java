@@ -360,32 +360,39 @@ public class Schedule {
 	}
 
 	public ArrayList<TimeSlot> searchForTime(int month, int year, int dayWeek, int dayMonth, LocalTime time) {
-		ArrayList<TimeSlot> available = new ArrayList<TimeSlot>();
+//		ArrayList<TimeSlot> available = new ArrayList<TimeSlot>();
 		
-		for(TimeSlot ts: timeSlots) {
-			available.add(ts);
-		}
+//		for(TimeSlot ts: timeSlots) {
+//			available.add(ts);
+//		}
 		
 		ArrayList<TimeSlot> toRemove = new ArrayList<TimeSlot>();
-		for(TimeSlot ts: available) {
+		for(TimeSlot ts: timeSlots) { //available) {
 			if(month != 0 && ts.getDate().getMonthValue() != month) {
-				toRemove.add(ts);
+//				toRemove.add(ts);
+				ts.isDispayed = false;
 			}
 			else if(year != 0 && ts.getDate().getYear() != year) {
-				toRemove.add(ts);
+//				toRemove.add(ts);
+				ts.isDisplayed = false;
 			}
 			else if(dayWeek != 0 && ts.getDate().getDayOfWeek().getValue() != dayWeek) {
-				toRemove.add(ts);
+//				toRemove.add(ts);
+				ts.isDisplayed = false;
 			}
 			else if(dayMonth != 0 && ts.getDate().getDayOfMonth() != dayMonth) {
-				toRemove.add(ts);
+//				toRemove.add(ts);
+				ts.isDisplayed = false;
 			}
 			else if(time.getSecond() != 1 && (ts.getStartTime().getHour() != time.getHour() || ts.getStartTime().getMinute() != time.getMinute())) {
-				toRemove.add(ts);
+//				toRemove.add(ts);
+				ts.isDisplayed = false;
+			}else {
+				ts.isDisplayed = true;
 			}
 		}
-		available.removeAll(toRemove);
-		return available;
+//		available.removeAll(toRemove);
+//		return available;
 	}
 
 	public boolean isCorrectCode(int sc) {

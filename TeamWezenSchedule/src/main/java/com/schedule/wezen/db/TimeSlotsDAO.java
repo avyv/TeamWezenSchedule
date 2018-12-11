@@ -152,7 +152,7 @@ public class TimeSlotsDAO {
                 return false;
             }
 
-            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting, ind) values(?,?,?,?,?,?,?,?,?);");
+            ps = conn.prepareStatement("INSERT INTO TimeSlots (sid, startTime, slotDate, id, meetingName, secretCode, isOpen, hasMeeting, ind, isDispayed) values(?,?,?,?,?,?,?,?,?,?);");
             ps.setString(1, timeSlot.getSid());
             ps.setTime(2,  Time.valueOf(timeSlot.getStartTime()));
             ps.setDate(3, Date.valueOf(timeSlot.getDate()));
@@ -162,6 +162,7 @@ public class TimeSlotsDAO {
             ps.setBoolean(7, timeSlot.getIsOpen());
             ps.setBoolean(8, timeSlot.getHasMeeting());
             ps.setInt(9, timeSlot.getIndex());
+            ps.setBoolean(10, timeSlot.getIsDisplayed());
             ps.execute();
             ps.close();
             return true;
