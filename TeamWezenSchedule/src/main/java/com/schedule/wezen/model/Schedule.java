@@ -410,10 +410,10 @@ public class Schedule {
 		}
 		for(TimeSlot ts: timeSlots) {
 			if(date != null) {
-				if(ts.getDate() == date) {ts.isOpen = toggle;}
+				if(ts.getDate().equals(date)) {ts.isOpen = toggle;}
 			} 
 			else if(time != null) {
-				if(ts.getStartTime() == time) {ts.isOpen = toggle;}
+				if(ts.getStartTime().equals(time)) {ts.isOpen = toggle;}
 			}
 		}
 		return true;
