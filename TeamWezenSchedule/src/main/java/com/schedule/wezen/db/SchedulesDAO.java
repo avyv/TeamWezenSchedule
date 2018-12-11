@@ -64,8 +64,8 @@ public class SchedulesDAO {
             throw new Exception("Failed to delete schedule: " + e.getMessage());
         }
     }
-
-    public boolean updateSchedule(Schedule schedule) throws Exception {
+    // have to get schedule then update in schedule class since it needs to populate time slots
+/*  public boolean updateSchedule(Schedule schedule) throws Exception {
         try {
         	String query = "UPDATE Schedules SET startDate=?, endDate=? WHERE id=?;";
         	PreparedStatement ps = conn.prepareStatement(query);
@@ -79,7 +79,7 @@ public class SchedulesDAO {
         } catch (Exception e) {
             throw new Exception("Failed to update report: " + e.getMessage());
         }
-    }
+    }*/
     
     
     public boolean addSchedule(Schedule schedule) throws Exception {
