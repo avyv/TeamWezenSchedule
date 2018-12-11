@@ -38,7 +38,6 @@ public class Schedule {
 	}
 
 
-	//TODO Don't use this? the arraylist doesn't populate
 	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, ArrayList<TimeSlot> timeSlots, LocalDateTime created) {
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -49,7 +48,6 @@ public class Schedule {
 		this.created = created;
 		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
 		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
-		//TODO this doesn't work
 		this.timeSlots = timeSlots;
 //		for(TimeSlot ts: timeSlots) {
 //			this.addTimeSlot(ts);
