@@ -126,7 +126,7 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 				
 				Model m = new Model();
 				
-				ArrayList<TimeSlot> nSE = retrievedSchedule.populateTimeSlots2(retrievedSchedule.getTimeSlots(), m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd));
+				ArrayList<TimeSlot> nSE = retrievedSchedule.populateTimeSlots2(/*retrievedSchedule.getTimeSlots(),*/ m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd));
 				
 				logger.log("After new population");
 				

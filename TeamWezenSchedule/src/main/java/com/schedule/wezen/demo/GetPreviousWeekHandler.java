@@ -151,11 +151,24 @@ public class GetPreviousWeekHandler implements RequestStreamHandler {
 					index++;
 				}
 				
-				byWeek = scheduleDividedByWeeks.get(week);
-				startDateOfWeek = byWeek.getStartDate().toString();
+				String response = "";
+				
+				if(week == -1)
+				{
+					response = "You are currently viewing the first week of the schedule";
+				}
+				else
+				{
+					byWeek = scheduleDividedByWeeks.get(week);
+					startDateOfWeek = byWeek.getStartDate().toString();
+					response = "Successfully retrieved schedule";
+				}
+				
+//				byWeek = scheduleDividedByWeeks.get(week);
+//				startDateOfWeek = byWeek.getStartDate().toString();
 			
 				
-				String response = "Successfully retrieved schedule";
+//				response = "Successfully retrieved schedule";
 				
 				getPreviousResponse = new GetPreviousWeekResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {

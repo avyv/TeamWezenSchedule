@@ -150,11 +150,19 @@ public class GetNextWeekHandler implements RequestStreamHandler {
 					index++;
 				}
 				
-				byWeek = scheduleDividedByWeeks.get(week);
-				startDateOfWeek = byWeek.getStartDate().toString();
-			
+				String response = "";
 				
-				String response = "Successfully retrieved schedule";
+				if(week == scheduleDividedByWeeks.size())
+				{
+					response = "You are currently viewing the last week of the schedule";
+				}
+				else
+				{
+					byWeek = scheduleDividedByWeeks.get(week);
+					startDateOfWeek = byWeek.getStartDate().toString();
+					response = "Successfully retrieved schedule";
+				}
+				
 				
 				getNextResponse = new GetNextWeekResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
