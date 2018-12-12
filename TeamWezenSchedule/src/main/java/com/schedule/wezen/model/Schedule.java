@@ -153,7 +153,7 @@ public class Schedule {
 		return true;
 	}
 	
-	public ArrayList<TimeSlot> populateTimeSlots2(ArrayList<TimeSlot> ts, LocalDate newStartDate, LocalDate newEndDate)
+	public ArrayList<TimeSlot> populateTimeSlots2(LocalDate newStartDate, LocalDate newEndDate)
 	{	
 		ArrayList<TimeSlot> extendArray = new ArrayList<TimeSlot>();
 		
@@ -226,7 +226,7 @@ public class Schedule {
 					// if the date is within the range of the schedule start and end dates, populate array with open time slots
 					else if (timeSlotDate.equals(this.startDate) || timeSlotDate.equals(this.endDate) || (timeSlotDate.isAfter(this.startDate) && timeSlotDate.isBefore(this.endDate)))
 					{
-						extendArray.add(ts.get(indexOfOrig));
+						extendArray.add(this.timeSlots.get(indexOfOrig));
 						indexOfOrig++;
 					}
 
@@ -360,7 +360,7 @@ public class Schedule {
 					ArrayList<TimeSlot> ts1 = new ArrayList<TimeSlot>();
 					int dayOfWeekStart = this.startDate.getDayOfWeek().getValue();
 					LocalDate dummyEd = this.startDate.minusDays(dayOfWeekStart);
-					ts1 = populateTimeSlots2(ts1, sd, dummyEd);
+					ts1 = populateTimeSlots2(sd, dummyEd);
 					for(TimeSlot ts : ts1) {this.timeSlots.add(0, ts);}
 				}
 			}
@@ -370,7 +370,7 @@ public class Schedule {
 					ArrayList<TimeSlot> ts2 = new ArrayList<TimeSlot>();
 					int dayOfWeekEnd = this.endDate.getDayOfWeek().getValue();
 					LocalDate dummySd = this.endDate.plusDays(8 - dayOfWeekEnd);
-					ts2 = populateTimeSlots2(ts2, dummySd, ed);
+					ts2 = populateTimeSlots2(dummySd, ed);
 					for(TimeSlot ts : ts2) {this.timeSlots.add(ts);}
 				}
 			}
