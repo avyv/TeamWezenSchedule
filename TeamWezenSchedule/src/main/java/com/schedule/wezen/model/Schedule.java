@@ -406,14 +406,15 @@ public class Schedule {
 					ts.setIsDisplayed(false);
 				}
 			}
-			if(!(dayMonth.equals(""))) { 
+			if(!(dayMonth.equals("0"))) { 
+				//if(ts.getDate().getDayOfMonth() != Integer.parseInt(dayMonth))
 				if(!(ts.getDate().toString().equals(dayMonth)))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
 			if(!(time.equals("0"))) { 
-				if(!(ts.getStartTime().toString().equals(time)))
+				if(!(ts.getStartTime().toString().equals(time.substring(0, 5))))
 				{
 					ts.setIsDisplayed(false);
 				}
