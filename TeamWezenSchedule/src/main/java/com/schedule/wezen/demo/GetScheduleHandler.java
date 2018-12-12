@@ -19,14 +19,11 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
 
 import com.schedule.wezen.db.SchedulesDAO;
-import com.schedule.wezen.demo.http.GetNextWeekResponse;
 import com.schedule.wezen.demo.http.GetScheduleRequest;
 import com.schedule.wezen.demo.http.GetScheduleResponse;
-import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 /**
  * Found gson JAR file from
