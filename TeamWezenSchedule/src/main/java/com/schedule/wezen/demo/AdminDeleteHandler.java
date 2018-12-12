@@ -1,4 +1,3 @@
-
 package com.schedule.wezen.demo;
 
 import java.io.BufferedReader;
@@ -7,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.simple.JSONObject;
@@ -24,21 +24,21 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.google.gson.Gson;
 
 import com.schedule.wezen.db.SchedulesDAO;
-import com.schedule.wezen.demo.http.DeleteScheduleRequest;
-import com.schedule.wezen.demo.http.DeleteScheduleResponse;
+import com.schedule.wezen.demo.http.AdminDeleteRequest;
+import com.schedule.wezen.demo.http.AdminDeleteResponse;
 
 
-public class DeleteScheduleHandler implements RequestStreamHandler {
+public class AdminDeleteHandler implements RequestStreamHandler {
 	
 	public LambdaLogger logger = null;
 	
-	boolean deleteScheduleLambda(String id) throws Exception {
+	boolean adminDeleteLambda(int numDays) throws Exception {
 		
 		SchedulesDAO dao = new SchedulesDAO();
 		
 		logger.log("DAO created");
 		
-		return dao.deleteSchedule(id);
+		return dao.deleteOverDays(numDays);
 	}
 	
 	@Override
@@ -54,7 +54,7 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 		JSONObject responseJson = new JSONObject();
 		responseJson.put("headers", headerJson);
 
-		DeleteScheduleResponse response = null;
+		AdminDeleteResponse response = null;
 		
 		// extract body from incoming HTTP DELETE request. If any error, then return 422 error
 		String body;
@@ -71,25 +71,36 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 			}
 		} catch (ParseException pe) {
 			logger.log(pe.toString());
-			response = new DeleteScheduleResponse("Bad Request:" + pe.getMessage(), 422);  // unable to process input
+			response = new AdminDeleteResponse("Bad Request:" + pe.getMessage(), 422);  // unable to process input
 	        responseJson.put("body", new Gson().toJson(response));
 	        processed = true;
 	        body = null;
 		}
 
 		if (!processed) {
-			DeleteScheduleRequest req = new Gson().fromJson(body, DeleteScheduleRequest.class);
+			AdminDeleteRequest req = new Gson().fromJson(body, AdminDeleteRequest.class);
 			logger.log(req.toString());
 			
 			try {
 				
-				logger.log("Trying to delete schedule");
+				int numDays = Integer.parseInt(req.requestNumDays);
 				
-				deleteScheduleLambda(req.requestSchedID);
+				logger.log("Trying to delete list of schedules N days old");
+				
+				boolean deleted = adminDeleteLambda(numDays);
 				
 				logger.log("After delete schedule");
 				
-				response = new DeleteScheduleResponse("Sucessfully deleted schedule", 200);
+				logger.log("" + deleted);
+				
+				if(deleted)
+				{
+					response = new AdminDeleteResponse(new ArrayList<String>(), "Sucessfully deleted schedules", 200);
+				}
+				else
+				{
+					response = new AdminDeleteResponse("Unable to delete schedules", 403);
+				}
 				
 			} catch (Exception e) {
 				
@@ -97,7 +108,7 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 				
 				logger.log("Caught Exception: " + e.getMessage());
 				
-				response = new DeleteScheduleResponse("Unable to delete schedule: " + e.getMessage(), 403);
+				response = new AdminDeleteResponse("Unable to delete schedules: " + e.getMessage(), 403);
 				
 			}
 			
