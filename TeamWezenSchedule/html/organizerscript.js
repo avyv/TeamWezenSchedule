@@ -524,7 +524,7 @@ function updateScheduleParams(){
   if(ned == ""){
     ned = currSchedule.fullEndDate;
   }
-  alert("New Start Date = " + nsd + ", New End Date = " + ned);
+  // alert("New Start Date = " + nsd + ", New End Date = " + ned);
   document.getElementById("editschedparamPrompt").style.display='none';
 
 
