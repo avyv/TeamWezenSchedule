@@ -151,7 +151,7 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 				
 				Schedule retrieveUpdate = retrieveScheduleLambda(extendRequest.requestSchedID);
 				
-				if(retrieveUpdate.getStartDate().toString().equals(extendRequest.requestNewStart))
+				if(retrieveUpdate.getStartDate().toString().equals(extendRequest.requestNewStart) && retrieveUpdate.getEndDate().toString().equals(extendRequest.requestNewEnd))
 				{
 					String startDateOfWeek = "";
 					String startTime = retrievedSchedule.getStartTime().toString();

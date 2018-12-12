@@ -13,7 +13,7 @@ public class TimeSlot {
 	int index;
 	boolean isOpen, hasMeeting, isDisplayed;
 	
-	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting,int index) {
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting, int index) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
 		this.id = id;
