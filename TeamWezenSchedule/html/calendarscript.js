@@ -36,12 +36,39 @@ var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:
 var currSchedule = dummySchedule;
 var currts = currSchedule.timeSlots[0];
 
-// window.onload = initialize;
-// //
-// function initialize(){
-//
-//   generateCalendar();
-// }
+var updatedd;
+
+var fday;
+var fmonth;
+var fdate;
+var fyear;
+var ftime;
+
+window.onload = updateFilt;
+
+
+function updateFilt(){
+  // updatedd = false;
+  fday = document.getElementById("dayofweek").value;
+  fmonth = document.getElementById("selectmonth").value;
+  fyear = document.getElementById("selectyear").value;
+  fdate = document.getElementById("selectdayofmonth").value;
+  ftime = document.getElementById("filterTime").value;
+}
+
+function resetFilt(){
+
+    document.getElementById("dayofweek").value = 0;
+    document.getElementById("selectmonth").value = 0;
+    document.getElementById("selectyear").value = 0;
+    document.getElementById("selectdayofmonth").value = "";
+    document.getElementById("filterTime").value = 0;
+    updateFilt();
+}
+function resetFiltBtn(){
+  resetFilt();
+  filter();
+}
 
 /**********  Create Calendar Display **********/
 function generateCalendar(){
@@ -71,8 +98,10 @@ function generateCalendar(){
     let dur = currSchedule.slotDuration;
     let timelabel = document.createElement("td");
     var tsiterator = 0;
-    let filt = document.getElementById("filterTime");//update filter while im here
-    filt.innerHTML = "<option value=0>--none--</option>"
+    let filt = document.getElementById("filterTime");
+    if(updatedd){//update filter while im here
+      filt.innerHTML = "<option value=0>--none--</option>";
+    }
     var hrs;
     var mins;
     for(let row=1; row<=(currSchedule.numSlotsPerDay); row++){
@@ -88,9 +117,19 @@ function generateCalendar(){
       timeslot = tsrow.insertCell(0);
       timeslot.innerHTML = label;
       timeslot.id = "daylbl";
+
       //update filter dropdown menu
-      filteroption.innerHTML = label;
-      filt.appendChild(filteroption);
+      if(updatedd){
+        filteroption.innerText = label;
+      }
+      var hr = labelslot.startTime.hour;
+      if(hr < 10){
+        hr = "0" + hr;
+      }
+      filteroption.value = hr + ":" + min;// + ":00";
+      if(updatedd){
+        filt.appendChild(filteroption);
+      }
       /********** Time Slots **********/
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
@@ -102,20 +141,23 @@ function generateCalendar(){
             var html = weekdays[d] + "<br>" + myslot.slotDate.month + "/" + myslot.slotDate.day;
             head.innerHTML = html;
         }
-
-        if((myslot.meetingName == " ")&&(myslot.isOpen)){
-          let freebtn = document.createElement("BUTTON");
-          freebtn.innerText = "Schedule Mtng";
-          freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
-          thisSlot.appendChild(freebtn);
-        }else if(myslot.meetingName != " "){
-          let mtng = document.createElement("P");
-          mtng.innerText = myslot.meetingName;
-          let cancelbtn = document.createElement("BUTTON");
-          cancelbtn.innerText = "Cancel Mtng";
-          cancelbtn.addEventListener('click',function(){cancelMtng(myslot)});
-          thisSlot.appendChild(mtng);
-          thisSlot.appendChild(cancelbtn);
+        if(myslot.isDisplayed){
+          if((myslot.meetingName == " ")&&(myslot.isOpen)){
+            let freebtn = document.createElement("BUTTON");
+            freebtn.innerText = "Schedule Mtng";
+            freebtn.addEventListener('click', function(){promptMeetingName(myslot)});
+            thisSlot.appendChild(freebtn);
+          }else if(myslot.meetingName != " "){
+            let mtng = document.createElement("P");
+            mtng.innerText = myslot.meetingName;
+            let cancelbtn = document.createElement("BUTTON");
+            cancelbtn.innerText = "Cancel Mtng";
+            cancelbtn.addEventListener('click',function(){cancelMtng(myslot)});
+            thisSlot.appendChild(mtng);
+            thisSlot.appendChild(cancelbtn);
+          }
+        }else{
+          thisSlot.innerText = " ";
         }
 
         tsiterator++;
@@ -123,11 +165,17 @@ function generateCalendar(){
     }
     //if not already visible, make visible
     document.getElementById("calendarwindow").style.visibility = 'visible';
+    updatedd = false;
   }
   function refresh(){
       let data = {};
       data["requestSchedID"] = String(currSchedule.id);
       data["requestWeekStart"] = String(currSchedule.startDate);
+      data["requestWeekday"] = String(fday);
+      data["requestMonth"] = String(fmonth);
+      data["requestYear"] = String(fyear);
+      data["requestDate"] = String(fdate);
+      data["requestTime"] = String(ftime);
       let refresh_url = base_url + "/getschedule";
       sendData(data,refresh_url,processSchedule);
   }
@@ -154,6 +202,11 @@ function createMtng(){
     data["requestSchedID"] = String(currSchedule.id);
     data["requestWeekStart"] = String(currSchedule.startDate);
     data["requestTSId"] = String(currts.id);
+    data["requestWeekday"] = String(fday);
+    data["requestMonth"] = String(fmonth);
+    data["requestYear"] = String(fyear);
+    data["requestDate"] = String(fdate);
+    data["requestTime"] = String(ftime);
     data["requestMtngName"] = String(name);
     let createmtng_url = base_url + "/createmeeting";
     sendData(data,createmtng_url,processScheduleMtng);
@@ -176,6 +229,11 @@ function checkMeetingAuthorization(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   data["requestTSId"] = String(currts.id);
   let deletemtng_url = base_url + "/cancelmeeting";
   sendData(data,deletemtng_url,processSchedule);
@@ -186,6 +244,7 @@ function openSchedPrompt(e){
   return false;
 }
 function openSchedule(){
+  updatedd = true;
   let enteredID = document.getElementById("schedid").value;
   orgCredentials = "";
   if((enteredID == " ") || (enteredID == "")){
@@ -194,6 +253,11 @@ function openSchedule(){
     let data = {};
     data["requestSchedID"] = String(enteredID);
     data["requestWeekStart"] = "";
+    data["requestWeekday"] = String(fday);
+    data["requestMonth"] = String(fmonth);
+    data["requestYear"] = String(fyear);
+    data["requestDate"] = String(fdate);
+    data["requestTime"] = String(ftime);
     let openschedule_url = base_url + "/getschedule";
     sendData(data,openschedule_url,processSchedule);
     document.getElementById("schedprompt").style.display ='none';
@@ -201,6 +265,7 @@ function openSchedule(){
 }
 
 function filter(){
+  updateFilt();
   let day = document.getElementById("dayofweek").value;
   let month = document.getElementById("selectmonth").value;
   let year = document.getElementById("selectyear").value;
@@ -209,12 +274,12 @@ function filter(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
-  data["requestWeekday"] = String(day);
-  data["requestMonth"] = String(month);
-  data["requestYear"] = String(year);
-  data["requestDate"] = String(date);
-  data["requestTime"] = String(time);
-  let filter_url = base_url + "/filterschedule";
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
+  let filter_url = base_url + "/getschedule";
   sendData(data,filter_url,processSchedule);
 }
 
@@ -223,6 +288,11 @@ function getNextWeek(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   let next_url = base_url + "/getnextweek";
   sendData(data,next_url,processSchedule);
 }
@@ -231,6 +301,11 @@ function getPreviousWeek(){
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
+  data["requestWeekday"] = String(fday);
+  data["requestMonth"] = String(fmonth);
+  data["requestYear"] = String(fyear);
+  data["requestDate"] = String(fdate);
+  data["requestTime"] = String(ftime);
   let previous_url = base_url + "/getpreviousweek";
   sendData(data,previous_url,processSchedule);
 }

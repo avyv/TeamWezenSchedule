@@ -18,7 +18,7 @@
     <section id="filteroptions">
     	<nav><b>Filter By: </b><br>
     		<label for="dayofweek">Day of Week</label>
-    		<select id="dayofweek" onchange="run()">
+    		<select id="dayofweek">
     		  <option value=0>--none--</option>
     		  <option value=1>Monday</option>
     		  <option value=2>Tuesday</option>
@@ -63,7 +63,8 @@
     		  <option value=2025>2025</option>
     		</select>
         <label for="filterTime">Timeslot: </label>
-        <select id="filterTime"></select>
+        <select id="filterTime"><option value=0>--none--</option></select>
+        <button onclick="JavaScript:resetFiltBtn();">Reset</button>
         <button onclick="filter()">Go</button>
     	</nav>
     </section>

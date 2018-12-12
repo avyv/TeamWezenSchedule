@@ -37,6 +37,7 @@ var dummySchedule = {startDate:"2018-12-03", startTime:"01:00:00", slotDuration:
 var currts = dummySchedule.timeSlots[0];
 var currSchedule = dummySchedule;
 var orgCredentials = "";
+var updatedd;
 
 var fday;
 var fmonth;
@@ -48,6 +49,7 @@ window.onload = updateFilt;
 
 
 function updateFilt(){
+  // updatedd = false;
   fday = document.getElementById("dayofweek").value;
   fmonth = document.getElementById("selectmonth").value;
   fyear = document.getElementById("selectyear").value;
@@ -56,12 +58,17 @@ function updateFilt(){
 }
 
 function resetFilt(){
+
     document.getElementById("dayofweek").value = 0;
     document.getElementById("selectmonth").value = 0;
     document.getElementById("selectyear").value = 0;
     document.getElementById("selectdayofmonth").value = "";
     document.getElementById("filterTime").value = 0;
     updateFilt();
+}
+function resetFiltBtn(){
+  resetFilt();
+  filter();
 }
 /**********  Create Calendar Display **********/
 function generateCalendar(){
@@ -93,10 +100,14 @@ function generateCalendar(){
     var dur = currSchedule.slotDuration;
     let timelabel = document.createElement("td");
     var tsiterator = 0;
-    let filt = document.getElementById("filterTime");//update filter while im here
-    filt.innerHTML = "<option value=0>--none--</option>";
+
+    let filt = document.getElementById("filterTime");
     let bulkedit = document.getElementById("opencloseTime");//update bulk edit
-    bulkedit.innerHTML = "<option value=0>--none--</option>";
+
+    if(updatedd){//update filter while im here
+      filt.innerHTML = "<option value=0>--none--</option>";
+      bulkedit.innerHTML = "<option value=0>--none--</option>";
+    }
     for(let row=1; row<=(currSchedule.numSlotsPerDay); row++){
       let filteroption = document.createElement("OPTION");
       let filteroption2 = document.createElement("OPTION");
@@ -114,11 +125,20 @@ function generateCalendar(){
       timeslot.innerHTML = label;
       timeslot.id = "daylbl";
       //update filter dropdown menu
-      filteroption.innerHTML = label;
-      filteroption2.innerHTML = label;
-
-      filt.appendChild(filteroption);
-      bulkedit.appendChild(filteroption2);
+      if(updatedd){
+        filteroption.innerText = label;
+        filteroption2.innerText = label;
+      }
+      var hr = labelslot.startTime.hour;
+      if(hr < 10){
+        hr = "0" + hr;
+      }
+      filteroption.value = hr + ":" + min;// + ":00";
+      filteroption2.value = hr + ":" + min;// + ":00";
+      if(updatedd){
+        filt.appendChild(filteroption);
+        bulkedit.appendChild(filteroption2);
+      }
       /********** Time Slots **********/
       for(let d=1;d<=7;d++){
         let thisSlot = tsrow.insertCell(-1);
@@ -159,7 +179,7 @@ function generateCalendar(){
             thisSlot.appendChild(cancelbtn);
           }
         }else{
-          thisSlot.innerText = " ";          
+          thisSlot.innerText = " ";
         }
         tsiterator++;
       }
@@ -176,6 +196,7 @@ function generateCalendar(){
     }
     //if not already visible, make visible
     document.getElementById("calendarwindow").style.visibility = 'visible';
+    updatedd = false;
   }
 
 
@@ -259,6 +280,7 @@ function generateCalendar(){
   }
   //compile inputs and send into java
   function createSchedule(){
+    updatedd = true;
     let sid = document.getElementById("setschedid").value
     let startDay = document.getElementById("setstartday").value;
     let endDay = document.getElementById("setendday").value;
@@ -356,6 +378,7 @@ document.getElementById("schedprompt").style.display='block';
 return false;
 }
 function openSchedule(){
+  updatedd = true;
   let enteredID = document.getElementById("schedid").value;
   orgCredentials = "";
   if((enteredID == " ") || (enteredID == "")){
@@ -380,6 +403,7 @@ document.getElementById("schededitprompt").style.display='block';
 return false;
 }
 function openEditSchedule(){
+  updatedd = true;
   let enteredID = document.getElementById("editschedid").value;
   orgCredentials = document.getElementById("orgCred").value;
   if((enteredID == " ") || (enteredID == "") || (orgCredentials == "")){
@@ -399,11 +423,7 @@ function openEditSchedule(){
   }
 }
 function filter(){
-  let day = document.getElementById("dayofweek").value;
-  let month = document.getElementById("selectmonth").value;
-  let year = document.getElementById("selectyear").value;
-  let date = document.getElementById("selectdayofmonth").value;
-  let time = document.getElementById("filterTime").value;
+  updateFilt();
   let data = {};
   data["requestSchedID"] = String(currSchedule.id);
   data["requestWeekStart"] = String(currSchedule.startDate);
@@ -533,7 +553,7 @@ function sendData(data,url,callback){
     console.log(xhr);
     console.log(xhr.request);
     if(xhr.readyState == XMLHttpRequest.DONE) {
-      console.log("XHR:" + xhr.responseText);
+      // console.log("XHR:" + xhr.responseText);
       callback(xhr.responseText);
     } else {
       callback(xhr.responseText);
