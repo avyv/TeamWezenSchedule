@@ -154,16 +154,16 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 				if(retrieveUpdate.getStartDate().toString().equals(extendRequest.requestNewStart) && retrieveUpdate.getEndDate().toString().equals(extendRequest.requestNewEnd))
 				{
 					String startDateOfWeek = "";
-					String startTime = retrievedSchedule.getStartTime().toString();
-					String scheduleID = retrievedSchedule.getId();
-					int slotDuration = retrievedSchedule.getSlotDuration();
-					int secretCode = retrievedSchedule.getSecretCode();
-					int numSlotsDay = retrievedSchedule.getNumSlotsDay();
-					String scheduleStartDate = retrievedSchedule.getStartDate().toString();
-					String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+					String startTime = retrieveUpdate.getStartTime().toString();
+					String scheduleID = retrieveUpdate.getId();
+					int slotDuration = retrieveUpdate.getSlotDuration();
+					int secretCode = retrieveUpdate.getSecretCode();
+					int numSlotsDay = retrieveUpdate.getNumSlotsDay();
+					String scheduleStartDate = retrieveUpdate.getStartDate().toString();
+					String scheduleEndDate = retrieveUpdate.getEndDate().toString();
 					
 					
-					ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
+					ArrayList<Schedule> scheduleDividedByWeeks = retrieveUpdate.divideByWeeks();
 					
 					
 					logger.log("Assigned values to variables");
