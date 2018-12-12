@@ -153,19 +153,13 @@ public class Schedule {
 		return true;
 	}
 	
-	public ArrayList<TimeSlot> populateTimeSlots2(ArrayList<TimeSlot> ts, LocalDate startDate, LocalDate endDate)
-	{
-		// test to make sure start date isn't after end date or start time isn't after end time
-		if(endDate.isBefore(startDate) || this.endTime.isBefore(this.startTime))
-		{
-			return null;
-		}
-		
+	public ArrayList<TimeSlot> populateTimeSlots2(ArrayList<TimeSlot> ts, LocalDate newStartDate, LocalDate newEndDate)
+	{	
 		ArrayList<TimeSlot> extendArray = new ArrayList<TimeSlot>();
 		
-		LocalDate scheduleStartDate = startDate;
+		LocalDate scheduleStartDate = newStartDate;
 
-		LocalDate scheduleEndDate = endDate;
+		LocalDate scheduleEndDate = newEndDate;
 
 		int dayOfWeekStart = scheduleStartDate.getDayOfWeek().getValue();
 
@@ -206,17 +200,31 @@ public class Schedule {
 					String tsID = this.id + " " + cntval;//Integer.toBinaryString(cntval);// + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
 
 					// populate with closed TimeSlots if the schedule does not start on Monday
-					if(timeSlotDate.isBefore(startDate) && (!(timeSlotDate.equals(startDate))))
+					if(timeSlotDate.isBefore(this.startDate) && (!(timeSlotDate.equals(this.startDate)))) // if it is before the original schedule start date but not equal to the original start date
 					{
-						extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false, cntval));
+						if(timeSlotDate.equals(newStartDate) || (timeSlotDate.isAfter(newStartDate))) // if it is before the new start date the time slot will be closed
+						{
+							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false, cntval));
+						}
+						else // if the date is equal to the new start date, the time slots will be open
+						{
+							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false, cntval));
+						}
 					}
 					// populate with closed TimeSlots if the schedule does not end on Sunday
-					else if(timeSlotDate.isAfter(endDate) && (!(timeSlotDate.equals(endDate))))
+					else if(timeSlotDate.isAfter(this.endDate) && (!(timeSlotDate.equals(this.endDate))))
 					{
-						extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
+						if(timeSlotDate.isBefore(newEndDate) || timeSlotDate.equals(newEndDate))
+						{
+							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false,cntval));
+						}
+						else
+						{
+							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
+						}
 					}
 					// if the date is within the range of the schedule start and end dates, populate array with open time slots
-					else if (timeSlotDate.equals(startDate) || timeSlotDate.equals(endDate) || (timeSlotDate.isAfter(startDate) && timeSlotDate.isBefore(endDate)))
+					else if (timeSlotDate.equals(this.startDate) || timeSlotDate.equals(this.endDate) || (timeSlotDate.isAfter(this.startDate) && timeSlotDate.isBefore(this.endDate)))
 					{
 						extendArray.add(ts.get(indexOfOrig));
 						indexOfOrig++;
