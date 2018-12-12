@@ -149,7 +149,7 @@ public class SchedulesDAO {
     	for(Schedule s: getAllSchedules()) {
     		LocalDateTime sCreate = s.getCreated();
     		
-    		if(sCreate.isAfter(nDaysAgo)) {
+    		if(sCreate.isBefore(nDaysAgo)) {
     			inLastNumDays.add(s);
     		}
     	}
