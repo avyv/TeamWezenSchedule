@@ -37,6 +37,21 @@ public class Schedule {
 		populateTimeSlots();
 	}
 
+	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, ArrayList<TimeSlot> timeSlots) {
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.startTime = startTime;
+		this.slotDuration = slotDuration;
+		this.id = id;
+		this.secretCode = secretCode;
+		this.created = created;
+		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
+		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
+		this.timeSlots = timeSlots;
+//		for(TimeSlot ts: timeSlots) {
+//			this.addTimeSlot(ts);
+//		}
+	}
 
 	public Schedule(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int slotDuration, String id, int secretCode, ArrayList<TimeSlot> timeSlots, LocalDateTime created) {
 		this.startDate = startDate;

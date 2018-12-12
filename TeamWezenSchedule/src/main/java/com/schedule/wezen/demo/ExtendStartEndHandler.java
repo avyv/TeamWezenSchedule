@@ -22,6 +22,7 @@ import com.schedule.wezen.demo.http.ExtendStartEndRequest;
 import com.schedule.wezen.demo.http.ExtendStartEndResponse;
 import com.schedule.wezen.model.Model;
 import com.schedule.wezen.model.Schedule;
+import com.schedule.wezen.model.TimeSlot;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -125,7 +126,13 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 				
 				Model m = new Model();
 				
-				Schedule updatedSchedule = new Schedule(m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getSecretCode());
+				ArrayList<TimeSlot> nSE = retrievedSchedule.populateTimeSlots2(retrievedSchedule.getTimeSlots(), m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd));
+				
+				logger.log("After new population");
+				
+				Schedule updatedSchedule = new Schedule(m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getSecretCode(), nSE);
+				
+				logger.log("After creating new schedule");
 				
 				
 				boolean deleted = deleteScheduleLambda(retrievedSchedule.getId());
