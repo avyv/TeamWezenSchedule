@@ -142,8 +142,29 @@ public class SchedulesDAO {
     	return toRet;
     }
     
+  //get schedules created in last n days
+    public ArrayList<String> getCreatedInLastDays(int num) throws Exception{
+    	List<Schedule> inLastNumDays = new ArrayList<Schedule>();
+    	LocalDateTime nDaysAgo = LocalDateTime.now().minusDays(num);
+    	for(Schedule s: getAllSchedules()) {
+    		LocalDateTime sCreate = s.getCreated();
+    		
+    		if(sCreate.isAfter(nDaysAgo)) {
+    			inLastNumDays.add(s);
+    		}
+    	}
+    	
+    	ArrayList<String> toRet = new ArrayList<String>();
+    	
+    	for(Schedule toAdd: inLastNumDays) {
+    		toRet.add(toAdd.getId() + ", " + toAdd.getCreated().toString());
+    	}
+    	
+    	return toRet;
+    }
+    
     //delete schedules over n days old
-    public ArrayList<String> deleteOverDays(int num) throws Exception{
+    public boolean deleteOverDays(int num) throws Exception{
     	List<Schedule> beforeNumDays = new ArrayList<Schedule>();
     	LocalDateTime nDaysAgo = LocalDateTime.now().minusDays(num);
     	for(Schedule s: getAllSchedules()) {
@@ -154,13 +175,14 @@ public class SchedulesDAO {
     		}
     	}
     	
-    	ArrayList<String> toRet = new ArrayList<String>();
+    	if(beforeNumDays.isEmpty()) {
+    		return false;
+    	}
     	
     	for(Schedule toDel: beforeNumDays) {
-    		toRet.add(toDel.getId() + ", " + toDel.getCreated().toString());
     		deleteSchedule(toDel.getId());
     	}
-    	return toRet;
+    	return true;
     }
 
     public List<Schedule> getAllSchedules() throws Exception {
