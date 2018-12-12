@@ -94,97 +94,153 @@ public class BulkEditTimeSlotsHandler implements RequestStreamHandler {
 		}
 		
 		if(!processed) {
-			BulkEditRequest extendRequest = new Gson().fromJson(body, BulkEditRequest.class);
-			logger.log(extendRequest.toString());
+			BulkEditRequest bulkRequest = new Gson().fromJson(body, BulkEditRequest.class);
+			logger.log(bulkRequest.toString());
 			
 			logger.log("Before retrieveSchedule");
 			
 			try {
-				Schedule retrievedSchedule = retrieveScheduleLambda(extendRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
+				Schedule retrievedSchedule = retrieveScheduleLambda(bulkRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
 				logger.log("Retrieved Schedule: " + retrievedSchedule.getId());
 				
+				logger.log("Before TS DAO");
 				
-				boolean deleted = deleteScheduleLambda(retrievedSchedule.getId());
+				TimeSlotsDAO tsdao = new TimeSlotsDAO();
 				
-				logger.log("Schedule deleted? : " + deleted);
+				logger.log("Before For Loop");
 				
-				boolean added = false;
-				
-				if(deleted)
-				{
-					added = addScheduleLambda(updatedSchedule);
+				for(TimeSlot ts: retrievedSchedule.getTimeSlots()) { 
+					
+					logger.log("In for loop");
+					
+					if(!(bulkRequest.requestMonth.equals("0"))) { 
+						if(ts.getDate().getMonthValue() == Integer.parseInt(bulkRequest.requestMonth))
+						{
+							if(bulkRequest.requestToggle.equals("open"))
+							{
+								tsdao.openTimeSlot(ts.getId());
+							}
+							else if(bulkRequest.requestToggle.equals("close"))
+							{
+								tsdao.closeTimeSlot(ts.getId());
+							}
+						}
+					}
+					if(!(bulkRequest.requestYear.equals("0"))) { 
+						if(ts.getDate().getYear() == Integer.parseInt(bulkRequest.requestYear))
+						{
+							if(bulkRequest.requestToggle.equals("open"))
+							{
+								tsdao.openTimeSlot(ts.getId());
+							}
+							else if(bulkRequest.requestToggle.equals("close"))
+							{
+								tsdao.closeTimeSlot(ts.getId());
+							}
+						}
+					}
+					if(!(bulkRequest.requestWeekday.equals("0"))) { 
+						if(ts.getDate().getDayOfWeek().getValue() == Integer.parseInt(bulkRequest.requestWeekday))
+						{
+							if(bulkRequest.requestToggle.equals("open"))
+							{
+								tsdao.openTimeSlot(ts.getId());
+							}
+							else if(bulkRequest.requestToggle.equals("close"))
+							{
+								tsdao.closeTimeSlot(ts.getId());
+							}
+						}
+					}
+					if(!(bulkRequest.requestDate.equals(""))) { 
+						if((ts.getDate().toString().equals(bulkRequest.requestDate)))
+						{
+							if(bulkRequest.requestToggle.equals("open"))
+							{
+								tsdao.openTimeSlot(ts.getId());
+							}
+							else if(bulkRequest.requestToggle.equals("close"))
+							{
+								tsdao.closeTimeSlot(ts.getId());
+							}
+						}
+					}
+					if(!(bulkRequest.requestStartTime.equals("0"))) { 
+						if((ts.getStartTime().toString().equals(bulkRequest.requestStartTime)))
+						{
+							if(bulkRequest.requestToggle.equals("open"))
+							{
+								tsdao.openTimeSlot(ts.getId());
+							}
+							else if(bulkRequest.requestToggle.equals("close"))
+							{
+								tsdao.closeTimeSlot(ts.getId());
+							}
+						}
+					}
 				}
 				
-				logger.log("Successfully added updated schedule: " + added);
+				Schedule retrieved2 = retrieveScheduleLambda(bulkRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
+				
+				logger.log("Retrieved Schedule 2nd time: " + retrieved2.getId());
+				
+				String startDateOfWeek = "";
+				String startTime = retrieved2.getStartTime().toString();
+				String scheduleID = retrieved2.getId();
+				int slotDuration = retrieved2.getSlotDuration();
+				int secretCode = retrieved2.getSecretCode();
+				int numSlotsDay = retrieved2.getNumSlotsDay();
+				String scheduleStartDate = retrieved2.getStartDate().toString();
+				String scheduleEndDate = retrieved2.getEndDate().toString();
 				
 				
-				Schedule retrieveUpdate = retrieveScheduleLambda(extendRequest.requestSchedID);
+				ArrayList<Schedule> scheduleDividedByWeeks = retrieved2.divideByWeeks();
 				
-				if(retrieveUpdate.getStartDate().toString().equals(extendRequest.requestNewStart) && retrieveUpdate.getEndDate().toString().equals(extendRequest.requestNewEnd))
+				
+				logger.log("Assigned values to variables");
+				
+				/**
+				 * This will return the schedule for the week beginning at requestWeekStart
+				 */
+				
+				Schedule byWeek = null;
+				
+				int index = 0;
+				int week = 0;
+				
+				for(Schedule schedule : scheduleDividedByWeeks)
 				{
-					String startDateOfWeek = "";
-					String startTime = retrievedSchedule.getStartTime().toString();
-					String scheduleID = retrievedSchedule.getId();
-					int slotDuration = retrievedSchedule.getSlotDuration();
-					int secretCode = retrievedSchedule.getSecretCode();
-					int numSlotsDay = retrievedSchedule.getNumSlotsDay();
-					String scheduleStartDate = retrievedSchedule.getStartDate().toString();
-					String scheduleEndDate = retrievedSchedule.getEndDate().toString();
+					LocalDate listStartDate = schedule.getStartDate();
+					String arrayListStartDate = listStartDate.toString();
+					String requestStart = bulkRequest.requestWeekStart;
 					
-					
-					ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks();
-					
-					
-					logger.log("Assigned values to variables");
-					
-					/**
-					 * This will return the schedule for the week beginning at requestWeekStart
-					 */
-					
-					Schedule byWeek = null;
-					
-					int index = 0;
-					int week = 0;
-					
-					for(Schedule schedule : scheduleDividedByWeeks)
-					{
-						LocalDate listStartDate = schedule.getStartDate();
-						String arrayListStartDate = listStartDate.toString();
-						String requestStart = extendRequest.requestWeekStart;
-						
-						if(arrayListStartDate.equals(requestStart)) {
-							week = index;
-						}
-						
-						index++;
+					if(arrayListStartDate.equals(requestStart)) {
+						week = index;
 					}
 					
-					byWeek = scheduleDividedByWeeks.get(week);
-					startDateOfWeek = byWeek.getStartDate().toString();
+					index++;
+				}
 				
-					
-					String response = "Successfully retrieved schedule";
-					
-					extendResponse = new ExtendStartEndResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
-
-				}
-				else
-				{
-					String response = "Unable to extend start and end dates: ";
-					extendResponse = new ExtendStartEndResponse(response, 403);
-				}
+				byWeek = scheduleDividedByWeeks.get(week);
+				startDateOfWeek = byWeek.getStartDate().toString();
+			
+				
+				String response = "Successfully retrieved schedule";
+				
+				bulkResponse = new BulkEditResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
+				
 				
 			} catch (Exception e) {
 				
 				e.printStackTrace();
 				
 				logger.log(e.getMessage());
-				extendResponse = new ExtendStartEndResponse("Unable to extend start and end dates: " + e.getMessage(), 403);
+				bulkResponse = new BulkEditResponse("Unable to extend start and end dates: " + e.getMessage(), 403);
 			}
 			
 			// compute proper response
-			responseJson.put("body", new Gson().toJson(extendResponse));
+			responseJson.put("body", new Gson().toJson(bulkResponse));
 			
 		}
 		
