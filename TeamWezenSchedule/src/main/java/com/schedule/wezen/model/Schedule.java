@@ -359,46 +359,35 @@ public class Schedule {
 		}
 	}
 
-	public /*ArrayList<TimeSlot>*/ void searchForTime(String month, String year, String dayWeek, String dayMonth, String time) {
-//		ArrayList<TimeSlot> available = new ArrayList<TimeSlot>();
-		
-//		for(TimeSlot ts: timeSlots) {
-//			available.add(ts);
-//		}
-		
-//		ArrayList<TimeSlot> toRemove = new ArrayList<TimeSlot>();
-		for(TimeSlot ts: timeSlots) { //available) {
-			if(!(month.equals("0"))) { //month != 0 && ts.getDate().getMonthValue() != month) {
-//				toRemove.add(ts);
+	public void searchForTime(String month, String year, String dayWeek, String dayMonth, String time) {
+
+		for(TimeSlot ts: timeSlots) { 
+			if(!(month.equals("0"))) { 
 				if(ts.getDate().getMonthValue() != Integer.parseInt(month))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(year.equals("0"))) { //year != 0 && ts.getDate().getYear() != year) {
-//				toRemove.add(ts);
+			else if(!(year.equals("0"))) { 
 				if(ts.getDate().getYear() != Integer.parseInt(year))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(dayWeek.equals("0"))) { //dayWeek != 0 && ts.getDate().getDayOfWeek().getValue() != dayWeek) {
-//				toRemove.add(ts);
+			else if(!(dayWeek.equals("0"))) { 
 				if(ts.getDate().getDayOfWeek().getValue() != Integer.parseInt(dayWeek))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(dayMonth.equals(""))) { //dayMonth != 0 && ts.getDate().getDayOfMonth() != dayMonth) {
-//				toRemove.add(ts);
+			else if(!(dayMonth.equals(""))) { 
 				System.out.println(ts.slotDate.getMonthValue());
 				if(ts.getDate().toString().equals(dayMonth))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(time.equals("0"))) { //time.getSecond() != 1 && (ts.getStartTime().getHour() != time.getHour() || ts.getStartTime().getMinute() != time.getMinute())) {
-//				toRemove.add(ts);
+			else if(!(time.equals("0"))) { 
 				if(ts.getStartTime().toString().equals(time))
 				{
 					ts.setIsDisplayed(false);
@@ -407,8 +396,6 @@ public class Schedule {
 				ts.setIsDisplayed(true);
 			}
 		}
-//		available.removeAll(toRemove);
-//		return available;
 	}
 	
 	public boolean editTimeSlots(String action, LocalDate date, LocalTime time) {
