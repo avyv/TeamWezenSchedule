@@ -465,7 +465,6 @@ function closeSlot(ts){
   sendData(data,close_url,processSchedule);
 }
 function bulkEdit(){
-  alert("Bulk Edit");
   let toggle = document.getElementById("setopenclose").value;
   let weekday = document.getElementById("openclosedayofweek").value;
   let month = document.getElementById("openclosemonth").value;
