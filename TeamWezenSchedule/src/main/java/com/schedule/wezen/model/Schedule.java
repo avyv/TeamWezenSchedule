@@ -160,7 +160,9 @@ public class Schedule {
 		{
 			return null;
 		}
-
+		
+		ArrayList<TimeSlot> extendArray = new ArrayList<TimeSlot>();
+		
 		LocalDate scheduleStartDate = startDate;
 
 		LocalDate scheduleEndDate = endDate;
@@ -189,6 +191,8 @@ public class Schedule {
 		//int numOfTimeSlotsPerDay = calculateNumTimeSlots(this.startTime, this.endTime, this.slotDuration);
 
 		LocalDate startOfWeekDate = scheduleStartDate;
+		
+		int indexOfOrig = 0;
 
 		int cntval = 0;
 		for(int week = 0; week < numWeeksInSchedule; week++)
@@ -204,17 +208,18 @@ public class Schedule {
 					// populate with closed TimeSlots if the schedule does not start on Monday
 					if(timeSlotDate.isBefore(startDate) && (!(timeSlotDate.equals(startDate))))
 					{
-						ts.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false, cntval));
+						extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false, cntval));
 					}
 					// populate with closed TimeSlots if the schedule does not end on Sunday
 					else if(timeSlotDate.isAfter(endDate) && (!(timeSlotDate.equals(endDate))))
 					{
-						ts.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
+						extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
 					}
 					// if the date is within the range of the schedule start and end dates, populate array with open time slots
 					else if (timeSlotDate.equals(startDate) || timeSlotDate.equals(endDate) || (timeSlotDate.isAfter(startDate) && timeSlotDate.isBefore(endDate)))
 					{
-						ts.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false,cntval));
+						extendArray.add(ts.get(indexOfOrig));
+						indexOfOrig++;
 					}
 
 					timeSlotDate = timeSlotDate.plusDays(1);
@@ -226,12 +231,7 @@ public class Schedule {
 			startOfWeekDate = startOfWeekDate.plusDays(7);
 		}
 
-		// for(TimeSlot ts: this.timeSlots)
-		// {
-		// 	System.out.println(ts.id);
-		// }
-
-		return ts;
+		return extendArray;
 	}
 
 	public ArrayList<Schedule> divideByWeeks() {

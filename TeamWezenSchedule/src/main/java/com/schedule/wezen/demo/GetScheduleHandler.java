@@ -158,7 +158,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				e.printStackTrace();
 				
 				logger.log(e.getMessage());
-				getScheduleResponse = new GetScheduleResponse("A schedule with that ID does not exist in our database: " + e.getMessage(), 403);
+				getScheduleResponse = new GetScheduleResponse("Unable to retrieve schedule: " + e.getMessage(), 403);
 			}
 			
 			// compute proper response
