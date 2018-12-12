@@ -382,6 +382,7 @@ public class Schedule {
 		}
 	}
 
+	//Comment just so I can commit this
 	public void searchForTime(String month, String year, String dayWeek, String dayMonth, String time) {
 
 		for(TimeSlot ts: timeSlots) { 

@@ -224,6 +224,7 @@ public class ScheduleTests extends TestCase{
 		}
 	}
 	
+	//Comment just so I can commit this
 	@Test
 	public void testChangeDuration() {
 		
