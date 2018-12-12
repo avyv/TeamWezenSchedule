@@ -13,6 +13,19 @@ public class TimeSlot {
 	int index;
 	boolean isOpen, hasMeeting, isDisplayed;
 	
+	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting, int index, boolean isDisplayed) {
+		this.startTime = startTime;
+		this.slotDate = slotDate;
+		this.id = id;
+		this.meetingName = meetingName;
+		this.sid = sid;
+		this.secretCode = secretCode;
+		this.isOpen = isOpen;
+		this.hasMeeting = hasMeeting;
+		this.index = index;
+		this.isDisplayed = isDisplayed;
+	}
+	
 	public TimeSlot(LocalTime startTime, LocalDate slotDate, String id, String meetingName, String sid, int secretCode, boolean isOpen, boolean hasMeeting, int index) {
 		this.startTime = startTime;
 		this.slotDate = slotDate;
