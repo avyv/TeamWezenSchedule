@@ -137,7 +137,7 @@ public class SchedulesDAO {
     }
     
     //delete schedules over n days old
-    public void deleteOverDays(int num) throws Exception{
+    public boolean deleteOverDays(int num) throws Exception{
     	List<Schedule> beforeNumDays = new ArrayList<Schedule>();
     	LocalDateTime nDaysAgo = LocalDateTime.now().minusDays(num);
     	for(Schedule s: getAllSchedules()) {
@@ -148,9 +148,14 @@ public class SchedulesDAO {
     		}
     	}
     	
+    	if(beforeNumDays.isEmpty()) {
+    		return false;
+    	}
+    	
     	for(Schedule toDel: beforeNumDays) {
     		deleteSchedule(toDel.getId());
     	}
+    	return true;
     }
 
     public List<Schedule> getAllSchedules() throws Exception {
