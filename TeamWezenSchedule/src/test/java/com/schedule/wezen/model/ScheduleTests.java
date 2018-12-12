@@ -67,6 +67,81 @@ public class ScheduleTests extends TestCase{
 		assertTrue(s.calculateNumTimeSlots(s.startTime, s.endTime, s.slotDuration) == 20);
 	}
 	
+	public ArrayList<TimeSlot> displayed(Schedule s) {
+		ArrayList<TimeSlot> disp = new ArrayList<TimeSlot>();
+		for(TimeSlot ts: s.timeSlots) {
+			if(ts.isDisplayed) {
+				disp.add(ts);
+			}
+		}
+		return disp;
+	}
+	
+//	@Test
+//	public void testSearchForTime() {
+//		
+//		big.searchForTime(0, 0, 0, 0, LocalTime.parse("00:00:01"));
+//		ArrayList<TimeSlot> sort1 = displayed(big);
+//		
+//		assertEquals(sort1.size(), big.timeSlots.size());
+//		
+//		big.searchForTime(1, 0, 0, 0, LocalTime.parse("00:00:01"));
+//		ArrayList<TimeSlot> sort2 = displayed(big);
+//		
+//		assertEquals(sort2.size(), 2*(60/15)*31);
+//		for(TimeSlot ts: sort2) {
+//			assertEquals(ts.slotDate.getMonthValue(), 1);
+//		}
+//		
+//		big.searchForTime(0, 2018, 0, 0, LocalTime.parse("00:00:01"));
+//		ArrayList<TimeSlot> sort3 = displayed(big);
+//		
+//		assertEquals(sort3.size(), 2*(60/15)*(16+6));
+//		for(TimeSlot ts: sort3) {
+//			assertEquals(ts.slotDate.getYear(), 2018);
+//		}
+//		
+//		big.searchForTime(0, 0, 2, 0, LocalTime.parse("00:00:01"));
+//		ArrayList<TimeSlot> sort4 = displayed(big);
+//		
+//		assertEquals(sort4.size(), 2*(60/15)*55);
+//		for(TimeSlot ts: sort4) {
+//			assertEquals(ts.slotDate.getDayOfWeek().getValue(), 2);
+//		}
+//		
+//		big.searchForTime(0, 0, 0, 4, LocalTime.parse("00:00:01"));
+//		ArrayList<TimeSlot> sort5 = displayed(big);
+//		
+//		assertEquals(sort5.size(), 2*(60/15)*13);
+//		for(TimeSlot ts: sort5) {
+//			assertEquals(ts.slotDate.getDayOfMonth(), 15);
+//		}
+//		
+//		big.searchForTime(0, 0, 0, 0, LocalTime.parse("09:15:00"));
+//		ArrayList<TimeSlot> sort6 = displayed(big);
+//		
+//		assertEquals(sort6.size(), 385);
+//		for(TimeSlot ts: sort6) {
+//			assertTrue(ts.startTime.equals(LocalTime.parse("09:15:00")));
+//		}
+//		
+//		big.searchForTime(2, 2019, 3, 6, LocalTime.parse("08:30:00"));
+//		ArrayList<TimeSlot> sort7 = displayed(big);
+//		
+//		assertEquals(sort7.size(), 1);
+//		for(TimeSlot ts: sort7) {
+//			assertEquals(ts.slotDate.getMonthValue(), 2);
+//			assertEquals(ts.slotDate.getYear(), 2019);
+//			assertEquals(ts.slotDate.getDayOfWeek().getValue(), 3);
+//			assertEquals(ts.slotDate.getDayOfMonth(), 6);
+//			assertTrue(ts.startTime.equals(LocalTime.parse("08:30:00")));
+//		}
+//		
+//		big.searchForTime(2, 2019, 3, 7, LocalTime.parse("08:30:00"));
+//		ArrayList<TimeSlot> sort8 = displayed(big);
+//		
+//		assertEquals(sort8.size(), 0);
+//	}
 	
 	@Test
 	public void testChangeDuration() {
@@ -110,80 +185,52 @@ public class ScheduleTests extends TestCase{
 		assertEquals(s4.getEndDate(), LocalDate.parse("2018-12-31"));
 	}
 	
-	public ArrayList<TimeSlot> displayed(Schedule s) {
-		ArrayList<TimeSlot> disp = new ArrayList<TimeSlot>();
-		for(TimeSlot ts: s.timeSlots) {
-			if(ts.isDisplayed) {
-				disp.add(ts);
+	@Test
+	public void testEditTimeSlots() {
+		
+		Schedule s = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
+		
+		s.editTimeSlots("close", LocalDate.parse("2018-12-20"), null);
+		for(TimeSlot ts:s.getTimeSlots()) {
+			if(ts.getDate().equals(LocalDate.parse("2018-12-20"))) {
+				assertEquals(ts.isOpen, false);
 			}
 		}
-		return disp;
-	}
-	
-	@Test
-	public void testSearchForTime() {
 		
-		big.searchForTime(0, 0, 0, 0, LocalTime.parse("00:00:01"));
-		ArrayList<TimeSlot> sort1 = displayed(big);
-		
-		assertEquals(sort1.size(), big.timeSlots.size());
-		
-		big.searchForTime(1, 0, 0, 0, LocalTime.parse("00:00:01"));
-		ArrayList<TimeSlot> sort2 = displayed(big);
-		
-		assertEquals(sort2.size(), 2*(60/15)*31);
-		for(TimeSlot ts: sort2) {
-			assertEquals(ts.slotDate.getMonthValue(), 1);
+		s.editTimeSlots("open", LocalDate.parse("2018-12-20"), null);
+		for(TimeSlot ts:s.getTimeSlots()) {
+			if(ts.getDate().equals(LocalDate.parse("2018-12-20"))) {
+				assertEquals(ts.isOpen, true);
+			}
 		}
 		
-		big.searchForTime(0, 2018, 0, 0, LocalTime.parse("00:00:01"));
-		ArrayList<TimeSlot> sort3 = displayed(big);
-		
-		assertEquals(sort3.size(), 2*(60/15)*(16+6));
-		for(TimeSlot ts: sort3) {
-			assertEquals(ts.slotDate.getYear(), 2018);
+		s.editTimeSlots("close", null, LocalTime.parse("10:15:00"));
+		for(TimeSlot ts:s.getTimeSlots()) {
+			if(ts.getStartTime().equals(LocalTime.parse("10:15:00"))) {
+				assertEquals(ts.isOpen, false);
+			}
 		}
 		
-		big.searchForTime(0, 0, 2, 0, LocalTime.parse("00:00:01"));
-		ArrayList<TimeSlot> sort4 = displayed(big);
-		
-		assertEquals(sort4.size(), 2*(60/15)*55);
-		for(TimeSlot ts: sort4) {
-			assertEquals(ts.slotDate.getDayOfWeek().getValue(), 2);
+		s.editTimeSlots("open", null, LocalTime.parse("10:15:00"));
+		for(TimeSlot ts:s.getTimeSlots()) {
+			if(ts.getStartTime().equals(LocalTime.parse("10:15:00"))) {
+				assertEquals(ts.isOpen, true);
+			}
 		}
 		
-		big.searchForTime(0, 0, 0, 4, LocalTime.parse("00:00:01"));
-		ArrayList<TimeSlot> sort5 = displayed(big);
-		
-		assertEquals(sort5.size(), 2*(60/15)*13);
-		for(TimeSlot ts: sort5) {
-			assertEquals(ts.slotDate.getDayOfMonth(), 15);
+		s.editTimeSlots("close", LocalDate.parse("2018-12-20"), LocalTime.parse("10:15:00"));
+		for(TimeSlot ts:s.getTimeSlots()) {
+			if(ts.getDate().equals(LocalDate.parse("2018-12-20")) && ts.getStartTime().equals(LocalTime.parse("10:15:00"))) {
+				assertEquals(ts.isOpen, false);
+			}
 		}
 		
-		big.searchForTime(0, 0, 0, 0, LocalTime.parse("09:15:00"));
-		ArrayList<TimeSlot> sort6 = displayed(big);
-		
-		assertEquals(sort6.size(), 385);
-		for(TimeSlot ts: sort6) {
-			assertTrue(ts.startTime.equals(LocalTime.parse("09:15:00")));
+		s.editTimeSlots("open", LocalDate.parse("2018-12-20"), LocalTime.parse("12:15:00"));
+		for(TimeSlot ts:s.getTimeSlots()) {
+			if(ts.getDate().equals(LocalDate.parse("2018-12-20")) && ts.getStartTime().equals(LocalTime.parse("12:15:00"))) {
+				assertEquals(ts.isOpen, true);
+			}
 		}
-		
-		big.searchForTime(2, 2019, 3, 6, LocalTime.parse("08:30:00"));
-		ArrayList<TimeSlot> sort7 = displayed(big);
-		
-		assertEquals(sort7.size(), 1);
-		for(TimeSlot ts: sort7) {
-			assertEquals(ts.slotDate.getMonthValue(), 2);
-			assertEquals(ts.slotDate.getYear(), 2019);
-			assertEquals(ts.slotDate.getDayOfWeek().getValue(), 3);
-			assertEquals(ts.slotDate.getDayOfMonth(), 6);
-			assertTrue(ts.startTime.equals(LocalTime.parse("08:30:00")));
-		}
-		
-		big.searchForTime(2, 2019, 3, 7, LocalTime.parse("08:30:00"));
-		ArrayList<TimeSlot> sort8 = displayed(big);
-		
-		assertEquals(sort8.size(), 0);
 	}
 
 }
