@@ -172,7 +172,7 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 					 * This will return the schedule for the week beginning at requestWeekStart
 					 */
 					
-					Schedule byWeek = null;
+					Schedule byWeek;
 					
 					int index = 0;
 					int week = 0;
