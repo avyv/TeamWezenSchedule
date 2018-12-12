@@ -385,38 +385,38 @@ public class Schedule {
 	public void searchForTime(String month, String year, String dayWeek, String dayMonth, String time) {
 
 		for(TimeSlot ts: timeSlots) { 
+			
+			ts.setIsDisplayed(true);
+			
 			if(!(month.equals("0"))) { 
 				if(ts.getDate().getMonthValue() != Integer.parseInt(month))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(year.equals("0"))) { 
+			if(!(year.equals("0"))) { 
 				if(ts.getDate().getYear() != Integer.parseInt(year))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(dayWeek.equals("0"))) { 
+			if(!(dayWeek.equals("0"))) { 
 				if(ts.getDate().getDayOfWeek().getValue() != Integer.parseInt(dayWeek))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(dayMonth.equals(""))) { 
-				System.out.println(ts.slotDate.getMonthValue());
-				if(ts.getDate().toString().equals(dayMonth))
+			if(!(dayMonth.equals(""))) { 
+				if(!(ts.getDate().toString().equals(dayMonth)))
 				{
 					ts.setIsDisplayed(false);
 				}
 			}
-			else if(!(time.equals("0"))) { 
-				if(ts.getStartTime().toString().equals(time))
+			if(!(time.equals("0"))) { 
+				if(!(ts.getStartTime().toString().equals(time)))
 				{
 					ts.setIsDisplayed(false);
 				}
-			}else {
-				ts.setIsDisplayed(true);
 			}
 		}
 	}
