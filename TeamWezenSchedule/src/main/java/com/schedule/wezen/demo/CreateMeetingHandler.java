@@ -203,15 +203,7 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				
 				logger.log("Filtering Schedule");
 				
-				Model m = new Model();
-				
-				int month = Integer.parseInt(createMeetingRequest.requestMonth);
-				int year = Integer.parseInt(createMeetingRequest.requestYear);
-				int dayWeek = Integer.parseInt(createMeetingRequest.requestWeekday);
-				int dayMonth = Integer.parseInt(createMeetingRequest.requestDate);
-				LocalTime time = m.stringToTime(createMeetingRequest.requestTime);
-				
-				retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+				retrievedSchedule.searchForTime(createMeetingRequest.requestMonth, createMeetingRequest.requestYear, createMeetingRequest.requestWeekday, createMeetingRequest.requestDate, createMeetingRequest.requestTime);
 				
 				logger.log("Finished Filtering");
 				

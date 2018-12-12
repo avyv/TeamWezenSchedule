@@ -117,4 +117,8 @@ public class TimeSlot {
 			return true;
 		}
 	}
+	
+	public void setIsDisplayed(boolean val) {
+		this.isDisplayed = val;
+	}
 }

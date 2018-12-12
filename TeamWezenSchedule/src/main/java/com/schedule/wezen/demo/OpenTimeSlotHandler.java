@@ -141,15 +141,7 @@ public class OpenTimeSlotHandler implements RequestStreamHandler {
 					
 					logger.log("Filtering Schedule");
 					
-					Model m = new Model();
-					
-					int month = Integer.parseInt(openTimeSlotRequest.requestMonth);
-					int year = Integer.parseInt(openTimeSlotRequest.requestYear);
-					int dayWeek = Integer.parseInt(openTimeSlotRequest.requestWeekday);
-					int dayMonth = Integer.parseInt(openTimeSlotRequest.requestDate);
-					LocalTime time = m.stringToTime(openTimeSlotRequest.requestTime);
-					
-					retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+					retrievedSchedule.searchForTime(openTimeSlotRequest.requestMonth, openTimeSlotRequest.requestYear, openTimeSlotRequest.requestWeekday, openTimeSlotRequest.requestDate, openTimeSlotRequest.requestTime);
 					
 					logger.log("Finished Filtering");
 					

@@ -195,15 +195,7 @@ public class CancelMeetingHandler implements RequestStreamHandler {
 				
 				logger.log("Filtering Schedule");
 				
-				Model m = new Model();
-				
-				int month = Integer.parseInt(cancelMeetingRequest.requestMonth);
-				int year = Integer.parseInt(cancelMeetingRequest.requestYear);
-				int dayWeek = Integer.parseInt(cancelMeetingRequest.requestWeekday);
-				int dayMonth = Integer.parseInt(cancelMeetingRequest.requestDate);
-				LocalTime time = m.stringToTime(cancelMeetingRequest.requestTime);
-				
-				retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+				retrievedSchedule.searchForTime(cancelMeetingRequest.requestMonth, cancelMeetingRequest.requestYear, cancelMeetingRequest.requestWeekday, cancelMeetingRequest.requestDate, cancelMeetingRequest.requestTime);
 				
 				logger.log("Finished Filtering");
 				

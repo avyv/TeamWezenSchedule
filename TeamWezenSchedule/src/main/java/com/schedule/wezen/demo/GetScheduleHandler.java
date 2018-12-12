@@ -116,15 +116,7 @@ public class GetScheduleHandler implements RequestStreamHandler {
 				
 				logger.log("Filtering Schedule");
 				
-				Model m = new Model();
-				
-				int month = Integer.parseInt(getScheduleRequest.requestMonth);
-				int year = Integer.parseInt(getScheduleRequest.requestYear);
-				int dayWeek = Integer.parseInt(getScheduleRequest.requestWeekday);
-				int dayMonth = Integer.parseInt(getScheduleRequest.requestDate);
-				LocalTime time = m.stringToTime(getScheduleRequest.requestTime);
-				
-				retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+				retrievedSchedule.searchForTime(getScheduleRequest.requestMonth, getScheduleRequest.requestYear, getScheduleRequest.requestWeekday, getScheduleRequest.requestDate, getScheduleRequest.requestTime);
 				
 				logger.log("Finished Filtering");
 				

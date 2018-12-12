@@ -116,15 +116,7 @@ public class GetPreviousWeekHandler implements RequestStreamHandler {
 				
 				logger.log("Filtering Schedule");
 				
-				Model m = new Model();
-				
-				int month = Integer.parseInt(getPreviousRequest.requestMonth);
-				int year = Integer.parseInt(getPreviousRequest.requestYear);
-				int dayWeek = Integer.parseInt(getPreviousRequest.requestWeekday);
-				int dayMonth = Integer.parseInt(getPreviousRequest.requestDate);
-				LocalTime time = m.stringToTime(getPreviousRequest.requestTime);
-				
-				retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+				retrievedSchedule.searchForTime(getPreviousRequest.requestMonth, getPreviousRequest.requestYear, getPreviousRequest.requestWeekday, getPreviousRequest.requestDate, getPreviousRequest.requestTime);
 				
 				logger.log("Finished Filtering");
 				

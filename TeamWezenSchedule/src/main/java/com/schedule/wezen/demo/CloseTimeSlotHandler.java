@@ -142,15 +142,7 @@ public class CloseTimeSlotHandler implements RequestStreamHandler {
 					
 					logger.log("Filtering Schedule");
 					
-					Model m = new Model();
-					
-					int month = Integer.parseInt(closeTimeSlotRequest.requestMonth);
-					int year = Integer.parseInt(closeTimeSlotRequest.requestYear);
-					int dayWeek = Integer.parseInt(closeTimeSlotRequest.requestWeekday);
-					int dayMonth = Integer.parseInt(closeTimeSlotRequest.requestDate);
-					LocalTime time = m.stringToTime(closeTimeSlotRequest.requestTime);
-					
-					retrievedSchedule.searchForTime(month, year, dayWeek, dayMonth, time);
+					retrievedSchedule.searchForTime(closeTimeSlotRequest.requestMonth, closeTimeSlotRequest.requestYear, closeTimeSlotRequest.requestWeekday, closeTimeSlotRequest.requestDate, closeTimeSlotRequest.requestTime);
 					
 					logger.log("Finished Filtering");
 					

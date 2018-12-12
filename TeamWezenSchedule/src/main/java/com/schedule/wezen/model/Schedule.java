@@ -359,37 +359,52 @@ public class Schedule {
 		}
 	}
 
-	public /*ArrayList<TimeSlot>*/ void searchForTime(int month, int year, int dayWeek, int dayMonth, LocalTime time) {
+	public /*ArrayList<TimeSlot>*/ void searchForTime(String month, String year, String dayWeek, String dayMonth, String time) {
 //		ArrayList<TimeSlot> available = new ArrayList<TimeSlot>();
 		
 //		for(TimeSlot ts: timeSlots) {
 //			available.add(ts);
 //		}
 		
-		ArrayList<TimeSlot> toRemove = new ArrayList<TimeSlot>();
+//		ArrayList<TimeSlot> toRemove = new ArrayList<TimeSlot>();
 		for(TimeSlot ts: timeSlots) { //available) {
-			if(month != 0 && ts.getDate().getMonthValue() != month) {
+			if(!(month.equals("0"))) { //month != 0 && ts.getDate().getMonthValue() != month) {
 //				toRemove.add(ts);
-				ts.isDisplayed = false;
+				if(ts.getDate().getMonthValue() != Integer.parseInt(month))
+				{
+					ts.setIsDisplayed(false);
+				}
 			}
-			else if(year != 0 && ts.getDate().getYear() != year) {
+			else if(!(year.equals("0"))) { //year != 0 && ts.getDate().getYear() != year) {
 //				toRemove.add(ts);
-				ts.isDisplayed = false;
+				if(ts.getDate().getYear() != Integer.parseInt(year))
+				{
+					ts.setIsDisplayed(false);
+				}
 			}
-			else if(dayWeek != 0 && ts.getDate().getDayOfWeek().getValue() != dayWeek) {
+			else if(!(dayWeek.equals("0"))) { //dayWeek != 0 && ts.getDate().getDayOfWeek().getValue() != dayWeek) {
 //				toRemove.add(ts);
-				ts.isDisplayed = false;
+				if(ts.getDate().getDayOfWeek().getValue() != Integer.parseInt(dayWeek))
+				{
+					ts.setIsDisplayed(false);
+				}
 			}
-			else if(dayMonth != 0 && ts.getDate().getDayOfMonth() != dayMonth) {
+			else if(!(dayMonth.equals(""))) { //dayMonth != 0 && ts.getDate().getDayOfMonth() != dayMonth) {
 //				toRemove.add(ts);
 				System.out.println(ts.slotDate.getMonthValue());
-				ts.isDisplayed = false;
+				if(ts.getDate().toString().equals(dayMonth))
+				{
+					ts.setIsDisplayed(false);
+				}
 			}
-			else if(time.getSecond() != 1 && (ts.getStartTime().getHour() != time.getHour() || ts.getStartTime().getMinute() != time.getMinute())) {
+			else if(!(time.equals("0"))) { //time.getSecond() != 1 && (ts.getStartTime().getHour() != time.getHour() || ts.getStartTime().getMinute() != time.getMinute())) {
 //				toRemove.add(ts);
-				ts.isDisplayed = false;
+				if(ts.getStartTime().toString().equals(time))
+				{
+					ts.setIsDisplayed(false);
+				}
 			}else {
-				ts.isDisplayed = true;
+				ts.setIsDisplayed(true);
 			}
 		}
 //		available.removeAll(toRemove);
