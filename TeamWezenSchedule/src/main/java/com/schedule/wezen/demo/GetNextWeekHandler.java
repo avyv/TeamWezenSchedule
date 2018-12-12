@@ -150,9 +150,9 @@ public class GetNextWeekHandler implements RequestStreamHandler {
 					index++;
 				}
 				
-				String response = "";
+				/*String response = "";
 				
-				if(week == scheduleDividedByWeeks.size())
+				if(week == scheduleDividedByWeeks.size() || week > scheduleDividedByWeeks.size())
 				{
 					response = "You are currently viewing the last week of the schedule";
 				}
@@ -161,8 +161,12 @@ public class GetNextWeekHandler implements RequestStreamHandler {
 					byWeek = scheduleDividedByWeeks.get(week);
 					startDateOfWeek = byWeek.getStartDate().toString();
 					response = "Successfully retrieved schedule";
-				}
+				}*/
 				
+				byWeek = scheduleDividedByWeeks.get(week);
+				startDateOfWeek = byWeek.getStartDate().toString();
+				
+				String response = "Successfully retrieved schedule";
 				
 				getNextResponse = new GetNextWeekResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 			} catch (Exception e) {
