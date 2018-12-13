@@ -38,6 +38,32 @@ public class CreateDeleteScheduleHandler {
     private static final String SAMPLE_INPUT_STRING_DELETE = "{\"requestSchedID\":\"mysched\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
+    
+    @Test
+    public void testDeleteScheduleHandler() throws IOException {
+        DeleteScheduleHandler handler = new DeleteScheduleHandler();
+
+        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING_DELETE.getBytes());;
+        OutputStream output = new ByteArrayOutputStream();
+
+        handler.handleRequest(input, output, createContext("sample"));
+
+        // TODO: validate output here if needed.
+        String sampleOutputString = output.toString();
+        JSONParser json = new JSONParser();
+        try {
+			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
+			String body = (String) obj.get("body");
+			JSONObject bson = (JSONObject) json.parse(body);
+			Assert.assertEquals("Successfully deleted schedule", bson.get("deleteScheduleResponse"));
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    }
+    
     @Test
     public void testCreateScheduleHandler() throws IOException {
     	
@@ -66,10 +92,11 @@ public class CreateDeleteScheduleHandler {
     }
     
     @Test
-    public void testDeleteScheduleHandler() throws IOException {
+    public void testDeleteScheduleHandlerFromFile() throws IOException {
         DeleteScheduleHandler handler = new DeleteScheduleHandler();
 
-        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING_DELETE.getBytes());;
+        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleDeleteSchedule.in"));
+        
         OutputStream output = new ByteArrayOutputStream();
 
         handler.handleRequest(input, output, createContext("sample"));
@@ -116,29 +143,5 @@ public class CreateDeleteScheduleHandler {
 		Assert.assertEquals("Successfully created schedule", bson.get("response"));
     }
     
-    @Test
-    public void testDeleteScheduleHandlerFromFile() throws IOException {
-        DeleteScheduleHandler handler = new DeleteScheduleHandler();
-
-        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleDeleteSchedule.in"));
-        
-        OutputStream output = new ByteArrayOutputStream();
-
-        handler.handleRequest(input, output, createContext("sample"));
-
-        // TODO: validate output here if needed.
-        String sampleOutputString = output.toString();
-        JSONParser json = new JSONParser();
-        try {
-			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
-			String body = (String) obj.get("body");
-			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("Successfully deleted schedule", bson.get("deleteScheduleResponse"));
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-    }
+    
 }
