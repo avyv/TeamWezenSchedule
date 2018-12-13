@@ -111,6 +111,7 @@ form{
 
 form.adminform{
   visibility: hidden;
+  float:right;
 }
 
 li.schedules{
@@ -189,4 +190,12 @@ a:hover {
     background-color: darkgrey;
     color: white;
     float: right;
+}
+
+nav#filterScheds {
+  padding: 30px;
+  background: #ccc;
+}
+button#listdelete {
+  display:none;
 }

@@ -10,7 +10,7 @@
     <h2>Administrator Portal</h2>
   </header>
   <section>
-    <nav>
+    <nav id="filterScheds">
       <label for="viewMenu">Show: </label>
       <select id="viewMenu" onchange="toggleSort()">
         <option value="all">All</option>
@@ -21,13 +21,14 @@
 
       <form id="sortForm" class="adminform">
         <label for="sort">Last </label>
-        <input id="sort" type="text">
+        <input id="sort" type="number">
         <label id="sortlabel"></label>
       </form>
+      <button onclick="JavaScript:getList()">Go</button>
     </nav>
   </section>
   <section id="displaySchedules">
-    <button>Delete All</button>
+    <button id="listdelete" onclick="handleDeleteSchedule()">Delete</button>
     <ol id="scheduleList"></ol>
   </section>
   </body>
