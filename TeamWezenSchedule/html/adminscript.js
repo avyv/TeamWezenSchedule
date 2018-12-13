@@ -21,9 +21,14 @@ function displaySchedules(){
 }
 
 function getList(){
-  let range = document.getElementById("viewMenu").value;
-  let userInput = document.getElementById("sort").value;
-  if((range != "all") && (userInput == "")){
+  var range = document.getElementById("viewMenu").value;
+  var userInput = document.getElementById("sort").value;
+
+  if(range == "all"){
+    range = "day";
+    userInput = "0";
+  }
+  if(userInput == ""){
     alert("Please Enter a number");
     return;
   }

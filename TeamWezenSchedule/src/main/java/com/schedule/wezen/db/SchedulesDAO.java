@@ -120,7 +120,6 @@ public class SchedulesDAO {
             throw new Exception("Failed to insert schedule: "/* + str2*/ + ":" + e.getMessage());
         }
     }
-    
     //get schedules created in last n hours
     public ArrayList<String> getCreatedInLastHours(int num) throws Exception{
     	List<Schedule> inLastNumHours = new ArrayList<Schedule>();
@@ -136,7 +135,11 @@ public class SchedulesDAO {
     	ArrayList<String> toRet = new ArrayList<String>();
     	
     	for(Schedule toAdd: inLastNumHours) {
-    		toRet.add(toAdd.getId() + ", " + toAdd.getCreated().toString());
+    		String[] timestamp = toAdd.getCreated().toString().split("T");
+    		String[] dividedTime = timestamp[1].split(":");
+    		String bigdivider = "....................";
+    		String label =  toAdd.getId() + bigdivider + timestamp[0] + bigdivider + dividedTime[0] + ":" + dividedTime[1];
+    		toRet.add(label);
     	}
     	
     	return toRet;
@@ -157,7 +160,12 @@ public class SchedulesDAO {
     	ArrayList<String> toRet = new ArrayList<String>();
     	
     	for(Schedule toAdd: inLastNumDays) {
-    		toRet.add(toAdd.getId() + ", " + toAdd.getCreated().toString());
+//    		toRet.add(toAdd.getId() + ", " + toAdd.getCreated().toString());
+    		String[] timestamp = toAdd.getCreated().toString().split("T");
+    		String[] dividedTime = timestamp[1].split(":");
+    		String bigdivider = "....................";
+    		String label =  toAdd.getId() + bigdivider + timestamp[0] + bigdivider + dividedTime[0] + ":" + dividedTime[1];
+    		toRet.add(label);
     	}
     	
     	return toRet;
