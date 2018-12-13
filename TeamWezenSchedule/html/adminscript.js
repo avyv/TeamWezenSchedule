@@ -37,7 +37,7 @@ function getList(){
   data["requestRange"] = String(range);
   data["requestNumDaysOrHours"] = String(userInput);
   let getlist_url = base_url + "/adminget";
-  sendData(data,getlist_url);
+  sendData(data,getlist_url,processList);
 }
 
 
@@ -53,7 +53,7 @@ function handleDeleteSchedule(sched){
     let data = {};
     data["requestNumDays"] = String(userInput);
     let deletelist_url = base_url + "/admindelete";
-    sendData(data,deletelist_url);
+    sendData(data,deletelist_url,processListDelete);
 }
 
 function toggleSort(){
@@ -74,7 +74,7 @@ function toggleSort(){
 
 
 
-function sendData(data,url){
+function sendData(data,url,callback){
   let js = JSON.stringify(data);
   console.log("JS:" + js);
   let xhr = new XMLHttpRequest();
@@ -85,9 +85,9 @@ function sendData(data,url){
     console.log(xhr.request);
     if(xhr.readyState == XMLHttpRequest.DONE) {
       console.log("XHR:" + xhr.responseText);
-      processList(xhr.responseText);
+      callback(xhr.responseText);
     } else {
-      processList(xhr.responseText);
+      callback(xhr.responseText);
     }
   };
 }
@@ -97,9 +97,23 @@ function processList(xhrResult){
 	let js = JSON.parse(xhrResult);
 
   //add if schedule couldnt be opened, display "could not find schedule"
-  if((js["response"]=="Successfully got list")||(js["response"]=="Successfully deleted schedules")){
+  if(js["response"]=="Successfully got list"){
     schedulelist = js["responseList"];
     displaySchedules();
+  }else{
+    alert(js["response"]);
+  }
+}
+
+
+function processListDelete(xhrResult){
+	console.log("result:" + xhrResult);
+	let js = JSON.parse(xhrResult);
+
+  //add if schedule couldnt be opened, display "could not find schedule"
+  if(js["response"]=="Successfully deleted schedules"){
+    schedulelist = js["responseList"];
+    getList();
   }else{
     alert(js["response"]);
   }

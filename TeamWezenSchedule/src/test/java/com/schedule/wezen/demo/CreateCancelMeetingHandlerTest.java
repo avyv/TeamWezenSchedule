@@ -39,59 +39,6 @@ public class CreateCancelMeetingHandlerTest {
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
-    public void testCreateMeetingHandler() throws IOException {
-    	
-        CreateMeetingHandler handler = new CreateMeetingHandler();
-
-        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING_CREATE.getBytes());
-        OutputStream output = new ByteArrayOutputStream();
-
-        handler.handleRequest(input, output, createContext("sample")); 
-
-        // TODO: validate output here if needed.
-        String sampleOutputString = output.toString();
-        JSONParser json = new JSONParser();
-        try {
-			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
-			String body = (String) obj.get("body");
-			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("Successfully created meeting", bson.get("response"));
-			
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-    }
-    
-    @Test
-    public void testCreateMeetingHandlerFromFile() throws IOException {
-    	
-//    	Assert.assertTrue (DatabaseUtil.conn != null);
-        CreateMeetingHandler  handler = new CreateMeetingHandler ();
-
-        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleCreateMeeting.in"));
-        
-        OutputStream output = new ByteArrayOutputStream();
-
-        handler.handleRequest(input, output, createContext("sample"));
-
-        // TODO: validate output here if needed.
-        PostResponse pr = new Gson().fromJson(output.toString(), PostResponse.class);
-        JSONParser json = new JSONParser();
-		JSONObject bson = null;
-		try {
-			bson = (JSONObject) json.parse(pr.body);
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Assert.assertEquals("Successfully created meeting", bson.get("response"));
-    }
-    
-    @Test
     public void testCancelMeetingHandler() throws IOException {
     	
         CancelMeetingHandler handler = new CancelMeetingHandler();
@@ -109,6 +56,33 @@ public class CreateCancelMeetingHandlerTest {
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
 			Assert.assertEquals("Successfully retrieved schedule", bson.get("response"));
+			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+    }
+    
+    @Test
+    public void testCreateMeetingHandler() throws IOException {
+    	
+        CreateMeetingHandler handler = new CreateMeetingHandler();
+
+        InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING_CREATE.getBytes());
+        OutputStream output = new ByteArrayOutputStream();
+
+        handler.handleRequest(input, output, createContext("sample")); 
+
+        // TODO: validate output here if needed.
+        String sampleOutputString = output.toString();
+        JSONParser json = new JSONParser();
+        try {
+			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
+			String body = (String) obj.get("body");
+			JSONObject bson = (JSONObject) json.parse(body);
+			Assert.assertEquals("Successfully created meeting", bson.get("response"));
 			
 			
 		} catch (ParseException e) {
@@ -143,4 +117,32 @@ public class CreateCancelMeetingHandlerTest {
 		}
 		Assert.assertEquals("Successfully retrieved schedule", bson.get("response"));
     }
+
+    @Test
+    public void testCreateMeetingHandlerFromFile() throws IOException {
+    	
+//    	Assert.assertTrue (DatabaseUtil.conn != null);
+        CreateMeetingHandler  handler = new CreateMeetingHandler ();
+
+        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleCreateMeeting.in"));
+        
+        OutputStream output = new ByteArrayOutputStream();
+
+        handler.handleRequest(input, output, createContext("sample"));
+
+        // TODO: validate output here if needed.
+        PostResponse pr = new Gson().fromJson(output.toString(), PostResponse.class);
+        JSONParser json = new JSONParser();
+		JSONObject bson = null;
+		try {
+			bson = (JSONObject) json.parse(pr.body);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Assert.assertEquals("Successfully created meeting", bson.get("response"));
+    }
+    
+    
 }

@@ -120,5 +120,5 @@
     "httpMethod": "POST",
     "queryStringParameters": null,
     "stageVariables": null,
-    "body": "{\"requestSchedID\":\"Leopold\",\"requestWeekStart\":\"\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}"
+    "body": "{\"requestSchedID\":\"beast\",\"requestWeekStart\":\"\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}"
 }

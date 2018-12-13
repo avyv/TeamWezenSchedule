@@ -19,7 +19,6 @@ public class TimeSlotTests extends TestCase {
 	protected void setUp() throws Exception {
 		dao = new TimeSlotsDAO();
 		testSlot = createTimeSlot();
-		dao.deleteAllTimeSlots();
 	}
 	
 	//DAO

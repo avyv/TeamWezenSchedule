@@ -36,7 +36,7 @@ public class GetScheduleHandlerTest {
     }
 
 	
-    private static final String SAMPLE_INPUT_STRING = "{\"requestSchedID\":\"hello!!\",\"requestWeekStart\":\"\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}";
+    private static final String SAMPLE_INPUT_STRING = "{\"requestSchedID\":\"Leopold\",\"requestWeekStart\":\"\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
