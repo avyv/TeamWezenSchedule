@@ -53,6 +53,6 @@ public class divideByWeekTest {
 		for(TimeSlot ts : firstWeek.getTimeSlots()) {
 			System.out.println(ts.getId());
 		}
-		assertEquals(counter,5);
+		assertEquals(weeklySchedules.size(),7);
 	}
 }
