@@ -206,6 +206,7 @@ public class CancelMeetingHandler implements RequestStreamHandler {
 				
 				Schedule byWeek = null;
 				
+				int index = 0;
 				int week = 0;
 				
 				for(Schedule schedule: scheduleDividedByWeeks) {
@@ -214,13 +215,15 @@ public class CancelMeetingHandler implements RequestStreamHandler {
 						
 						logger.log("Found the correct week");
 						
-						byWeek = scheduleDividedByWeeks.get(week);
+						week = index;
 					}
 					
-					week++;
+					index++;
 				}
 				
 				logger.log("After for loop");
+				
+				byWeek = scheduleDividedByWeeks.get(week);
 				
 				startDateOfWeek = byWeek.getStartDate().toString();
 				

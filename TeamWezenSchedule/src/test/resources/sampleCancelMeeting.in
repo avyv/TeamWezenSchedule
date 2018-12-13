@@ -1,5 +1,5 @@
 {
-    "path": "/createmeeting",
+    "path": "/cancelmeeting",
     "headers": {
         "Accept": "*/*",
         "CloudFront-Viewer-Country": "US",
@@ -7,17 +7,17 @@
         "CloudFront-Is-Tablet-Viewer": "false",
         "origin": "https://wezenschedule.s3.us-east-2.amazonaws.com",
         "CloudFront-Is-Mobile-Viewer": "false",
-        "Referer": "https://wezenschedule.s3.us-east-2.amazonaws.com/participant.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20181212T181829Z&X-Amz-SignedHeaders=host&X-Amz-Expires=431996&X-Amz-Credential=AKIAJEKB4NABQYMWAOPA%2F20181212%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=fde5c9042ad9650bf18c049475fc4d39e014ca1be8ba40ff1d78d56951cd86f4",
+        "Referer": "https://wezenschedule.s3.us-east-2.amazonaws.com/organizer.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20181212T033412Z&X-Amz-SignedHeaders=host&X-Amz-Expires=604794&X-Amz-Credential=AKIAJEKB4NABQYMWAOPA%2F20181212%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=c18216a2e27a9b1c679c79f9b6c95c4575785b8598e6f7489d1b860bd06b1385",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36",
         "X-Forwarded-Proto": "https",
         "CloudFront-Is-SmartTV-Viewer": "false",
         "Host": "kiljpq1n4a.execute-api.us-east-2.amazonaws.com",
         "Accept-Encoding": "gzip, deflate, br",
         "X-Forwarded-Port": "443",
-        "X-Amzn-Trace-Id": "Root=1-5c11ae21-43c95209fdbc2b5f3d81e917",
-        "Via": "2.0 5ea17ec24e220cfd5bc26fea52e3a29c.cloudfront.net (CloudFront)",
-        "X-Amz-Cf-Id": "QHKS2fNLSgcA6Rsy2FhjYHr5UCOzamNYPG6cWeM2CcVmVbJN7LwB8A==",
-        "X-Forwarded-For": "130.215.120.119, 52.46.29.64",
+        "X-Amzn-Trace-Id": "Root=1-5c1089a5-824ed2f9d8ce1ff4d1c9e641",
+        "Via": "2.0 4a9cf7d692d7309a16ebde15ef85ff54.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "k9-qc1JiiOyx5qD4T8mR-Jm0CbnyBa9nsPmYn89Y7jqwdFRZ5FYgkw==",
+        "X-Forwarded-For": "130.215.120.119, 52.46.29.9",
         "content-type": "text/plain;charset=UTF-8",
         "Accept-Language": "en-US,en;q=0.9",
         "CloudFront-Is-Desktop-Viewer": "true"
@@ -45,7 +45,7 @@
             "false"
         ],
         "Referer": [
-            "https://wezenschedule.s3.us-east-2.amazonaws.com/participant.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20181212T181829Z&X-Amz-SignedHeaders=host&X-Amz-Expires=431996&X-Amz-Credential=AKIAJEKB4NABQYMWAOPA%2F20181212%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=fde5c9042ad9650bf18c049475fc4d39e014ca1be8ba40ff1d78d56951cd86f4"
+            "https://wezenschedule.s3.us-east-2.amazonaws.com/organizer.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20181212T033412Z&X-Amz-SignedHeaders=host&X-Amz-Expires=604794&X-Amz-Credential=AKIAJEKB4NABQYMWAOPA%2F20181212%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=c18216a2e27a9b1c679c79f9b6c95c4575785b8598e6f7489d1b860bd06b1385"
         ],
         "User-Agent": [
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"
@@ -66,16 +66,16 @@
             "443"
         ],
         "X-Amzn-Trace-Id": [
-            "Root=1-5c11ae21-43c95209fdbc2b5f3d81e917"
+            "Root=1-5c1089a5-824ed2f9d8ce1ff4d1c9e641"
         ],
         "Via": [
-            "2.0 5ea17ec24e220cfd5bc26fea52e3a29c.cloudfront.net (CloudFront)"
+            "2.0 4a9cf7d692d7309a16ebde15ef85ff54.cloudfront.net (CloudFront)"
         ],
         "X-Amz-Cf-Id": [
-            "QHKS2fNLSgcA6Rsy2FhjYHr5UCOzamNYPG6cWeM2CcVmVbJN7LwB8A=="
+            "k9-qc1JiiOyx5qD4T8mR-Jm0CbnyBa9nsPmYn89Y7jqwdFRZ5FYgkw=="
         ],
         "X-Forwarded-For": [
-            "130.215.120.119, 52.46.29.64"
+            "130.215.120.119, 52.46.29.9"
         ],
         "content-type": [
             "text/plain;charset=UTF-8"
@@ -88,18 +88,18 @@
         ]
     },
     "requestContext": {
-        "resourceId": "dyzcrw",
-        "resourcePath": "/createmeeting",
+        "resourceId": "nj6uhn",
+        "resourcePath": "/cancelmeeting",
         "httpMethod": "POST",
-        "extendedRequestId": "R0glTG26iYcF5sQ=",
-        "requestTime": "13/Dec/2018:00:56:01 +0000",
-        "path": "/Alpha/createmeeting",
+        "extendedRequestId": "Rxpx7FSjiYcFqhw=",
+        "requestTime": "12/Dec/2018:04:08:05 +0000",
+        "path": "/Alpha/cancelmeeting",
         "accountId": "326444859572",
         "protocol": "HTTP/1.1",
         "stage": "Alpha",
         "domainPrefix": "kiljpq1n4a",
-        "requestTimeEpoch": 1544662561949,
-        "requestId": "dc887575-fe71-11e8-bd46-15a7c4c3f662",
+        "requestTimeEpoch": 1544587685939,
+        "requestId": "86f4086d-fdc3-11e8-a1e5-c3cf27b5b36e",
         "identity": {
             "cognitoIdentityPoolId": null,
             "accountId": null,
@@ -116,7 +116,7 @@
         "domainName": "kiljpq1n4a.execute-api.us-east-2.amazonaws.com",
         "apiId": "kiljpq1n4a"
     },
-    "resource": "/createmeeting",
+    "resource": "/cancelmeeting",
     "httpMethod": "POST",
     "queryStringParameters": null,
     "stageVariables": null,

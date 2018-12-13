@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -211,9 +212,11 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 				ArrayList<Schedule> scheduleDividedByWeeks = retrievedSchedule.divideByWeeks(/*retrievedSchedule.getStartDate(), retrievedSchedule.getEndDate(), retrievedSchedule.getStartTime(), retrievedSchedule.getEndTime(), retrievedSchedule.getSlotDuration(), retrievedSchedule.getId(), retrievedSchedule.getNumSlotsDay()*/);
 				
 				logger.log("After initializing variables, before retrieving the correct weekly schedule");
+			
 				
 				Schedule byWeek = null;
 				
+				int index = 0;
 				int week = 0;
 				
 				for(Schedule schedule: scheduleDividedByWeeks) {
@@ -222,15 +225,23 @@ public class CreateMeetingHandler implements RequestStreamHandler {
 						
 						logger.log("Found the correct week");
 						
-						byWeek = scheduleDividedByWeeks.get(week);
+						week = index;
+						
+						logger.log("week: " + week);
 					}
 					
-					week++;
+					index++;
 				}
 				
 				logger.log("After for loop");
 				
+				byWeek = scheduleDividedByWeeks.get(week);
+				
+				logger.log("start date of byWeek: " + byWeek.getStartDate().toString());
+				
 				startDateOfWeek = byWeek.getStartDate().toString();
+				
+				logger.log(startDateOfWeek);
 				
 				createMeetingResponse = new CreateMeetingResponse(startDateOfWeek, startTime, scheduleID, slotDuration, secretCode, numSlotsDay, scheduleStartDate, scheduleEndDate, byWeek.getTimeSlots(), response, 200);
 				
