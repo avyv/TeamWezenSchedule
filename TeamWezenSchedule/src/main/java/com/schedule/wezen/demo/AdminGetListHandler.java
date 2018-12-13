@@ -45,11 +45,7 @@ public class AdminGetListHandler implements RequestStreamHandler {
 		
 		ArrayList<String> listOfSchedules = null;
 		
-		if(range.equals("all"))
-		{
-			listOfSchedules = new ArrayList<String>();
-		}
-		else if (range.equals("hr"))
+		if (range.equals("hr"))
 		{
 			listOfSchedules = dao.getCreatedInLastHours(daysOrHours);
 		}

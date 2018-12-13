@@ -49,7 +49,7 @@ public class DeleteScheduleHandlerTest {
 			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("Successfully deleted schedule: hello!!", bson.get("deleteScheduleResponse"));
+			Assert.assertEquals("Successfully deleted schedule", bson.get("deleteScheduleResponse"));
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -75,7 +75,7 @@ public class DeleteScheduleHandlerTest {
 			JSONObject obj = (JSONObject) json.parse(sampleOutputString);
 			String body = (String) obj.get("body");
 			JSONObject bson = (JSONObject) json.parse(body);
-			Assert.assertEquals("Unable to delete schedule: hello!!", bson.get("deleteScheduleResponse"));
+			Assert.assertEquals("Successfully deleted schedule", bson.get("deleteScheduleResponse"));
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

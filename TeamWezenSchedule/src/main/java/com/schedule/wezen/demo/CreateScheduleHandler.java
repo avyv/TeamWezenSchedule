@@ -229,7 +229,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 					
 					logger.log("In else statement, dublicate ID");
 					
-					resp = new CreateScheduleResponse("Unable to create schedule, duplicate name: ", 422);
+					resp = new CreateScheduleResponse("Unable to create schedule, duplicate name", 422);
 				}
 				
 			} catch (Exception e) {
@@ -274,6 +274,8 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				logger.log(firstWeek.getCreated().toString());
 				
+				response = "Successfully created schedule";
+				
 				resp = new CreateScheduleResponse(startDateOfWeek, startTime, scheduleID, slotDuration, sc, numSlotsDay, scheduleStartDate, scheduleEndDate, firstWeek.getTimeSlots(), response, 200);
 					
 			} 
@@ -284,7 +286,7 @@ public class CreateScheduleHandler implements RequestStreamHandler {
 				
 				logger.log(e.getMessage());
 				
-				resp = new CreateScheduleResponse("Unable to retrieve schedule: (" + e.getMessage() + ")", 403);
+				resp = new CreateScheduleResponse("Unable to create schedule, duplicate name", 403);
 			} //
 
 			// compute proper response

@@ -1,5 +1,5 @@
 {
-    "path": "/getschedule",
+    "path": "/getpreviousweek",
     "headers": {
         "Accept": "*/*",
         "CloudFront-Viewer-Country": "US",
@@ -14,10 +14,10 @@
         "Host": "kiljpq1n4a.execute-api.us-east-2.amazonaws.com",
         "Accept-Encoding": "gzip, deflate, br",
         "X-Forwarded-Port": "443",
-        "X-Amzn-Trace-Id": "Root=1-5c11adff-54b0c2b6d49070e48cb6c7b8",
+        "X-Amzn-Trace-Id": "Root=1-5c11ae6d-dc3f3e1efc0e87b8eadadbb7",
         "Via": "2.0 5ea17ec24e220cfd5bc26fea52e3a29c.cloudfront.net (CloudFront)",
-        "X-Amz-Cf-Id": "7hTuOceiySwcXL65byM52dsn_ivEI_WJceUgmFGf9K9jI3VJzL6Ldw==",
-        "X-Forwarded-For": "130.215.120.119, 52.46.29.9",
+        "X-Amz-Cf-Id": "g1esPRuCOUd8FzDwY0AzVQXGBRTZUUfxpuIMpIEaKl6J4Ym4hkIiSA==",
+        "X-Forwarded-For": "130.215.120.119, 52.46.29.7",
         "content-type": "text/plain;charset=UTF-8",
         "Accept-Language": "en-US,en;q=0.9",
         "CloudFront-Is-Desktop-Viewer": "true"
@@ -66,16 +66,16 @@
             "443"
         ],
         "X-Amzn-Trace-Id": [
-            "Root=1-5c11adff-54b0c2b6d49070e48cb6c7b8"
+            "Root=1-5c11ae6d-dc3f3e1efc0e87b8eadadbb7"
         ],
         "Via": [
             "2.0 5ea17ec24e220cfd5bc26fea52e3a29c.cloudfront.net (CloudFront)"
         ],
         "X-Amz-Cf-Id": [
-            "7hTuOceiySwcXL65byM52dsn_ivEI_WJceUgmFGf9K9jI3VJzL6Ldw=="
+            "g1esPRuCOUd8FzDwY0AzVQXGBRTZUUfxpuIMpIEaKl6J4Ym4hkIiSA=="
         ],
         "X-Forwarded-For": [
-            "130.215.120.119, 52.46.29.9"
+            "130.215.120.119, 52.46.29.7"
         ],
         "content-type": [
             "text/plain;charset=UTF-8"
@@ -88,18 +88,18 @@
         ]
     },
     "requestContext": {
-        "resourceId": "r7zkqp",
-        "resourcePath": "/getschedule",
+        "resourceId": "ekk6qy",
+        "resourcePath": "/getpreviousweek",
         "httpMethod": "POST",
-        "extendedRequestId": "R0gf6EZDCYcFaDg=",
-        "requestTime": "13/Dec/2018:00:55:27 +0000",
-        "path": "/Alpha/getschedule",
+        "extendedRequestId": "R0gxIEdzCYcFjKw=",
+        "requestTime": "13/Dec/2018:00:57:17 +0000",
+        "path": "/Alpha/getpreviousweek",
         "accountId": "326444859572",
         "protocol": "HTTP/1.1",
         "stage": "Alpha",
         "domainPrefix": "kiljpq1n4a",
-        "requestTimeEpoch": 1544662527485,
-        "requestId": "c7fdabb7-fe71-11e8-966b-27759e70a718",
+        "requestTimeEpoch": 1544662637671,
+        "requestId": "09aab7d5-fe72-11e8-bdf8-8d67688212ef",
         "identity": {
             "cognitoIdentityPoolId": null,
             "accountId": null,
@@ -116,9 +116,9 @@
         "domainName": "kiljpq1n4a.execute-api.us-east-2.amazonaws.com",
         "apiId": "kiljpq1n4a"
     },
-    "resource": "/getschedule",
+    "resource": "/getpreviousweek",
     "httpMethod": "POST",
     "queryStringParameters": null,
     "stageVariables": null,
-    "body": "{\"requestSchedID\":\"Leopold\",\"requestWeekStart\":\"\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}"
+    "body": "{\"requestSchedID\":\"Leopold\",\"requestWeekStart\":\"2018-12-17\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}"
 }

@@ -89,7 +89,7 @@ public class DeleteScheduleHandler implements RequestStreamHandler {
 				
 				logger.log("After delete schedule");
 				
-				response = new DeleteScheduleResponse("Sucessfully deleted schedule", 200);
+				response = new DeleteScheduleResponse("Successfully deleted schedule", 200);
 				
 			} catch (Exception e) {
 				

@@ -21,14 +21,14 @@ import com.google.gson.Gson;
 import com.schedule.wezen.db.DatabaseUtil;
 import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.db.TestContext;
-import com.schedule.wezen.demo.http.CreateScheduleRequest;
+import com.schedule.wezen.demo.http.GetNextWeekRequest;
 import com.schedule.wezen.demo.http.PostResponse;
 
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class GetScheduleHandlerTest {
+public class GetNextWeekHandlerTest {
 	Context createContext(String apiCall) {
         TestContext ctx = new TestContext();
         ctx.setFunctionName(apiCall);
@@ -36,12 +36,12 @@ public class GetScheduleHandlerTest {
     }
 
 	
-    private static final String SAMPLE_INPUT_STRING = "{\"requestSchedID\":\"hello!!\",\"requestWeekStart\":\"\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}";
+    private static final String SAMPLE_INPUT_STRING = "{\"requestSchedID\":\"Leopold\",\"requestWeekStart\":\"2018-12-10\",\"requestWeekday\":\"0\",\"requestMonth\":\"0\",\"requestYear\":\"0\",\"requestDate\":\"\",\"requestTime\":\"0\"}";
     private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
-    public void testGetScheduleHandler() throws IOException {
-        GetScheduleHandler handler = new GetScheduleHandler();
+    public void testGetNextWeekHandler() throws IOException {
+        GetNextWeekHandler handler = new GetNextWeekHandler();
 
         InputStream input = new ByteArrayInputStream(SAMPLE_INPUT_STRING.getBytes());
         OutputStream output = new ByteArrayOutputStream();
@@ -65,12 +65,12 @@ public class GetScheduleHandlerTest {
     }
     
     @Test
-    public void testGetScheduleHandlerFromFile() throws IOException {
+    public void testGetNextWeekHandlerFromFile() throws IOException {
     	SchedulesDAO dao = new SchedulesDAO();
     	Assert.assertTrue (DatabaseUtil.conn != null);
-        GetScheduleHandler  handler = new GetScheduleHandler ();
+        GetNextWeekHandler  handler = new GetNextWeekHandler ();
 
-        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleGetSchedule.in"));
+        FileInputStream input = new FileInputStream( new File("src/test/resources/sampleGetNextWeek.in"));
         
         OutputStream output = new ByteArrayOutputStream();
 

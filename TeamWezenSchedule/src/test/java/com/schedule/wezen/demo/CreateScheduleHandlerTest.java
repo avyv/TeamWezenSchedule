@@ -19,9 +19,7 @@ import org.junit.Test;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
 import com.schedule.wezen.db.DatabaseUtil;
-import com.schedule.wezen.db.SchedulesDAO;
 import com.schedule.wezen.db.TestContext;
-import com.schedule.wezen.db.TimeSlotsDAO;
 import com.schedule.wezen.demo.http.CreateScheduleRequest;
 import com.schedule.wezen.demo.http.PostResponse;
 
@@ -42,8 +40,6 @@ public class CreateScheduleHandlerTest {
 
     @Test
     public void testCreateScheduleHandler() throws IOException {
-    	SchedulesDAO dao = new SchedulesDAO();
-    	TimeSlotsDAO tsdao = new TimeSlotsDAO();
     	
         CreateScheduleHandler handler = new CreateScheduleHandler();
 
@@ -67,15 +63,10 @@ public class CreateScheduleHandlerTest {
 			e.printStackTrace();
 		}
         
-        dao.deleteAllSchedules();
-		tsdao.deleteAllTimeSlots();
-        
     }
     
     @Test
     public void testCreateScheduleHandlerFromFile() throws IOException {
-    	SchedulesDAO dao = new SchedulesDAO();
-    	TimeSlotsDAO tsdao = new TimeSlotsDAO();
     	
     	Assert.assertTrue (DatabaseUtil.conn != null);
         CreateScheduleHandler  handler = new CreateScheduleHandler ();
@@ -97,9 +88,6 @@ public class CreateScheduleHandlerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Assert.assertEquals("Successfully created schedule", bson.get("response")); 
-		
-		dao.deleteAllSchedules();
-		tsdao.deleteAllTimeSlots();
+		Assert.assertEquals("Successfully created schedule", bson.get("response"));
     }
 }
