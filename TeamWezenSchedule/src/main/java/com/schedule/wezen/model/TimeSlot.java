@@ -90,7 +90,10 @@ public class TimeSlot {
 	public boolean isCorrectCode(int sc) {
 		return (sc == secretCode);
 	}
-	
+	public void setIndex(int newi) {
+		this.index = newi;
+		this.id = this.sid + newi;
+	}
 	// Unnecessary?
 	/*public LocalTime calculateEndTime(LocalTime startTime, LocalTime duration) {
 		int min = startTime.getMinute();

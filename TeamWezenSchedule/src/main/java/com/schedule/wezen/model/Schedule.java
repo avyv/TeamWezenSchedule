@@ -155,6 +155,7 @@ public class Schedule {
 		return true;
 	}
 	
+
 	public ArrayList<TimeSlot> populateTimeSlots2(ArrayList<TimeSlot> ts, LocalDate newStartDate, LocalDate newEndDate)
 	{	
 		ArrayList<TimeSlot> extendArray = new ArrayList<TimeSlot>();
@@ -184,65 +185,55 @@ public class Schedule {
 
 		int numWeeksInSchedule = numDaysInSchedule / 7;
 
-		//int numOfTimeSlotsPerDay = calculateNumTimeSlots(this.startTime, this.endTime, this.slotDuration);
-
 		LocalDate startOfWeekDate = scheduleStartDate;
-		
-		int indexOfOrig = 0;
-
+		ArrayList <TimeSlot> copyts = new ArrayList<TimeSlot>();
+		for(TimeSlot myts : ts) {
+			LocalDate mydate = myts.getDate();
+			if ((mydate.isAfter(this.startDate) && mydate.isBefore(this.endDate)) || (mydate.equals(this.startDate) || mydate.equals(this.endDate)))
+			{
+				copyts.add(myts);
+			}
+		}
+		int copycnt = 0;
 		int cntval = 0;
 		for(int week = 0; week < numWeeksInSchedule; week++)
-		{
+		{ 
+			timeSlotStartTime = this.startTime;
 			for(int time = 0; time < this.numSlotsDay; time++)
 			{
 				timeSlotDate = startOfWeekDate;
 
 				for(int day = 0; day < 7; day++)
 				{
-					String tsID = this.id + " " + cntval;//Integer.toBinaryString(cntval);// + timeSlotStartTime.toString() + " " + timeSlotDate.toString();
-
-					// populate with closed TimeSlots if the schedule does not start on Monday
-					if(timeSlotDate.isBefore(this.startDate) && (!(timeSlotDate.equals(this.startDate)))) // if it is before the original schedule start date but not equal to the original start date
+					String tsID = this.id + " " + cntval;
+					
+					if ((copycnt < copyts.size()) && ((timeSlotDate.isAfter(this.startDate) && timeSlotDate.isBefore(this.endDate)) || ((timeSlotDate.equals(this.startDate) || timeSlotDate.equals(this.endDate)))))
 					{
-						if(timeSlotDate.equals(newStartDate) || (timeSlotDate.isAfter(newStartDate))) // if it is before the new start date the time slot will be closed
-						{
-							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false, cntval));
-						}
-						else // if the date is equal to the new start date, the time slots will be open
-						{
-							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false, cntval));
-						}
-					}
-					// populate with closed TimeSlots if the schedule does not end on Sunday
-					else if(timeSlotDate.isAfter(this.endDate) && (!(timeSlotDate.equals(this.endDate))))
+						copyts.get(copycnt).setIndex(cntval);
+						extendArray.add(copyts.get(copycnt));
+						copycnt++;
+					}else
 					{
-						if(timeSlotDate.isBefore(newEndDate) || timeSlotDate.equals(newEndDate))
+						if ((timeSlotDate.isAfter(newStartDate) && timeSlotDate.isBefore(newEndDate)) || ((timeSlotDate.equals(newStartDate) || (timeSlotDate.equals(newEndDate)))))
 						{
 							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), true, false,cntval));
-						}
-						else
+						}else 
 						{
-							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));
-						}
+							extendArray.add(new TimeSlot(timeSlotStartTime, timeSlotDate, tsID, " ", this.id, createSecretCode(), false, false,cntval));	
+						}		 					
 					}
-					// if the date is within the range of the schedule start and end dates, populate array with open time slots
-					else if (timeSlotDate.equals(this.startDate) || timeSlotDate.equals(this.endDate) || (timeSlotDate.isAfter(this.startDate) && timeSlotDate.isBefore(this.endDate)))
-					{
-						extendArray.add(ts.get(indexOfOrig));
-						indexOfOrig++;
-					}
-
+					
 					timeSlotDate = timeSlotDate.plusDays(1);
 					cntval++;
 				}
 				timeSlotStartTime = timeSlotStartTime.plusMinutes(this.slotDuration);
 			}
-			timeSlotStartTime = this.startTime;
 			startOfWeekDate = startOfWeekDate.plusDays(7);
 		}
-
 		return extendArray;
 	}
+
+	
 
 	public ArrayList<Schedule> divideByWeeks() {
 //		ArrayList<TimeSlot> rdsisdumb = fuckYouRDS();

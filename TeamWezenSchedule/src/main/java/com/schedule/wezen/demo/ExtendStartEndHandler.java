@@ -123,7 +123,7 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 				Schedule retrievedSchedule = retrieveScheduleLambda(extendRequest.requestSchedID); // this is where we call the retrieveSchedule function that utilizes SchedulesDAO
 				
 				logger.log("Retrieved Schedule: " + retrievedSchedule.getId());
-				
+				logger.log("Retrieved ts size: " + retrievedSchedule.getTimeSlots().size());
 				Model m = new Model();
 				
 				ArrayList<TimeSlot> nSE = retrievedSchedule.populateTimeSlots2(retrievedSchedule.getTimeSlots(), m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd));
@@ -164,13 +164,18 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 					String scheduleStartDate = retrieveUpdate.getStartDate().toString();
 					String scheduleEndDate = retrieveUpdate.getEndDate().toString();
 					
-					
+					logger.log("size of retrieveUpdate: " + retrieveUpdate.getTimeSlots().size());
+//					for (TimeSlot ts : retrieveUpdate.getTimeSlots()) {
+//						logger.log("" + ts.getId());
+//					}
+					logger.log("Num slots day retrieveUpdate: " + retrieveUpdate.getNumSlotsDay());
+
 					ArrayList<Schedule> scheduleDividedByWeeks = retrieveUpdate.divideByWeeks();
-					
 					logger.log("size of sdbw: " + scheduleDividedByWeeks.size());
 					
 					logger.log("sdbw item 0 size: " + scheduleDividedByWeeks.get(0).getTimeSlots().size());
-					
+					logger.log("Num slots day retrieveUpdate: " + scheduleDividedByWeeks.get(0).getNumSlotsDay());
+
 					logger.log("Assigned values to variables");
 					
 					/**
