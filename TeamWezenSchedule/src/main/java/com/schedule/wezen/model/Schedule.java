@@ -46,7 +46,7 @@ public class Schedule {
 		this.slotDuration = slotDuration;
 		this.id = id;
 		this.secretCode = secretCode;
-		this.created = created;
+		this.created = LocalDateTime.now();
 		this.numSlotsDay = calculateNumTimeSlots(startTime, endTime, slotDuration);
 		this.endTime = endTime; /*calculateEndTime(startTime, slotDuration, numSlotsDay);*/
 		this.timeSlots = timeSlots;
@@ -155,7 +155,7 @@ public class Schedule {
 		return true;
 	}
 	
-	public ArrayList<TimeSlot> populateTimeSlots2(LocalDate newStartDate, LocalDate newEndDate)
+	public ArrayList<TimeSlot> populateTimeSlots2(ArrayList<TimeSlot> ts, LocalDate newStartDate, LocalDate newEndDate)
 	{	
 		ArrayList<TimeSlot> extendArray = new ArrayList<TimeSlot>();
 		
@@ -228,7 +228,7 @@ public class Schedule {
 					// if the date is within the range of the schedule start and end dates, populate array with open time slots
 					else if (timeSlotDate.equals(this.startDate) || timeSlotDate.equals(this.endDate) || (timeSlotDate.isAfter(this.startDate) && timeSlotDate.isBefore(this.endDate)))
 					{
-						extendArray.add(this.timeSlots.get(indexOfOrig));
+						extendArray.add(ts.get(indexOfOrig));
 						indexOfOrig++;
 					}
 
@@ -349,40 +349,40 @@ public class Schedule {
 		return code;*/
 	}
 
-	public boolean changeDuration(LocalDate sd, LocalDate ed) {
-		
-		if(this.startDate.isBefore(sd) || this.endDate.isAfter(ed)) {
-			return false;
-		}
-		
-		else {
-			
-			if(!(sd.equals(this.startDate))){
-				if((ChronoUnit.DAYS.between(sd, this.startDate)) >= 7 || calculateDayOfWeek(this.startDate) < calculateDayOfWeek(sd)) {
-					ArrayList<TimeSlot> ts1 = new ArrayList<TimeSlot>();
-					int dayOfWeekStart = this.startDate.getDayOfWeek().getValue();
-					LocalDate dummyEd = this.startDate.minusDays(dayOfWeekStart);
-					ts1 = populateTimeSlots2(sd, dummyEd);
-					for(TimeSlot ts : ts1) {this.timeSlots.add(0, ts);}
-				}
-			}
-			
-			if(!(ed.equals(this.endDate))){
-				if((ChronoUnit.DAYS.between(this.endDate, ed)) >= 7 || calculateDayOfWeek(this.endDate) > calculateDayOfWeek(ed)) {
-					ArrayList<TimeSlot> ts2 = new ArrayList<TimeSlot>();
-					int dayOfWeekEnd = this.endDate.getDayOfWeek().getValue();
-					LocalDate dummySd = this.endDate.plusDays(8 - dayOfWeekEnd);
-					ts2 = populateTimeSlots2(dummySd, ed);
-					for(TimeSlot ts : ts2) {this.timeSlots.add(ts);}
-				}
-			}
-			
-			this.startDate = sd;
-			this.endDate = ed;
-			
-			return true;
-		}
-	}
+//	public boolean changeDuration(LocalDate sd, LocalDate ed) {
+//		
+//		if(this.startDate.isBefore(sd) || this.endDate.isAfter(ed)) {
+//			return false;
+//		}
+//		
+//		else {
+//			
+//			if(!(sd.equals(this.startDate))){
+//				if((ChronoUnit.DAYS.between(sd, this.startDate)) >= 7 || calculateDayOfWeek(this.startDate) < calculateDayOfWeek(sd)) {
+//					ArrayList<TimeSlot> ts1 = new ArrayList<TimeSlot>();
+//					int dayOfWeekStart = this.startDate.getDayOfWeek().getValue();
+//					LocalDate dummyEd = this.startDate.minusDays(dayOfWeekStart);
+//					ts1 = populateTimeSlots2(sd, dummyEd);
+//					for(TimeSlot ts : ts1) {this.timeSlots.add(0, ts);}
+//				}
+//			}
+//			
+//			if(!(ed.equals(this.endDate))){
+//				if((ChronoUnit.DAYS.between(this.endDate, ed)) >= 7 || calculateDayOfWeek(this.endDate) > calculateDayOfWeek(ed)) {
+//					ArrayList<TimeSlot> ts2 = new ArrayList<TimeSlot>();
+//					int dayOfWeekEnd = this.endDate.getDayOfWeek().getValue();
+//					LocalDate dummySd = this.endDate.plusDays(8 - dayOfWeekEnd);
+//					ts2 = populateTimeSlots2(dummySd, ed);
+//					for(TimeSlot ts : ts2) {this.timeSlots.add(ts);}
+//				}
+//			}
+//			
+//			this.startDate = sd;
+//			this.endDate = ed;
+//			
+//			return true;
+//		}
+//	}
 
 	//Comment just so I can commit this
 	public void searchForTime(String month, String year, String dayWeek, String dayMonth, String time) {
@@ -409,7 +409,7 @@ public class Schedule {
 					ts.setIsDisplayed(false);
 				}
 			}
-			if(!(dayMonth.equals("0"))) { 
+			if(!(dayMonth.equals(""))) { 
 				//if(ts.getDate().getDayOfMonth() != Integer.parseInt(dayMonth))
 				if(!(ts.getDate().toString().equals(dayMonth)))
 				{

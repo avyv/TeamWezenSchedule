@@ -26,7 +26,7 @@ import com.schedule.wezen.demo.http.PostResponse;
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-public class CreateDeleteScheduleHandler {
+public class CreateDeleteScheduleHandlerTest {
 	Context createContext(String apiCall) {
         TestContext ctx = new TestContext();
         ctx.setFunctionName(apiCall);

@@ -156,47 +156,47 @@ public class ScheduleTests extends TestCase{
 		}
 	}
 	
-	@Test
-	public void testChangeDuration() {
-		
-		Schedule s = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
-		
-		assertTrue(s.getTimeSlots().size() == 140);
-		
-		s.changeDuration(LocalDate.parse("2018-12-11"), LocalDate.parse("2018-12-25"));
-		
-		assertEquals(s.getTimeSlots().size(), 420);
-		assertEquals(s.getStartDate(), LocalDate.parse("2018-12-11"));
-		assertEquals(s.getEndDate(), LocalDate.parse("2018-12-25"));
-		
-		Schedule s1 = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
-		s1.changeDuration(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"));
-		
-		assertEquals(s1.getTimeSlots().size(), 140);
-		assertEquals(s1.getStartDate(), LocalDate.parse("2018-12-17"));
-		assertEquals(s1.getEndDate(), LocalDate.parse("2018-12-21"));
-		
-		Schedule s2 = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
-		s2.changeDuration(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-29"));
-		
-		assertEquals(s2.getTimeSlots().size(), 280);
-		assertEquals(s2.getStartDate(), LocalDate.parse("2018-12-17"));
-		assertEquals(s2.getEndDate(), LocalDate.parse("2018-12-29"));
-		
-		Schedule s3 = new Schedule(LocalDate.parse("2018-12-19"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
-		s3.changeDuration(LocalDate.parse("2018-12-11"), LocalDate.parse("2018-12-21"));
-		
-		assertEquals(s3.getTimeSlots().size(), 280);
-		assertEquals(s3.getStartDate(), LocalDate.parse("2018-12-11"));
-		assertEquals(s3.getEndDate(), LocalDate.parse("2018-12-21"));
-		
-		Schedule s4 = new Schedule(LocalDate.parse("2018-12-19"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
-		s4.changeDuration(LocalDate.parse("2018-12-07"), LocalDate.parse("2018-12-31"));
-		
-		assertEquals(s4.getTimeSlots().size(), 700);
-		assertEquals(s4.getStartDate(), LocalDate.parse("2018-12-07"));
-		assertEquals(s4.getEndDate(), LocalDate.parse("2018-12-31"));
-	}
+//	@Test
+//	public void testChangeDuration() {
+//		
+//		Schedule s = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
+//		
+//		assertTrue(s.getTimeSlots().size() == 140);
+//		
+//		s.changeDuration(LocalDate.parse("2018-12-11"), LocalDate.parse("2018-12-25"));
+//		
+//		assertEquals(s.getTimeSlots().size(), 420);
+//		assertEquals(s.getStartDate(), LocalDate.parse("2018-12-11"));
+//		assertEquals(s.getEndDate(), LocalDate.parse("2018-12-25"));
+//		
+//		Schedule s1 = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
+//		s1.changeDuration(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"));
+//		
+//		assertEquals(s1.getTimeSlots().size(), 140);
+//		assertEquals(s1.getStartDate(), LocalDate.parse("2018-12-17"));
+//		assertEquals(s1.getEndDate(), LocalDate.parse("2018-12-21"));
+//		
+//		Schedule s2 = new Schedule(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
+//		s2.changeDuration(LocalDate.parse("2018-12-17"), LocalDate.parse("2018-12-29"));
+//		
+//		assertEquals(s2.getTimeSlots().size(), 280);
+//		assertEquals(s2.getStartDate(), LocalDate.parse("2018-12-17"));
+//		assertEquals(s2.getEndDate(), LocalDate.parse("2018-12-29"));
+//		
+//		Schedule s3 = new Schedule(LocalDate.parse("2018-12-19"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
+//		s3.changeDuration(LocalDate.parse("2018-12-11"), LocalDate.parse("2018-12-21"));
+//		
+//		assertEquals(s3.getTimeSlots().size(), 280);
+//		assertEquals(s3.getStartDate(), LocalDate.parse("2018-12-11"));
+//		assertEquals(s3.getEndDate(), LocalDate.parse("2018-12-21"));
+//		
+//		Schedule s4 = new Schedule(LocalDate.parse("2018-12-19"), LocalDate.parse("2018-12-21"), LocalTime.parse("08:00:00"), LocalTime.parse("13:00:00"), 15, "aSchedule", 0123);
+//		s4.changeDuration(LocalDate.parse("2018-12-07"), LocalDate.parse("2018-12-31"));
+//		
+//		assertEquals(s4.getTimeSlots().size(), 700);
+//		assertEquals(s4.getStartDate(), LocalDate.parse("2018-12-07"));
+//		assertEquals(s4.getEndDate(), LocalDate.parse("2018-12-31"));
+//	}
 	
 	@Test
 	public void testEditTimeSlots() {

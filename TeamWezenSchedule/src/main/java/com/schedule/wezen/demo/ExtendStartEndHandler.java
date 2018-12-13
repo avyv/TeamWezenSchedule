@@ -126,7 +126,7 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 				
 				Model m = new Model();
 				
-				ArrayList<TimeSlot> nSE = retrievedSchedule.populateTimeSlots2(/*retrievedSchedule.getTimeSlots(),*/ m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd));
+				ArrayList<TimeSlot> nSE = retrievedSchedule.populateTimeSlots2(retrievedSchedule.getTimeSlots(), m.stringToDate(extendRequest.requestNewStart), m.stringToDate(extendRequest.requestNewEnd));
 				
 				logger.log("After new population");
 				
@@ -151,6 +151,8 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 				
 				Schedule retrieveUpdate = retrieveScheduleLambda(extendRequest.requestSchedID);
 				
+				logger.log("start date of updated schedule" + retrieveUpdate.getStartDate().toString());
+				
 				if(retrieveUpdate.getStartDate().toString().equals(extendRequest.requestNewStart) && retrieveUpdate.getEndDate().toString().equals(extendRequest.requestNewEnd))
 				{
 					String startDateOfWeek = "";
@@ -165,6 +167,9 @@ public class ExtendStartEndHandler implements RequestStreamHandler {
 					
 					ArrayList<Schedule> scheduleDividedByWeeks = retrieveUpdate.divideByWeeks();
 					
+					logger.log("size of sdbw: " + scheduleDividedByWeeks.size());
+					
+					logger.log("sdbw item 0 size: " + scheduleDividedByWeeks.get(0).getTimeSlots().size());
 					
 					logger.log("Assigned values to variables");
 					
